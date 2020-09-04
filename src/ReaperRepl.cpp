@@ -62,7 +62,7 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     // RegisterAction("IPlugReaperExtension: Action 3 - Show/Hide UI", [&]() { ShowHideMainWindow(); mGUIToggle = !mGUIToggle; }, true, &mGUIToggle);
 
     cb = [&](const char *data) -> std::string {
-        printf("main: got data %s\n", data);
+//         printf("main: got data %s\n", data);
 
         std::ostringstream stream;
         stream << "Got " << strlen(data) << " chars" << std::endl;

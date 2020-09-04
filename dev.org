@@ -1,0 +1,17 @@
+* Linux
+  #+BEGIN_SRC sh :session *reaper-repl*
+ln -s `readlink -f ../iPlug2` subprojects/iPlug2
+meson setup build
+meson setup --reconfigure build
+ninja -C build
+# to cleanup/regenerate
+rm -rf build    
+  #+END_SRC
+
+  Launching
+  #+BEGIN_SRC sh
+# installing
+ln -s `readlink -f build/reaper_s7-reaper-repl.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
+
+~/Downloads/reaper_linux_x86_64/REAPER/reaper
+  #+END_SRC

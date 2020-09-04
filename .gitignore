@@ -1,0 +1,10 @@
+.vs/
+subprojects/*
+
+# un-ignoring specific file extensions
+!subprojects/*.wrap
+build*/
+*.reapeaks
+imgui.ini
+*.RPP-bak
+*.kdev4

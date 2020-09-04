@@ -1,9 +1,12 @@
-#include "IPlugReaperExtension.h"
+#include "ReaperRepl.h"
 #include "ReaperExt_include_in_plug_src.h"
+#include "reaper_plugin_functions.h"
 
 // #include "IControls.h"
+#include <iostream>
+#include <sstream>
 
-IPlugReaperExtension::IPlugReaperExtension(reaper_plugin_info_t* pRec)
+ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
 : ReaperExtBase(pRec)
 {
   //Use IMPAPI to register any Reaper APIs that you need to use
@@ -28,9 +31,23 @@ IPlugReaperExtension::IPlugReaperExtension(reaper_plugin_info_t* pRec)
   RegisterAction("IPlugReaperExtension: Action 1 - MsgBox", action1, true);
   RegisterAction("IPlugReaperExtension: Action 2 - AddTrack", action2, true);
   // RegisterAction("IPlugReaperExtension: Action 3 - Show/Hide UI", [&]() { ShowHideMainWindow(); mGUIToggle = !mGUIToggle; }, true, &mGUIToggle);
+  
+  cb = [](const char *data) -> std::string {
+		printf("main: got data %s\n", data);
+
+		std::ostringstream stream;
+		stream << "Got " << strlen(data) << " chars" << std::endl;
+		std::string str = stream.str();
+
+        InsertTrackAtIndex(GetNumTracks(), false);
+		return str;
+	};
+	
+	srv.listen(1234, cb, "s7-reaper-repl\n> ");
+    printf("started listening at 1234\n");
 }
 
-void IPlugReaperExtension::OnIdle()
+void ReaperRepl::OnIdle()
 {
   int tracks = CountTracks(0);
   

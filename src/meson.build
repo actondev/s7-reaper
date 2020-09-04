@@ -1,5 +1,5 @@
 sources = files(
-  'IPlugReaperExtension.cpp',
+  'ReaperRepl.cpp',
 )
 
 # can be filled by subdirs
@@ -11,5 +11,5 @@ subdir('resources')
 
 app_dep = declare_dependency(
   include_directories: includes,
-  sources: sources
+  sources: sources,
   )

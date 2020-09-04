@@ -1,0 +1,6 @@
+[wrap-git]
+ url = https://github.com/actonDev/imgui.git
+ # contains fixes about how the mouse events are handled
+ # needed for the vst
+ # if not.. some hacks for the input focus had to be done
+revision = feature/meson-sdl

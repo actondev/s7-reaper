@@ -48,4 +48,12 @@ netcat localhost 1234
 rpr
 ((rpr 'count-tracks))
 ((rpr 'insert-track))
+
+# insert new track 40001
+((rpr 'Main_OnCommand) 40001)
+# select all 40296
+((rpr 'Main_OnCommand) 40296)
+# remove
+((rpr 'Main_OnCommand) 40697)
+
    #+END_SRC

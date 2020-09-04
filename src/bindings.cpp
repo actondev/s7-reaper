@@ -6,6 +6,26 @@
 
 namespace reaper_repl {
 
+namespace common {
+s7_pointer main_on_command(s7_scheme* sc, s7_pointer args) {
+    // 2nd arg flags.. what is "flags" ??
+    Main_OnCommand(s7_real(s7_car(args)), 0);
+    return s7_nil(sc);
+}
+
+void bind(s7_scheme* sc, s7_pointer env) {
+    // TODO should I keep the naming for the .."factory" functions?
+    // and the create my own "wrappers" with normal dash-case?
+    s7_define(sc, env, s7_make_symbol(sc, "Main_OnCommand"),
+              s7_make_function(sc, "Main_OnCommand", main_on_command,
+                               1, // req args
+                               0, // optional args: thickness
+                               false, // rest args
+                               "(Main_OnCommand cmd-id)"));
+
+}
+}
+
 namespace tracks {
 
 
@@ -35,6 +55,13 @@ void bind(s7_scheme* sc, s7_pointer env) {
                                0, // optional args: thickness
                                false, // rest args
                                "(insert-track)"));
+
+    s7_define(sc, env, s7_make_symbol(sc, "main-on-command"),
+              s7_make_function(sc, "main-on-command", insert_track,
+                               0, // req args
+                               0, // optional args: thickness
+                               false, // rest args
+                               "(main-on-command cmd-id)"));
 }
 
 }
@@ -51,8 +78,10 @@ void bind(reaper_plugin_info_t* pRec, s7_scheme* sc) {
     IMPAPI(GetNumTracks);
     IMPAPI(CountTracks);
     IMPAPI(InsertTrackAtIndex);
+    IMPAPI(Main_OnCommand);
 
     tracks::bind(sc, env);
+    common::bind(sc, env);
 
     s7_define_variable(sc, "rpr", env);
 }

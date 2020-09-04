@@ -2,6 +2,7 @@
 
 #include "ReaperExt_include_in_plug_hdr.h"
 #include "aod/net/net.hpp"
+#include "aod/s7/repl.hpp"
 
 enum EControlTags
 {
@@ -26,5 +27,6 @@ private:
     int mGUIToggle = 0;
     aod::net::TcpServer srv;
     aod::net::Callback cb;
+    aod::s7::Repl repl;
 };
 

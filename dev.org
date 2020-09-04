@@ -15,6 +15,13 @@ ln -s `readlink -f ../imgui` subprojects/imgui
 ln -s `readlink -f ../nativefiledialog` subprojects/nfd
    #+END_SRC
 
+** Necessary symlinks (or copy)
+   Necessary s7-imgui scheme files: contain imgui macros etc.
+   #+BEGIN_SRC sh
+ln -s `readlink -f subprojects/s7_imgui/src/scheme/aod` src/scheme/aod
+ln -s `readlink -f src/scheme/` build/scheme
+   #+END_SRC
+
 ** Building
    #+BEGIN_SRC sh
 meson setup build
@@ -37,5 +44,8 @@ ln -s `readlink -f build/reaper_s7-reaper-repl.so` ~/Downloads/reaper_linux_x86_
    #+BEGIN_SRC sh :session *socket*
 netcat localhost 1234
 
-1
+(+ 1 2 3)
+rpr
+((rpr 'count-tracks))
+((rpr 'insert-track))
    #+END_SRC

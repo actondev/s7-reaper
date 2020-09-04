@@ -1,5 +1,6 @@
 sources = files(
   'ReaperRepl.cpp',
+  'bindings.cpp',
 )
 
 # can be filled by subdirs

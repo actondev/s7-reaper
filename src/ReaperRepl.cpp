@@ -38,9 +38,8 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     cerr << "scheme path is " << scheme_path << '\n';
 
     s7_scheme* sc = aod::s7::init(scheme_path);
-    aod::s7::load_file(sc, "init.scm");
-
     reaper_repl::bind(pRec, sc);
+    aod::s7::load_file(sc, "init.scm");
     this->repl = aod::s7::Repl(sc);
 
     // mMakeGraphicsFunc = [&]() {

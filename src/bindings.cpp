@@ -6,6 +6,46 @@
 
 namespace reaper_repl {
 
+namespace sws {
+void* ftor_cf_enumarate_actions = NULL;
+#define BUFFER_SIZE 1024
+char buffer[BUFFER_SIZE];
+
+s7_pointer cf_enumarate_actions(s7_scheme* sc, s7_pointer args) {
+//     int (*cf_enumerate)(void*)
+    if(ftor_cf_enumarate_actions != NULL) {
+//         (*int)(int,int) ftor;
+        // int CF_EnumerateActions(const int section, const int idx, char *nameBuf, const int nameBufSize)
+//         int CF_EnumerateActions(int section, int index, char* nameOut, int nameOut_sz)
+//         char* name[1024];
+        auto ftor  = (int (*)(int,int, char*, int)) ftor_cf_enumarate_actions;
+//         ftor()
+        int section = s7_integer(s7_car(args));
+        args = s7_cdr(args);
+        int index = s7_integer(s7_car(args));
+        int res = ftor(section, index, buffer, BUFFER_SIZE-1);
+
+        // Lua: integer retval, string name = reaper.CF_EnumerateActions(integer section, integer index)
+        return s7_list(sc,
+                       2,
+                       s7_make_integer(sc, res),
+                       s7_make_string(sc, buffer));
+
+    }
+}
+
+void bind(s7_scheme* sc, s7_pointer env) {
+    s7_define(sc, env, s7_make_symbol(sc, "CF_EnumerateActions"),
+              s7_make_function(sc, "CF_EnumerateActions", cf_enumarate_actions,
+                               2, // req args
+                               0, // optional args: thickness
+                               false, // rest args
+                               "(CF_EnumerateActions section idx) ret (retval:int name:string)"));
+}
+
+
+}
+
 namespace common {
 s7_pointer main_on_command(s7_scheme* sc, s7_pointer args) {
     // 2nd arg flags.. what is "flags" ??
@@ -79,9 +119,17 @@ void bind(reaper_plugin_info_t* pRec, s7_scheme* sc) {
     IMPAPI(CountTracks);
     IMPAPI(InsertTrackAtIndex);
     IMPAPI(Main_OnCommand);
+//     IMPAPI(CF_EnumerateActions);
+
+    sws::ftor_cf_enumarate_actions = pRec->GetFunc("CF_EnumerateActions");
+    // int CF_EnumerateActions(const int section, const int idx, char *nameBuf, const int nameBufSize)
+//     CF_EnumerateActions(0);
+//     printf("CF_EnumerateActions is %p\n", CF_EnumerateActions);
+//     IMPAPI(CF_
 
     tracks::bind(sc, env);
     common::bind(sc, env);
+    sws::bind(sc, env);
 
     s7_define_variable(sc, "rpr", env);
 }

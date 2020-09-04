@@ -1,22 +1,11 @@
-(autoload 'rpr.tracks "rpr/tracks.scm")
-(autoload 'rpr.items "rpr/items.scm")
-(autoload 'rpr.gen "rpr/gen.scm")
-
-(autoload 'rpr.gen.item "rpr/gen/item.scm")
-(autoload 'rpr.gen.track "rpr/gen/track.scm")
-
 (print "hi from init.scm")
 
-(ns-require rpr.gen)
-
-;; (ns rootlet
-    ;; :require ((rpr.gen)))
-
-(rpr.gen/gen)
+(autoload 'rpr.actions.item "rpr/actions/item.scm")
+(autoload 'rpr.actions.track "rpr/actions/track.scm")
 
 (comment
- (ns-require rpr.gen.track :as track)
- (ns-doc 'rpr.gen.track)
+ (ns-require rpr.actions.track :as track)
+ (ns-doc 'rpr.actions.track)
 
  (track/insert-new-track)
  (track/select-all-tracks)

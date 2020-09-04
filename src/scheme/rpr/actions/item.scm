@@ -1,4 +1,5 @@
-(ns rpr.gen.item
+;; auto-generated file. see gen.scm
+(ns rpr.actions.item
   :require ((rpr)))
 
 (define cmd rpr/Main_OnCommand)

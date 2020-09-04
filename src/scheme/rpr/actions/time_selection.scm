@@ -1,4 +1,5 @@
-(ns rpr.gen.time-selection
+;; auto-generated file. see gen.scm
+(ns rpr.actions.time-selection
   :require ((rpr)))
 
 (define cmd rpr/Main_OnCommand)

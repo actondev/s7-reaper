@@ -3,6 +3,8 @@
 (autoload 'rpr.actions.item "rpr/actions/item.scm")
 (autoload 'rpr.actions.track "rpr/actions/track.scm")
 
+(ns-require rpr :as rpr)
+
 (comment
  (ns-require rpr.actions.track :as track)
  (ns-doc 'rpr.actions.track)

@@ -1,7 +1,4 @@
 #include "./bindings.h"
-// #include "ReaperExt_include_in_plug_hdr.h"
-// #include "ReaperExt_include_in_plug_src.h"
-
 #include "reaper_plugin_functions.h"
 
 namespace reaper_repl {
@@ -117,6 +114,35 @@ ReaProject* getCurrentProject() {
     //  idx=-1 for current project,projfn can be NULL if not interested in filename. use idx 0x40000000 for currently rendering project, if any.
     return EnumProjects(-1, NULL, 0);
 }
+
+s7_pointer register_action(s7_scheme* sc, s7_pointer args) {
+
+    const char* name = s7_string(s7_car(args));
+    args = s7_cdr(args);
+    s7_pointer fn = s7_car(args);
+    // TODO maybe s7_gc_protect the fn?
+    auto cb = [sc,fn]() {
+        s7_call(sc, fn, s7_nil(sc));
+    };
+
+    // perhaps the environment of here is.. outlet of curlet?
+    // at the moment keep in mind that I define this environment globablly as "rpr"
+//     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string(sc, "(rpr 'ReaperExtBase*)"));
+    iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "ReaperExtBase*", s7_curlet(sc)));
+    
+//     s7_eval_c_string_with_environment(sc, "(print \"rpr defined?\" (defined? 'ReaperExtBase*))", (s7_curlet(sc)));
+    printf("rpr is %p name is %s\n", rpr, name);
+    rpr->RegisterAction(name, cb, true);
+    return s7_nil(sc);
+}
+
+void bind(s7_scheme* sc, s7_pointer env) {
+        s7_define(sc, env, s7_make_symbol(sc, "RegisterAction"),
+              s7_make_function(sc, "RegisterAction", register_action,
+                               2, 0, false, // 
+                               "(RegisterAction name fn) Adds a menu item inside reaper"));
+}
+
 }
 
 namespace items {
@@ -207,9 +233,14 @@ void bind(s7_scheme* sc, s7_pointer env) {
 }
 } // items
 
-void bind(reaper_plugin_info_t* pRec, s7_scheme* sc) {
+
+void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc) {
     s7_pointer env = s7_inlet(sc, s7_nil(sc));
     s7_gc_protect(sc, env);
+
+    printf("registering instance %p\n", inst);
+    s7_define_constant_with_environment(sc, env, "ReaperExtBase*", s7_make_c_pointer(sc, (void*)inst));
+
     int gErrorCount = 0;
     // as seen in ReaperExt_include_in_plug_src.h
 #define IMPAPI(x) if (!((*((void **)&(x)) = (void *)pRec->GetFunc(#x)))) gErrorCount++;
@@ -249,6 +280,7 @@ void bind(reaper_plugin_info_t* pRec, s7_scheme* sc) {
     tracks::bind(sc, env);
     common::bind(sc, env);
     sws::bind(sc, env);
+    internal::bind(sc, env);
 
     s7_define_variable(sc, "rpr", env);
 }

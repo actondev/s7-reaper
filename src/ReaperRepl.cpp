@@ -24,23 +24,24 @@ thread_local ImGuiContext* MyImGuiTLS = NULL;
 ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     : ReaperExtBase(pRec)
 {
+    
     //Use IMPAPI to register any Reaper APIs that you need to use
 //   IMPAPI(GetNumTracks);
 //   IMPAPI(CountTracks);
 //   IMPAPI(InsertTrackAtIndex);
 
+    printf("here, this is %p\n", this);
     std::string path = aod::path::get();
     printf("path is %s\n", path.c_str());
 
-//   s7_scheme* sc = s7_init();
     fs::path base_path = fs::path(path).remove_filename();
     fs::path scheme_path = base_path / "s7_reaper";
     cerr << "scheme path is " << scheme_path << '\n';
 
-    s7_scheme* sc = aod::s7::init(scheme_path);
-    reaper_repl::bind(pRec, sc);
-    aod::s7::load_file(sc, "init.scm");
+    sc = aod::s7::init(scheme_path);
+    reaper_repl::bind(this, pRec, sc);
     this->repl = aod::s7::Repl(sc);
+    aod::s7::load_file(sc, "init.scm");
 
     // mMakeGraphicsFunc = [&]() {
     // return MakeGraphics(*this, PLUG_WIDTH, PLUG_HEIGHT, PLUG_FPS);

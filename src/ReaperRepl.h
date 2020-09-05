@@ -3,6 +3,7 @@
 #include "ReaperExt_include_in_plug_hdr.h"
 #include "aod/net/net.hpp"
 #include "aod/s7/repl.hpp"
+#include "s7.h"
 
 enum EControlTags
 {
@@ -28,5 +29,6 @@ private:
     aod::net::TcpServer srv;
     aod::net::Callback cb;
     aod::s7::Repl repl;
+    s7_scheme* sc;
 };
 

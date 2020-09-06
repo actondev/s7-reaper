@@ -1,8 +1,10 @@
-#include "./bindings.h"
+#include "./bindings.hpp"
 #include "reaper_plugin_functions.h"
+#include "s7_reaper/gui.hpp"
 
-namespace reaper_repl {
+namespace s7_reaper {
 
+namespace bindings {
 namespace sws {
 void* FTOR_CF_ENUMERATE_ACTIONS = NULL; // set later upon binding
 
@@ -129,18 +131,54 @@ s7_pointer register_action(s7_scheme* sc, s7_pointer args) {
     // at the moment keep in mind that I define this environment globablly as "rpr"
 //     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string(sc, "(rpr 'ReaperExtBase*)"));
     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "ReaperExtBase*", s7_curlet(sc)));
-    
-//     s7_eval_c_string_with_environment(sc, "(print \"rpr defined?\" (defined? 'ReaperExtBase*))", (s7_curlet(sc)));
-    printf("rpr is %p name is %s\n", rpr, name);
+    if(rpr == NULL) {
+        fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
+        return s7_nil(sc);
+    }
+
+    rpr->RegisterAction(name, cb, true);
+    return s7_nil(sc);
+}
+
+s7_pointer register_gui(s7_scheme* sc, s7_pointer args) {
+    const char* name = s7_string(s7_car(args));
+    args = s7_cdr(args);
+    const char* script_file = s7_string(s7_car(args));
+    printf("registering gui %s:%s\n", name, script_file);
+
+    auto pRec = (reaper_plugin_info_t*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "*reaper_plugin_info_t*", s7_curlet(sc)));
+    if(pRec == NULL) {
+        fprintf(stderr, "*reaper_plugin_info_t* is NULL, cannot register gui\n");
+        return s7_nil(sc);
+    }
+    auto cb = [pRec, script_file]() {
+        printf("GUI: running script file %s\n", script_file);
+        s7_reaper::gui::init(pRec, script_file);
+    };
+
+    // perhaps the environment of here is.. outlet of curlet?
+    // at the moment keep in mind that I define this environment globablly as "rpr"
+//     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string(sc, "(rpr 'ReaperExtBase*)"));
+    iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "ReaperExtBase*", s7_curlet(sc)));
+    if(rpr == NULL) {
+        fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
+        return s7_nil(sc);
+    }
+
     rpr->RegisterAction(name, cb, true);
     return s7_nil(sc);
 }
 
 void bind(s7_scheme* sc, s7_pointer env) {
-        s7_define(sc, env, s7_make_symbol(sc, "RegisterAction"),
+    s7_define(sc, env, s7_make_symbol(sc, "RegisterAction"),
               s7_make_function(sc, "RegisterAction", register_action,
-                               2, 0, false, // 
+                               2, 0, false, //
                                "(RegisterAction name fn) Adds a menu item inside reaper"));
+
+    s7_define(sc, env, s7_make_symbol(sc, "RegisterGui"),
+              s7_make_function(sc, "RegisterGui", register_gui,
+                               2, 0, false, //
+                               "(RegisterGui name script-file) CUSTOM (not part of reaper): Registers an action under name which runs a gui script"));
 }
 
 }
@@ -240,6 +278,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
 
     printf("registering instance %p\n", inst);
     s7_define_constant_with_environment(sc, env, "ReaperExtBase*", s7_make_c_pointer(sc, (void*)inst));
+    s7_define_constant_with_environment(sc, env, "*reaper_plugin_info_t*", s7_make_c_pointer(sc, (void*)pRec));
 
     int gErrorCount = 0;
     // as seen in ReaperExt_include_in_plug_src.h
@@ -284,4 +323,5 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
 
     s7_define_variable(sc, "rpr", env);
 }
-}
+} // bindings
+} // s7_reaper

@@ -9,6 +9,7 @@ ln -s `readlink -f ../s7` subprojects/s7
 ln -s `readlink -f ../SDL` subprojects/sdl2
 ln -s `readlink -f ../SDL_net` subprojects/sdl_net
 ln -s `readlink -f ../imgui` subprojects/imgui
+ln -s `readlink -f ../SFML` subprojects/SFML
 
 # TODO the s7-imgui should accept flags about which features we want
 # for example, I don't need the native-file-dialog here
@@ -27,6 +28,7 @@ ln -s `readlink -f src/scheme/` build/scheme
 meson setup build
 meson setup --reconfigure build
 ninja -C build
+meson setup --wipe build
 # to cleanup/regenerate
 rm -rf build
    #+END_SRC

@@ -7,3 +7,5 @@
 
 ;; will appear on Extensions menu
 (rpr/RegisterAction "test" (lambda () (print "hi there!!")))
+(rpr/RegisterGui "gui 1" "gui1.scm")
+(rpr/RegisterGui "gui 2" "gui2.scm")

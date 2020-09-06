@@ -6,8 +6,8 @@
 #include <filesystem>
 #include <iostream>
 
-#include "bindings.h"
-#include "aod/path.hpp"
+#include "s7_reaper/bindings.hpp"
+#include "s7_reaper/path.hpp"
 #include "aod/s7.hpp"
 
 #include "imgui.h"
@@ -164,7 +164,7 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
 //   IMPAPI(InsertTrackAtIndex);
 
     printf("here, this is %p\n", this);
-    std::string path = aod::path::get();
+    std::string path = s7_reaper::path::get();
     printf("path is %s\n", path.c_str());
 
     fs::path base_path = fs::path(path).remove_filename();
@@ -172,7 +172,7 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     cerr << "scheme path is " << scheme_path << '\n';
 
     sc = aod::s7::init(scheme_path);
-    reaper_repl::bind(this, pRec, sc);
+    s7_reaper::bindings::bind(this, pRec, sc);
     this->repl = aod::s7::Repl(sc);
     aod::s7::load_file(sc, "init.scm");
 

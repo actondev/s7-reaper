@@ -9,7 +9,7 @@
 #include <libloaderapi.h>
 #endif
 
-namespace aod {
+namespace s7_reaper {
 
 namespace path {
 

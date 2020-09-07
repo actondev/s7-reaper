@@ -1,0 +1,30 @@
+* <2020-09-04 Fri> init
+  - can build reaper extension with meson
+    worked on meson-iplug reaper, added the example there
+  - added some first s7 reaper bindings
+  - generated s7 functions that call reaper actions (actions beginning with =Item:= =Track:= and =Time Selection:=)
+* <2020-09-05 Sat> (IM)Gui proof of concept
+* <2020-09-06 Sun> how to handle multiple windows?
+  Tried to modify SDL to make it work. Got somewhere but still had bugs (and would have to modify again for Windows - did the mods for linux)
+
+  Started migrating to SFML
+* <2020-09-07 Mon> migrated to SFML, can show multiple gui windows properly
+  not bad at all for the 4th day of this :)
+  Note: also VST3 is working properly now with multiple windows
+
+  TODOs for today
+  - [ ] draw from a gui =.scm= 
+* TODO some TODOs/notes
+  <2020-09-07 Mon> :
+  - toolbar icon: can my action show active/inactive for gui scripts?
+  - the concept of background scripts:
+    - rpr/RegisterAction
+    - rpr/RegisterBackgroundAction
+    - rpr/RegisterGui
+    the last 2 are running an event loop, the 1st is a one-time action
+  - user scripts etc: sharing modules users should define their
+    scripts in their own namespaces and thus be able to call other
+    users' functions.
+    
+    EG: my region items could be exposed, anyone could embed it in their script
+  - package manager for =.scm= scripts.. ughh

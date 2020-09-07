@@ -28,3 +28,9 @@
     
     EG: my region items could be exposed, anyone could embed it in their script
   - package manager for =.scm= scripts.. ughh
+* <2020-09-07 Mon> SDL -> SFML
+
+  |                    | size |
+  | SDL                |   ?? |
+  | SFML               | 21.4 |
+  | SFML-sans graphics | 17.7 |

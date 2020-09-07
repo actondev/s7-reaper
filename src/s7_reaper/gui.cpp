@@ -28,7 +28,7 @@ namespace gui {
 
 namespace fs = std::filesystem;
 
-int guiLoop(); // defined later
+int guiLoop(s7_scheme* sc); // defined later
 
 /**
  * Starts a thread where the gui is shown.
@@ -44,14 +44,18 @@ void init(reaper_plugin_info_t* pRec, std::string file) {
     fs::path scheme_path = base_path / "s7_reaper";
 
     s7_scheme* sc = aod::s7::init(scheme_path);
+    // passing NULL instance
+    // by having a NULL instance, I won't be able to register actions/guis
+    // which is fine. this should only happen on start up
     s7_reaper::bindings::bind(NULL, pRec, sc);
     aod::s7::load_file(sc, "init.scm");
     aod::s7::load_file(sc, file.c_str());
 
-    new std::thread(guiLoop);
+    std::thread t(guiLoop, sc);
+    t.detach();
 }
 
-int guiLoop() {
+int guiLoop(s7_scheme* sc) {
 
     sf::Window window(sf::VideoMode(200, 200), "SFML works!");
 
@@ -81,20 +85,31 @@ int guiLoop() {
             }
         }
 
+        ImGui_ImplOpenGL2_NewFrame(); // builds the font (font atlas?)
+        // actually, update calls new frame
         ImGui::SFML::Update(window, deltaClock.restart());
-	ImGui_ImplOpenGL2_NewFrame(); // builds the font (font atlas?)
-//         s7_eval_c_string(sc, "(draw)");
+        // need to call ImGui::NewFrame?
+        // nope.. it's crashing
+        // Forgot to call Render() or EndFrame()  ???
+        s7_eval_c_string(sc, "(draw)");
 
-        ImGui::ShowDemoWindow();
-
-        // window.clear();
+//         ImGui::ShowDemoWindow();
         ImGui::SFML::Render(window);
         window.display();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+    
+    ImGui_ImplOpenGL2_Shutdown();
+//     ImGui::DestroyContext();
+    ImGui::SFML::Shutdown();
 
     printf("guiLoop: ----- gui loop quit ------\n");
+    
+    // even with freeing sc, I seem to get memory leaks
+    // does s7 properly free things?
+    // or the problem is elsewhere?
+    free(sc);
     return 0;
 }
 

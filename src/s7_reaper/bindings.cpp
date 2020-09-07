@@ -132,10 +132,11 @@ s7_pointer register_action(s7_scheme* sc, s7_pointer args) {
 //     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string(sc, "(rpr 'ReaperExtBase*)"));
     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "ReaperExtBase*", s7_curlet(sc)));
     if(rpr == NULL) {
-        fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
+//         fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
         return s7_nil(sc);
     }
 
+    printf("Registering action %s\n", name);
     rpr->RegisterAction(name, cb, true);
     return s7_nil(sc);
 }
@@ -144,11 +145,10 @@ s7_pointer register_gui(s7_scheme* sc, s7_pointer args) {
     const char* name = s7_string(s7_car(args));
     args = s7_cdr(args);
     const char* script_file = s7_string(s7_car(args));
-    printf("registering gui %s:%s\n", name, script_file);
 
     auto pRec = (reaper_plugin_info_t*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "*reaper_plugin_info_t*", s7_curlet(sc)));
     if(pRec == NULL) {
-        fprintf(stderr, "*reaper_plugin_info_t* is NULL, cannot register gui\n");
+//         fprintf(stderr, "*reaper_plugin_info_t* is NULL, cannot register gui\n");
         return s7_nil(sc);
     }
     auto cb = [pRec, script_file]() {
@@ -161,10 +161,11 @@ s7_pointer register_gui(s7_scheme* sc, s7_pointer args) {
 //     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string(sc, "(rpr 'ReaperExtBase*)"));
     iplug::ReaperExtBase* rpr = (iplug::ReaperExtBase*)s7_c_pointer(s7_eval_c_string_with_environment(sc, "ReaperExtBase*", s7_curlet(sc)));
     if(rpr == NULL) {
-        fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
+//         fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
         return s7_nil(sc);
     }
-
+    
+    printf("registering gui %s:%s\n", name, script_file);
     rpr->RegisterAction(name, cb, true);
     return s7_nil(sc);
 }

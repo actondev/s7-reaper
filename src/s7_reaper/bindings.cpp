@@ -97,39 +97,116 @@ void bind(s7_scheme* sc, s7_pointer env) {
 
 namespace tracks {
 
-s7_pointer count_tracks(s7_scheme* sc, s7_pointer) {
+int tag_media_track(s7_scheme* sc) {
+    s7_pointer res = s7_eval_c_string_with_environment(sc, "type-media-track", s7_curlet(sc));
+    if(s7_is_integer(res)) {
+        return s7_integer(res);
+    }
+    s7_error(sc,
+             s7_make_symbol(sc, "error"),
+             s7_cons(sc, s7_make_string(sc, "type-media-track not found"), s7_nil(sc)));
+    return -1;
+}
+
+
+const char* help_CountTracks = "(CountTracks &optional ReaProject=0) TODO ReaProject always 0";
+s7_pointer _CountTracks(s7_scheme* sc, s7_pointer) {
     return s7_make_integer(sc, CountTracks(0));
 }
 
-s7_pointer insert_track(s7_scheme* sc, s7_pointer) {
-    InsertTrackAtIndex(GetNumTracks(), false);
+s7_pointer _GetMediaItem_Track(s7_scheme* sc, s7_pointer args) {
+    MediaItem* item = (MediaItem*) s7_c_object_value(s7_car(args));
+    if(item == NULL) {
+        // or error?
+        return s7_nil(sc);
+    }
+    MediaTrack* track = GetMediaItem_Track(item);
+
+    return s7_make_c_object(sc, tag_media_track(sc), (void*)track);
+}
+
+s7_pointer _SetOnlyTrackSelected(s7_scheme* sc, s7_pointer args) {
+    MediaTrack* track = (MediaTrack*) s7_c_object_value(s7_car(args));
+    SetOnlyTrackSelected(track);
+
     return s7_nil(sc);
 }
 
+// SetTrackSelected
+const char* help_SetTrackSelected = "(SetTrackSelected *media-track sel:bool)";
+s7_pointer _SetTrackSelected(s7_scheme* sc, s7_pointer args) {
+    MediaTrack* track = (MediaTrack*) s7_c_object_value(s7_car(args));
+    args = s7_cdr(args);
+    bool sel = s7_boolean(sc, s7_car(args));
+    SetTrackSelected(track, sel);
+
+    return s7_nil(sc);
+}
+
+const char* help_CountSelectedTracks = "(CountSelectedTracks &optional ReapProject*=0) TODO project is always 0";
+s7_pointer _CountSelectedTracks(s7_scheme* sc, s7_pointer args) {
+    return s7_make_integer(sc, CountSelectedTracks(0));
+}
+
+// GetSelectedTrack
+const char* help_GetSelectedTrack = "(GetSelectedTrack ReapProject* idx) TODO project* always 0";
+s7_pointer _GetSelectedTrack(s7_scheme* sc, s7_pointer args) {
+    // ignoring first arg project
+    args = s7_cdr(args);
+    int idx = s7_integer(s7_car(args));
+    MediaTrack* track = GetSelectedTrack(0,  idx);
+    return s7_make_c_object(sc, tag_media_track(sc), (void*)track);
+}
+
+// returns <media-track name:"track name here">
+s7_pointer to_string(s7_scheme* sc, s7_pointer args) {
+    MediaTrack* track = (MediaTrack*) s7_c_object_value(s7_car(args));
+    if(track == NULL) {
+        return s7_make_string(sc, "null");
+    }
+    static char buffer[1024];
+    GetSetMediaTrackInfo_String(track, "P_NAME", buffer, false);
+    std::string str = "<media-track name:\"";
+    str += buffer;
+    str += "\">";
+    return s7_make_string(sc, str.c_str());
+}
 
 void bind(s7_scheme* sc, s7_pointer env) {
-    // TODO count-tracks or CountTracks?
-    // the 2nd keeps the same names as in the REAPER API doc : useful!!
-    s7_define(sc, env, s7_make_symbol(sc, "count-tracks"),
-              s7_make_function(sc, "count-tracks", count_tracks,
-                               0, // req args
-                               0, // optional args: thickness
-                               false, // rest args
-                               "(count-tracks &optional rpr-proj)"));
+    // types
+    s7_int type = s7_make_c_type(sc, "<media-track>");
+    s7_define(sc, env, s7_make_symbol(sc, "type-media-track"),
+              s7_make_integer(sc, type));
 
-    s7_define(sc, env, s7_make_symbol(sc, "insert-track"),
-              s7_make_function(sc, "insert-track", insert_track,
-                               0, // req args
-                               0, // optional args: thickness
-                               false, // rest args
-                               "(insert-track)"));
+    s7_c_type_set_to_string(sc, type, to_string);
 
-    s7_define(sc, env, s7_make_symbol(sc, "main-on-command"),
-              s7_make_function(sc, "main-on-command", insert_track,
-                               0, // req args
-                               0, // optional args: thickness
-                               false, // rest args
-                               "(main-on-command cmd-id)"));
+    s7_define(sc, env, s7_make_symbol(sc, "CountTracks"),
+              s7_make_function(sc, "CountTracks", _CountTracks,
+                               0, 1, false, // optional: ReaProject
+                               help_CountTracks));
+    s7_define(sc, env, s7_make_symbol(sc, "GetMediaItem_Track"),
+              s7_make_function(sc, "GetMediaItem_Track", _GetMediaItem_Track,
+                               1, 0, false,
+                               "(GetMediaItem_Track *media-item)"));
+
+    s7_define(sc, env, s7_make_symbol(sc, "SetOnlyTrackSelected"),
+              s7_make_function(sc, "SetOnlyTrackSelected", _SetOnlyTrackSelected,
+                               1, 0, false,
+                               "(SetOnlyTrackSelected *media-track)"));
+
+    s7_define(sc, env, s7_make_symbol(sc, "SetTrackSelected"),
+              s7_make_function(sc, "SetTrackSelected", _SetTrackSelected,
+                               2, 0, false,
+                               help_SetTrackSelected));
+    s7_define(sc, env, s7_make_symbol(sc, "CountSelectedTracks"),
+              s7_make_function(sc, "CountSelectedTracks", _CountSelectedTracks,
+                               0, 1, false, // optional: ReaProject
+                               help_CountSelectedTracks));
+
+    s7_define(sc, env, s7_make_symbol(sc, "GetSelectedTrack"),
+              s7_make_function(sc, "GetSelectedTrack", _GetSelectedTrack,
+                               2, 0, false,
+                               help_GetSelectedTrack));
 }
 
 }
@@ -138,7 +215,12 @@ namespace internal {
 ReaProject* getCurrentProject() {
     // C: ReaProject* EnumProjects(int idx, char* projfnOutOptional, int projfnOutOptional_sz)
     //  idx=-1 for current project,projfn can be NULL if not interested in filename. use idx 0x40000000 for currently rendering project, if any.
-    return EnumProjects(-1, NULL, 0);
+
+    
+    // return EnumProjects(-1, NULL, 0);
+    // in the API when passing 0 it means the active project
+    // so, that works as well
+    return 0;
 }
 
 s7_pointer register_action(s7_scheme* sc, s7_pointer args) {
@@ -221,7 +303,7 @@ int tag_media_item(s7_scheme* sc) {
     return -1;
 }
 
-// returns <media-item {xyz-abc-xyz} 'active take name'>
+// returns <media-item {xyz-abc-xyz} active-take:"active take name">
 s7_pointer to_string(s7_scheme* sc, s7_pointer args) {
     // checked? skipping for now
 //     MediaItem* item = (MediaItem*) s7_c_object_value_checked(s7_car(args), tag_media_item(sc));
@@ -239,9 +321,9 @@ s7_pointer to_string(s7_scheme* sc, s7_pointer args) {
     GetSetMediaItemInfo_String(item, "GUID", buffer_guid, false);
     std::string str = "<media-item ";
     str += buffer_guid;
-    str += " '";
+    str += " active-take:\"";
     str += buffer;
-    str += "'>";
+    str += "\">";
     return s7_make_string(sc, str.c_str());
 }
 
@@ -318,7 +400,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(InsertTrackAtIndex);
     IMPAPI(Main_OnCommand);
     IMPAPI(UpdateArrange);
-    IMPAPI(NamedCommandLookup);
+//     IMPAPI(NamedCommandLookup);
     IMPAPI(ReverseNamedCommandLookup);
 
 
@@ -346,6 +428,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(SetTrackSelected);
     IMPAPI(CountSelectedTracks);
     IMPAPI(GetSelectedTrack);
+    IMPAPI(GetSetMediaTrackInfo_String);
 
     //project
     IMPAPI(EnumProjects);

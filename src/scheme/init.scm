@@ -5,6 +5,10 @@
 (autoload 'rpr.actions.track "rpr/actions/track.scm")
 (autoload 'rpr.actions.sws-track "rpr/actions/sws-track.scm")
 (autoload 'rpr.actions.sws-item "rpr/actions/sws-item.scm")
+;; I guess.. this has to be renamed to rpr.helpers.item
+(autoload 'rpr.item "rpr/item.scm")
+
+
 ;; common
 (autoload 'rpr.common "rpr/common.scm")
 ;; making rpr available to any script
@@ -14,9 +18,12 @@
 ;; ----
 ;; ----
 ;; my scripts (WIP/testing)
-(autoload 'aod.region-items "aod/region-items.scm")
+(autoload 'region-items.core "region-items/core.scm")
 
-(ns-require aod.region-items :as region-items)
+
+;; requires
+(ns rootlet
+    :require ((region-items.core :as region-items)))
 
 ;; will appear on Extensions menu
 (rpr/RegisterAction "test" (lambda () (print "hi there!!")))
@@ -26,5 +33,6 @@
 
 (comment
  (ns-doc rpr)
+ (rpr/GetSelectedTrack 0 0)
 
  )

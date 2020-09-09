@@ -48,6 +48,14 @@ s7_pointer main_on_command(s7_scheme* sc, s7_pointer args) {
     return s7_nil(sc);
 }
 
+const char* help_NamedCommandLookup = "(NamedCommandLookup name-id)";
+s7_pointer _NamedCommandLookup(s7_scheme* sc, s7_pointer args) {
+    const char* name= s7_string(s7_car(args));
+    int id = NamedCommandLookup(name);
+
+    return s7_make_integer(sc, id);
+}
+
 const char* help_reverse_named_command_lookup = "(ReverseNamedCommandLookup id) Returns #f or the named id (string)";
 s7_pointer reverse_named_command_lookup(s7_scheme* sc, s7_pointer args) {
     int id = s7_integer(s7_car(args));
@@ -75,6 +83,11 @@ void bind(s7_scheme* sc, s7_pointer env) {
                                0, // optional args: thickness
                                false, // rest args
                                help_reverse_named_command_lookup));
+    
+        s7_define(sc, env, s7_make_symbol(sc, "NamedCommandLookup"),
+              s7_make_function(sc, "NamedCommandLookup", _NamedCommandLookup,
+                               1, 0, false,
+                               help_NamedCommandLookup));
 
 }
 } // actions
@@ -216,7 +229,7 @@ ReaProject* getCurrentProject() {
     // C: ReaProject* EnumProjects(int idx, char* projfnOutOptional, int projfnOutOptional_sz)
     //  idx=-1 for current project,projfn can be NULL if not interested in filename. use idx 0x40000000 for currently rendering project, if any.
 
-    
+
     // return EnumProjects(-1, NULL, 0);
     // in the API when passing 0 it means the active project
     // so, that works as well
@@ -355,6 +368,16 @@ s7_pointer get_selected(s7_scheme* sc, s7_pointer args) {
     return s7_make_c_object(sc, tag, (void*) item);
 }
 
+const char* help_GetMediaItemInfo_Value = "(GetMediaItemInfo_Value item param-name)";
+s7_pointer _GetMediaItemInfo_Value(s7_scheme* sc, s7_pointer args) {
+    MediaItem* item = (MediaItem*) s7_c_object_value(s7_car(args));
+    args = s7_cdr(args);
+    const char* param = s7_string(s7_car(args));
+    double value = GetMediaItemInfo_Value(item, param);
+
+    return s7_make_real(sc, value);
+}
+
 void bind(s7_scheme* sc, s7_pointer env) {
     // types
     s7_int type = s7_make_c_type(sc, "<media-item>");
@@ -379,8 +402,55 @@ void bind(s7_scheme* sc, s7_pointer env) {
                                2, 0, false,
                                help_set_selected));
 
+    // _GetMediaItemInfo_Value
+    s7_define(sc, env, s7_make_symbol(sc, "GetMediaItemInfo_Value"),
+              s7_make_function(sc, "GetMediaItemInfo_Value", _GetMediaItemInfo_Value,
+                               2, 0, false,
+                               help_GetMediaItemInfo_Value));
+
 }
 } // items
+
+namespace range {
+
+/**
+ *     -- start, end = reaper.GetSet_LoopTimeRange( isSet, isLoop, start, end, allowautoseek )
+reaper.GetSet_LoopTimeRange(true, false, tstart, tend, false)
+
+ */
+
+const char* help_GetSet_LoopTimeRange = "(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)";
+s7_pointer _GetSet_LoopTimeRange(s7_scheme* sc, s7_pointer args) {
+    bool isset = s7_boolean(sc, s7_car(args));
+    args = s7_cdr(args);
+    bool isloop = s7_boolean(sc, s7_car(args));
+    args = s7_cdr(args);
+    double start = s7_real(s7_car(args));
+    args = s7_cdr(args);
+    double end = s7_real(s7_car(args));
+    args = s7_cdr(args);
+    bool allow_auto_seek = s7_boolean(sc, s7_car(args));
+
+    GetSet_LoopTimeRange(isset, isloop, &start, &end, allow_auto_seek);
+
+    if(!isset)
+        return s7_nil(sc);
+    // else, get: returns a list
+    return s7_list(sc, 2,
+                   s7_make_real(sc, start),
+                   s7_make_real(sc, end));
+}
+
+void bind(s7_scheme* sc, s7_pointer env) {
+    // functions
+    s7_define(sc, env, s7_make_symbol(sc, "GetSet_LoopTimeRange"),
+              s7_make_function(sc, "GetSet_LoopTimeRange", _GetSet_LoopTimeRange,
+                               5, 0, false,
+                               help_GetSet_LoopTimeRange));
+
+}
+
+} // range (time selection, loop)
 
 
 void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc) {
@@ -400,13 +470,14 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(InsertTrackAtIndex);
     IMPAPI(Main_OnCommand);
     IMPAPI(UpdateArrange);
-//     IMPAPI(NamedCommandLookup);
+    IMPAPI(NamedCommandLookup);
     IMPAPI(ReverseNamedCommandLookup);
 
 
     // items
     IMPAPI(CountSelectedMediaItems);
     IMPAPI(GetSelectedMediaItem);
+    IMPAPI(GetMediaItemInfo_Value)
 //     IMPAPI(SetMediaItemInfo_Value);
 //     IMPAPI(SetMediaItemLength);
 //     IMPAPI(SetMediaItemPosition);
@@ -430,6 +501,9 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(GetSelectedTrack);
     IMPAPI(GetSetMediaTrackInfo_String);
 
+    // ranges (time sel, loop sel)
+    IMPAPI(GetSet_LoopTimeRange)
+    
     //project
     IMPAPI(EnumProjects);
 
@@ -442,6 +516,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     sws::bind(sc, env);
     internal::bind(sc, env);
     actions::bind(sc, env);
+    range::bind(sc, env); // time selection, loop selection : get/set
 
     s7_define_variable(sc, "rpr", env);
 }

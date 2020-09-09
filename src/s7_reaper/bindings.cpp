@@ -41,16 +41,22 @@ void bind(s7_scheme* sc, s7_pointer env) {
 
 } // sws
 
-namespace common {
+namespace actions {
 s7_pointer main_on_command(s7_scheme* sc, s7_pointer args) {
     // 2nd arg flags.. what is "flags" ??
     Main_OnCommand(s7_real(s7_car(args)), 0);
     return s7_nil(sc);
 }
 
-s7_pointer update_arrage(s7_scheme* sc, s7_pointer) {
-    UpdateArrange();
-    return s7_nil(sc);
+const char* help_reverse_named_command_lookup = "(ReverseNamedCommandLookup id) Returns #f or the named id (string)";
+s7_pointer reverse_named_command_lookup(s7_scheme* sc, s7_pointer args) {
+    int id = s7_integer(s7_car(args));
+    const char* name = ReverseNamedCommandLookup(id);
+    if(name == NULL) {
+        return s7_f(sc);
+    }
+
+    return s7_make_string(sc, name);
 }
 
 void bind(s7_scheme* sc, s7_pointer env) {
@@ -63,6 +69,24 @@ void bind(s7_scheme* sc, s7_pointer env) {
                                false, // rest args
                                "(Main_OnCommand cmd-id)"));
 
+    s7_define(sc, env, s7_make_symbol(sc, "ReverseNamedCommandLookup"),
+              s7_make_function(sc, "ReverseNamedCommandLookup", reverse_named_command_lookup,
+                               1, // req args
+                               0, // optional args: thickness
+                               false, // rest args
+                               help_reverse_named_command_lookup));
+
+}
+} // actions
+
+namespace common {
+
+s7_pointer update_arrage(s7_scheme* sc, s7_pointer) {
+    UpdateArrange();
+    return s7_nil(sc);
+}
+
+void bind(s7_scheme* sc, s7_pointer env) {
     s7_define(sc, env, s7_make_symbol(sc, "UpdateArrange"),
               s7_make_function(sc, "UpdateArrange", update_arrage,
                                0, 0, false,
@@ -164,7 +188,7 @@ s7_pointer register_gui(s7_scheme* sc, s7_pointer args) {
 //         fprintf(stderr, "ReaperExtBase* is NULL, cannot register action\n");
         return s7_nil(sc);
     }
-    
+
     printf("registering gui %s:%s\n", name, script_file);
     rpr->RegisterAction(name, cb, true);
     return s7_nil(sc);
@@ -241,6 +265,10 @@ const char* help_get_selected = "(GetSelectedMediaItem idx) TODO skipping first 
 s7_pointer get_selected(s7_scheme* sc, s7_pointer args) {
     // TODO be able to pass ReaProject?
     MediaItem* item = GetSelectedMediaItem(0, s7_integer(s7_car(args)));
+    if(item == NULL) {
+        printf("NULL item\n");
+        return s7_nil(sc);
+    }
     int tag = tag_media_item(sc);
     return s7_make_c_object(sc, tag, (void*) item);
 }
@@ -290,6 +318,8 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(InsertTrackAtIndex);
     IMPAPI(Main_OnCommand);
     IMPAPI(UpdateArrange);
+    IMPAPI(NamedCommandLookup);
+    IMPAPI(ReverseNamedCommandLookup);
 
 
     // items
@@ -307,8 +337,15 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
 //     IMPAPI(GetSetMediaItemTakeInfo_String);
 
     // takes
-    IMPAPI(GetActiveTake)
+    IMPAPI(GetActiveTake);
     IMPAPI(GetSetMediaItemTakeInfo_String);
+
+    // track
+    IMPAPI(GetMediaItem_Track);
+    IMPAPI(SetOnlyTrackSelected);
+    IMPAPI(SetTrackSelected);
+    IMPAPI(CountSelectedTracks);
+    IMPAPI(GetSelectedTrack);
 
     //project
     IMPAPI(EnumProjects);
@@ -321,8 +358,10 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     common::bind(sc, env);
     sws::bind(sc, env);
     internal::bind(sc, env);
+    actions::bind(sc, env);
 
     s7_define_variable(sc, "rpr", env);
 }
 } // bindings
 } // s7_reaper
+

@@ -40,7 +40,10 @@ rm -rf build
 ln -s `readlink -f build/reaper_s7-reaper-repl.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
 # scheme files: available in Plugins/s7_reaper
 ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7_reaper
+
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper
+
+~/Downloads/reaper_linux_x86_64/REAPER/reaper test/demo-regions.rpp
    #+END_SRC
 
 ** Testing the socket (REPL)

@@ -24,6 +24,12 @@
   (selected)
   )
 
+(define* (start-end
+	  (item (rpr/GetSelectedMediaItem 0 0)))
+  (let ((start (rpr/GetMediaItemInfo_Value item "D_POSITION"))
+	(length (rpr/GetMediaItemInfo_Value item "D_LENGTH")))
+    (list start (+ start length))))
+
 (comment
  (rpr/CountSelectedMediaItems)
  (map (lambda (idx)
@@ -34,11 +40,12 @@
  )
 
 (define* (active-take-name (item (rpr/GetSelectedMediaItem 0 0)))
-  (print "item is " item)
+  ;; (print "item is " item)
   (let ((take (rpr/GetActiveTake item)))
     (rpr/GetSetMediaItemTakeInfo_String take "P_NAME")))
 
 
 (comment
  (active-take-name)
+ (rpr/GetSelectedMediaItem 0 0)
  )

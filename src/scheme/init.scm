@@ -8,9 +8,6 @@
 
 ;; helpers
 (autoload 'rpr.helpers.item "rpr/helpers/item.scm")
-;; I guess.. this has to be renamed to rpr.helpers.item
-(autoload 'rpr.item "rpr/item.scm")
-
 
 ;; common
 (autoload 'rpr.common "rpr/common.scm")
@@ -32,8 +29,12 @@
 (rpr/RegisterAction "test" (lambda () (print "hi there!!")))
 (rpr/RegisterGui "Gui: some track things" "gui1.scm")
 (rpr/RegisterGui "gui 2" "gui2.scm")
+;; note: to make these actions take into account future changes of the function definition
+;; in the files, I have to "dynamically" call them:
+;; (((*nss* 'region-items.core) 'select))
+;; TODO: actually test this
 (rpr/RegisterAction "Region Items: Select" region-items/select)
-(rpr/RegisterAction "Region Items: Propagate" region-items/select)
+(rpr/RegisterAction "Region Items: Propagate" region-items/propagate)
 
 (comment
  (ns-doc rpr)

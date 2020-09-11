@@ -485,13 +485,7 @@ void bind(s7_scheme* sc, s7_pointer env) {
 }
 } // items
 
-namespace range {
-
-/**
- *     -- start, end = reaper.GetSet_LoopTimeRange( isSet, isLoop, start, end, allowautoseek )
-reaper.GetSet_LoopTimeRange(true, false, tstart, tend, false)
-
- */
+namespace time {
 
 const char* help_GetSet_LoopTimeRange = "(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)";
 s7_pointer _GetSet_LoopTimeRange(s7_scheme* sc, s7_pointer args) {
@@ -515,12 +509,50 @@ s7_pointer _GetSet_LoopTimeRange(s7_scheme* sc, s7_pointer args) {
                    s7_make_real(sc, end));
 }
 
+const char* help_SetEditCurPos = "(SetEditCurPos time &optional move-view?=false seek-play?=false)";
+s7_pointer _SetEditCurPos(s7_scheme* sc, s7_pointer args) {
+    double time = s7_real(s7_car(args));
+    bool move_view = false;
+    bool seek_play = false;
+
+    // 2 idios for handling these:
+    // goto, or do{}while(false) hmm..
+    {   // optional arguments
+        args = s7_cdr(args);
+        if(args == s7_nil(sc))
+            goto ret;
+        move_view = s7_boolean(sc, s7_car(args));
+
+        args = s7_cdr(args);
+        if(args == s7_nil(sc))
+            goto ret;
+        seek_play = s7_boolean(sc, s7_car(args));
+    }
+ret:
+    SetEditCurPos(time, move_view, seek_play);
+    return s7_nil(sc);
+
+}
+
+s7_pointer _GetCursorPosition(s7_scheme* sc, s7_pointer) {
+    return s7_make_real(sc, GetCursorPosition());
+}
+
 void bind(s7_scheme* sc, s7_pointer env) {
     // functions
     s7_define(sc, env, s7_make_symbol(sc, "GetSet_LoopTimeRange"),
               s7_make_function(sc, "GetSet_LoopTimeRange", _GetSet_LoopTimeRange,
                                5, 0, false,
                                help_GetSet_LoopTimeRange));
+    // _SetEditCurPos
+    s7_define(sc, env, s7_make_symbol(sc, "SetEditCurPos"),
+              s7_make_function(sc, "SetEditCurPos", _SetEditCurPos,
+                               1, 2, false,
+                               help_SetEditCurPos));
+        s7_define(sc, env, s7_make_symbol(sc, "GetCursorPosition"),
+              s7_make_function(sc, "GetCursorPosition", _GetCursorPosition,
+                               0, 0, false,
+                               "(GetCursorPosition)"));
 
 }
 
@@ -575,8 +607,10 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(GetSelectedTrack);
     IMPAPI(GetSetMediaTrackInfo_String);
 
-    // ranges (time sel, loop sel)
+    // time (time sel, loop sel, edit cursor)
     IMPAPI(GetSet_LoopTimeRange)
+    IMPAPI(GetCursorPosition);
+    IMPAPI(SetEditCurPos);
 
     //project
     IMPAPI(EnumProjects);
@@ -591,10 +625,11 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     sws::bind(sc, env);
     internal::bind(sc, env);
     actions::bind(sc, env);
-    range::bind(sc, env); // time selection, loop selection : get/set
+    time::bind(sc, env); // time selection, loop selection, edit cursor
 
     s7_define_variable(sc, "rpr", env);
 }
 } // bindings
 } // s7_reaper
+
 

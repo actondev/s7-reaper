@@ -1,24 +1,16 @@
 (ns region-items.core
-    :require ((rpr.item)
-	      (rpr.actions.sws-track :as sws.track)
+    :require ((rpr.actions.sws-track :as sws.track)
 	      (rpr.actions.item :as actions.item)
 	      (rpr.helpers.item :as h.item)))
-
-(comment
- (if (rpr/GetSelectedMediaItem 0)
-     1
-     2)
-
- (if () 1 2)
- )
 
 (define* (select (item (rpr/GetSelectedMediaItem 0 0)))
   ;; time selection to item
   ;; let with list destructuring
-  (letd (((start end) (rpr.item/start-end item)))
-    (print "item " item "time:" (list start end))
+  (letd (((start end) (h.item/start-end item)))
+    ;; (print "item " item "time:" (list start end))
     (rpr/GetSet_LoopTimeRange #t #f start end #f))
   ;; Gotta call UpdateArrange to see effects in time selection
+  ;; TODO maybe first unselect all items also?
   
   ;; select children tracks of item track
   (let ((track (rpr/GetMediaItem_Track item)))
@@ -29,15 +21,25 @@
     (rpr/UpdateArrange))
   ;; /select
   )
-
 (comment
  (select)
- (rpr.actions.sws-track/select-children-of-selected-folder-track{s})
- (documentation rpr/GetSet_LoopTimeRange)
- (ns-doc 'rpr 'GetSet_LoopTimeRange)
  )
 
+(define* (clear (item (rpr/GetSelectedMediaItem 0 0)))
+  (select item)
+  ;; unselecting the item.. don't want to delete the "region item"
+  (rpr/SetMediaItemSelected item #f)
+  ;; update arrange for selection
+  ;; not sure if this is needed
+  (rpr/UpdateArrange)
+  (actions.item/remove-items)
+  (rpr/SetMediaItemSelected item #t)
+  ;; update arrange for selection
+  (rpr/UpdateArrange)
+  )
+
 (define* (propagate (item (rpr/GetSelectedMediaItem 0 0)))
+  (print "propagating 1")
   ;; copying
   (select item)
   (actions.item/copy-selected-area-of-items)
@@ -53,10 +55,30 @@
 		(not (equivalent? target item))
 		(equivalent? (h.item/active-take-name target)
 			     item-take-name))
+	     (print "pasting..")
+	     ;; clearing target
+	     (clear target)
+	     ;; removing it from selection to be sure (with set
+	     ;; selected #f or by unselecting all?)
+	     (rpr/SetMediaItemSelected target #f)
+	     ;; (actions.item/unselect-all-items)
+	     ;; need to update arrange?
+
+	     ;; now, when we'll paste, we guess that the first
+	     ;; selected item is the copied (src) region item.
+	     
 	     ;; pasting to target
-	     ;; TODO set edit cursor
-	     (print "pasting")
-	     (actions.item/paste-items-tracks))
+	     (letd (((start _) (h.item/start-end target)))
+		   (rpr/SetEditCurPos start)
+		   ;; (print "pasting")
+		   )
+	     (actions.item/paste-items-tracks)
+	     (let ((copied-item (rpr/GetSelectedMediaItem 0 0)))
+	       (h.item/set-only-selected copied-item)
+	       ;; UpdateArrange ?
+	       (actions.item/remove-items))	     
+	     ;; /pasting
+	     )
 	     
 	   )
 	 targets))

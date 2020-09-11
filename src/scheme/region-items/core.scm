@@ -87,6 +87,16 @@
   )
 
 (comment
+  ;; selecting a region item
+ (select)
+ (rpr/CountSelectedMediaItems)
+ ;; propagating: copying the "region" to similarly named region items
  (propagate)
+ (define temp-item
+   (rpr/GetSelectedMediaItem 0 0))
+ (actions.item/unselect-all-items)
+ (begin
+   (rpr/SetMediaItemSelected temp-item #f)
+   (rpr/UpdateArrange))
  ;;
  )

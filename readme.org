@@ -1,7 +1,37 @@
-* S7 REAPER REPL
-  REPL like functionality with [[https://ccrma.stanford.edu/software/snd/snd/s7.html][s7 scheme]] for [[https://www.reaper.fm/][REAPER]], easy to couple
-  with EMACS.
+* s7rpr
+  Scripting [[https://www.reaper.fm/][REAPER]] with [[https://ccrma.stanford.edu/software/snd/snd/s7.html][s7 scheme]]. Side effect: A REPL over Emacs
 
   REAPER is already one of the (if not THE) most hacker-friendly DAW
   out there. So why not pair it with the most hacker-friendly
   text-editor/OS aka EMACS?
+
+* Showcase
+  REPL (with emacs)
+
+  [[file:media/s7rpr-emacs-repl.gif]]
+
+  GUI (with dear imgui)
+
+  [[file:media/s7rpr-gui.gif]]
+  
+
+* Features
+  - writing simple actions scripts
+  - writing gui scripts with =s7= & =dear imgui=
+  - REPL over a socket\\
+    that can leverage emacs to remotely control reaper
+
+* Help wanted!
+  The first step to make this happen was to create the basic skeleton
+  to make =C++= applications with =s7 scheme= and =dear imgui=. [[https://github.com/actonDev/s7-imgui][Here]]
+  is the relevant repo.
+
+  In this repo I'm leveraging functionality from aforementioned
+  repo. It would be great to at least discuss certain aspects of
+  organization, libraries etc.
+
+  Apart from this repo, I'm working on a framework to create =VST3=
+  applications with =s7 scheme=.
+
+  As you can see this grows and some input (if not help!) would be
+  much appreciated.

@@ -26,9 +26,11 @@
     :require ((region-items.core :as region-items)))
 
 ;; will appear on Extensions menu
-(rpr/RegisterAction "test" (lambda () (print "hi there!!")))
-(rpr/RegisterGui "Gui: some track things" "gui1.scm")
-(rpr/RegisterGui "gui 2" "gui2.scm")
+;; (rpr/RegisterAction "test" (lambda () (print "hi there!!")))
+(rpr/RegisterGui "Region Items: GUI" "region-items/gui.scm")
+;; (rpr/RegisterGui "Gui: some track things" "gui1.scm")
+;; (rpr/RegisterGui "gui 2" "gui2.scm")
+
 ;; note: to make these actions take into account future changes of the function definition
 ;; in the files, I have to "dynamically" call them:
 ;; (((*nss* 'region-items.core) 'select))

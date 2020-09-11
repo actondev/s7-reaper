@@ -57,7 +57,7 @@ void init(reaper_plugin_info_t* pRec, std::string file) {
 
 int guiLoop(s7_scheme* sc) {
 
-    sf::Window window(sf::VideoMode(200, 200), "SFML works!");
+    sf::Window window(sf::VideoMode(200, 200), "s7rpr");
 
 
     IMGUI_CHECKVERSION();
@@ -71,8 +71,6 @@ int guiLoop(s7_scheme* sc) {
     ImGui_ImplOpenGL2_Init();
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(30, 30, 30, 255));
-
-    printf("guiLoop: quit gui event loop, cleaning up \n");
 
     sf::Clock deltaClock;
     while (window.isOpen()) {
@@ -104,7 +102,7 @@ int guiLoop(s7_scheme* sc) {
 //     ImGui::DestroyContext();
     ImGui::SFML::Shutdown();
 
-    printf("guiLoop: ----- gui loop quit ------\n");
+//     printf("guiLoop: ----- gui loop quit ------\n");
     
     // even with freeing sc, I seem to get memory leaks
     // does s7 properly free things?

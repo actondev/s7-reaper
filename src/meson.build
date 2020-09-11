@@ -1,6 +1,9 @@
 sources = files(
   'ReaperRepl.cpp',
-  'bindings.cpp',
+  # s7_reaper
+  's7_reaper/path.cpp',
+  's7_reaper/bindings.cpp',
+  's7_reaper/gui.cpp',
 )
 
 # can be filled by subdirs

@@ -6,5 +6,6 @@ subprojects/*
 build*/
 *.reapeaks
 imgui.ini
+*.rpp-bak
 *.RPP-bak
 *.kdev4

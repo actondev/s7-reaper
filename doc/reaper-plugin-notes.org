@@ -1,0 +1,74 @@
+* Hooks?
+  from =reaper_plugin_functions.h=
+ #+BEGIN_QUOTE
+ additional notes on plugin_register / rec->Register
+ register("API_blafunc",funcaddress) then other plug-ins can use GetFunc("blafunc"),
+ (use -API_* to unregister)
+
+ another thing you can register is "hookcommand", which you pass a function:
+ NON_API: bool runCommand(int command, int flag);
+              register("hookcommand",runCommand);
+ which returns TRUE to eat (process) the command. flag is usually 0 but can sometimes have useful info depending on the message
+ note: it's OK to call Main_OnCommand() within your runCommand, however you MUST check for recursion if doing so!
+ in fact, any use of this hook should benefit from a simple reentrancy test...
+ #+END_QUOTE
+
+* Menu
+  From ReaPack https://github.com/cfillion/reapack
+
+  #+BEGIN_SRC cpp
+// main.cpp
+static void menuHook(const char *name, HMENU handle, const int f)
+{
+  if(strcmp(name, "Main extensions") || f != 0)
+    return;
+
+  Menu menu = Menu(handle).addMenu("ReaPack");
+  menu.addAction("&Synchronize packages",   "_REAPACK_SYNC");
+  menu.addAction("&Browse packages...",     "_REAPACK_BROWSE");
+  menu.addAction("&Import repositories...", "_REAPACK_IMPORT");
+  menu.addAction("&Manage repositories...", "_REAPACK_MANAGE");
+  menu.addSeparator();
+  menu.addAction(String::format("&About ReaPack v%s", REAPACK_VERSION), "_REAPACK_ABOUT");
+}
+  
+  #+END_SRC
+
+  #+BEGIN_SRC cpp
+//reapack.cpp
+void ReaPack::setupActions()
+{
+  m_actions.add("REAPACK_SYNC", "ReaPack: Synchronize packages",
+    std::bind(&ReaPack::synchronizeAll, this));
+
+  m_actions.add("REAPACK_BROWSE", "ReaPack: Browse packages...",
+    std::bind(&ReaPack::browsePackages, this));
+  
+  #+END_SRC
+
+
+  #+BEGIN_SRC cpp
+//menu.cpp
+UINT Menu::addAction(const std::string &label, const char *namedCommand)
+{
+  return addAction(label, NamedCommandLookup(namedCommand));
+}  
+  #+END_SRC
+
+  #+BEGIN_SRC cpp
+#ifndef REAPACK_MENU_HPP
+#define REAPACK_MENU_HPP
+
+#include <string>
+
+#ifdef _WIN32
+#  include <windows.h>
+#else
+#  include <swell/swell-types.h>
+#endif
+
+class Menu {
+public:
+  Menu(HMENU handle = nullptr);
+  ~Menu();  
+  #+END_SRC

@@ -34,3 +34,21 @@
   | SDL                |   ?? |
   | SFML               | 21.4 |
   | SFML-sans graphics | 17.7 |
+
+* SFML cannot listen to port??
+  #+BEGIN_SRC sh :session *server*
+# start listening
+nc -l -p 1234
+  #+END_SRC
+
+  #+BEGIN_SRC sh :session *client*
+netcat localhost 1234
+  #+END_SRC
+
+  That worked.. and now after this SFML worked..
+
+  I think SFML has some issues with networking.. saw that commented somewhere as well... ugh
+
+
+  maybe not.. i stumbled upon a scenario when =nc= cannot open the port.
+  I think this happens when the app crashes.. I have to wait some time (30 secs?) till the port is avaiable..?

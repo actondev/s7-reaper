@@ -1,6 +1,9 @@
 [wrap-git]
  url = https://github.com/actonDev/imgui.git
- # contains fixes about how the mouse events are handled
- # needed for the vst
- # if not.. some hacks for the input focus had to be done
-revision = feature/meson-sdl
+ # contains a patch with thread_local:
+ #  - imgui context is thread_local
+ #  - opengl2 impl global variables thread_local
+ # revision = feature/meson+thread_local
+ # depth = 1
+ # c6411cd : feature/meson+thread_local 12/09/2020
+ revision = c6411cdb

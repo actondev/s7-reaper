@@ -1,6 +1,0 @@
-[wrap-git]
- url = https://github.com/actonDev/SDL.git
- # embedding windows works on windows but on linux
- # thus using my sdl fork
- revision = feature/2.0.3-x11-createWindowFrom
- depth = 1

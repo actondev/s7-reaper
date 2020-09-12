@@ -34,35 +34,30 @@ std::string get() {
 
     return path;
 #elif defined(_WIN32)
-    // TODOOOOO
-
-    TCHAR path[2048];
-    GetModuleFileName(NULL, path, 2048);
-    std::string path_str = path;
-
     char path_char[MAX_PATH];
+    std::string path_str;
     HMODULE hm = NULL;
 
     if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
                           GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                          (LPCSTR)&aod::vst3::path, &hm) == 0)
+                          // pointing to our get function here
+                          (LPCSTR)&get, &hm) == 0)
     {
         int ret = GetLastError();
         fprintf(stderr, "GetModuleHandle failed, error = %d\n", ret);
-        // Return or however you want to handle an error.
+        return path_str;
     }
-    if (GetModuleFileName(hm, path, sizeof(path_char)) == 0)
+    if (GetModuleFileName(hm, path_char, sizeof(path_char)) == 0)
     {
         int ret = GetLastError();
         fprintf(stderr, "GetModuleFileName failed, error = %d\n", ret);
-        // Return or however you want to handle an error.
+        return path_str;
     }
-    //fprintf(stderr, "Got vst3 path %s\n", path_char);
 
-
+    path_str = path_char;
     return path_str;
 #else
-#error "aod::vst3::path() not implemented in this platform"
+#error "s7_reaper::path::get() not implemented in this platform"
 #endif
 }
 

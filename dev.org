@@ -6,8 +6,6 @@
 ln -s `readlink -f ../iPlug2` subprojects/iPlug2
 ln -s `readlink -f ../s7-imgui` subprojects/s7_imgui
 ln -s `readlink -f ../s7` subprojects/s7
-ln -s `readlink -f ../SDL` subprojects/sdl2
-ln -s `readlink -f ../SDL_net` subprojects/sdl_net
 ln -s `readlink -f ../imgui` subprojects/imgui
 ln -s `readlink -f ../SFML` subprojects/SFML
 
@@ -20,7 +18,9 @@ ln -s `readlink -f ../nativefiledialog` subprojects/nfd
    Necessary s7-imgui scheme files: contain imgui macros etc.
    #+BEGIN_SRC sh
 ln -s `readlink -f subprojects/s7_imgui/src/scheme/aod` src/scheme/aod
-ln -s `readlink -f src/scheme/` build/scheme
+ln -s `readlink -f src/scheme/` build/s7-reaper
+# validate
+ls build/scheme -alL
    #+END_SRC
 
 ** Building
@@ -32,14 +32,16 @@ meson setup --wipe build
 # to cleanup/regenerate
 rm -rf build
    #+END_SRC
-
 ** Launching REAPER
    (pardon the hardcoded reaper path for now)
    #+BEGIN_SRC sh
 # installing
-ln -s `readlink -f build/reaper_s7-reaper-repl.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
-# scheme files: available in Plugins/s7_reaper
-ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7_reaper
+ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
+# scheme files: available in Plugins/s7-reaper
+ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7-reaper
+# ooor, in UserPlugins folder
+ln -s `readlink -f build/reaper_s7-reaper.so` ~/.config/REAPER/UserPlugins
+ln -s `readlink -f src/scheme/` ~/.config/REAPER/UserPlugins/s7-reaper
 
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper
 
@@ -82,7 +84,71 @@ x
 (rpr/UpdateArrange)
    #+END_SRC
 
+** Zip tar build bundle
+   #+BEGIN_SRC sh
+tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7-reaper.so s7-reaper
+   #+END_SRC
 
+*** COMMENT versioned
+    #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
+tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so s7-reaper
+    #+END_SRC
+* Windows
+** Setup & build project
+   #+BEGIN_SRC sh :session *s7-reaper-vs*
+cmd //k "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+meson setup build --backend vs
+meson compile -C build
+
+# useful commands
+meson setup build --reconfigure --backend vs
+meson setup build --wipe --backend vs
+rm -rf build
+   #+END_SRC
+
+** Necessary symlinks 
+   #+BEGIN_SRC sh :session *s7-reaper-vs*
+cmd
+mklink /J src\scheme\aod subprojects\s7_imgui\src\scheme\aod
+mklink /J build\s7-reaper src\scheme
+exit
+   #+END_SRC
+** Launching REAPER
+   (pardon the hardcoded reaper path for now)
+   #+BEGIN_SRC sh :session *s7-reaper-vs*
+
+ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
+# scheme files: available in Plugins/s7-reaper
+ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7-reaper
+
+~/Downloads/reaper_linux_x86_64/REAPER/reaper
+
+~/Downloads/reaper_linux_x86_64/REAPER/reaper test/demo-regions.rpp
+   #+END_SRC
+
+
+   #+BEGIN_SRC sh :session *s7-reaper-cmd*
+cmd
+# fuck that's not working, do it by hand
+mklink W:\DAW\Reaper\Plugins\reaper_s7-reaper.dll build\reaper_s7-reaper.dll
+
+mklink /J W:\DAW\Reaper\Plugins\s7-reaper src\scheme
+mklink /h
+W:\DAW\Reaper\reaper.exe
+
+exit
+cp build/reaper_s7-reaper.dll /w/DAW/Reaper/Plugins/
+/w/DAW/Reaper/reaper
+   #+END_SRC
+** Zip build bundle
+   #+BEGIN_SRC sh
+cd build && zip ../s7-reaper.zip -r reaper_s7-reaper.dll s7-reaper -x "*.gitignore" && cd ..
+   #+END_SRC
+*** COMMENT versioned
+    #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
+cd build && zip "../s7-reaper_win_${version}.zip" -r reaper_s7-reaper.dll s7-reaper -x "*.gitignore" && cd ..
+    #+END_SRC
 * COMMENT Local variables
   # Local Variables:
   # eval: (aod.org-babel/generate-call-buttons)

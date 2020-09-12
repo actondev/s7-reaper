@@ -1,6 +1,4 @@
 [wrap-git]
  url = https://github.com/actonDev/iPlug2.git
-# TODO: use a tag when things are ~stable
-# for now using a symlink to my iPlug2 repo
-depth = 1
-revision = feature/meson-and-linux-nogui
+ revision = feature/meson-and-linux-nogui
+ depth = 1

@@ -1,5 +1,10 @@
 [wrap-git]
  url = https://github.com/actonDev/s7-imgui.git
- #WIP.. this changes fast
- revision = feature/c-bindings-s7-work-etc
- depth = 1
+ # WIP.. this changes fast
+ # revision = feature/c-bindings-s7-work-etc
+ # SFML work (migrated from SDL)
+ revision = 4515e47
+ # Note: cannot use commit ids with depth=1
+ # https://mesonbuild.com/Wrap-dependency-system-manual.html
+ # depth - shallowly clone the repository to X number of commits. Note that git always allow shallowly cloning branches, but in order to clone commit ids shallowly, the server must support
+ # depth = 1

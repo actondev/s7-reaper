@@ -3,7 +3,7 @@
  # WIP.. this changes fast
  # revision = feature/c-bindings-s7-work-etc
  # SFML work (migrated from SDL)
- revision = 8ec915a
+ revision = 4157358
  # Note: cannot use commit ids with depth=1
  # https://mesonbuild.com/Wrap-dependency-system-manual.html
  # depth - shallowly clone the repository to X number of commits. Note that git always allow shallowly cloning branches, but in order to clone commit ids shallowly, the server must support

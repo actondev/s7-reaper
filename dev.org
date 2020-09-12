@@ -91,14 +91,7 @@ tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7
 tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so scheme
     #+END_SRC
 * Windows
-** Necessary symlinks
-   #+BEGIN_SRC sh :session *s7-reaper-cmd*
-cmd
-mklink /J src\scheme\aod subprojects\s7_imgui\src\scheme\aod
-# after having built
-mklink /J build\scheme src\scheme
-   #+END_SRC
-** Setup project
+** Setup & build project
    #+BEGIN_SRC sh :session *s7-reaper-vs*
 cmd //k "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
@@ -114,6 +107,7 @@ rm -rf build
 ** Necessary symlinks 
    #+BEGIN_SRC sh :session *s7-reaper-vs*
 cmd
+mklink /J src\scheme\aod subprojects\s7_imgui\src\scheme\aod
 mklink /J build\scheme src\scheme
 exit
    #+END_SRC

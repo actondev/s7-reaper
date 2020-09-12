@@ -21,6 +21,8 @@ ln -s `readlink -f ../nativefiledialog` subprojects/nfd
    #+BEGIN_SRC sh
 ln -s `readlink -f subprojects/s7_imgui/src/scheme/aod` src/scheme/aod
 ln -s `readlink -f src/scheme/` build/scheme
+# validate
+ls build/scheme -alL
    #+END_SRC
 
 ** Building

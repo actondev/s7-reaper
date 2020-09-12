@@ -4,5 +4,6 @@
  #  - imgui context is thread_local
  #  - opengl2 impl global variables thread_local
  # revision = feature/meson+thread_local
- depth = 1
+ # depth = 1
+ # c6411cd : feature/meson+thread_local 12/09/2020
  revision = c6411cdb

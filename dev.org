@@ -6,8 +6,6 @@
 ln -s `readlink -f ../iPlug2` subprojects/iPlug2
 ln -s `readlink -f ../s7-imgui` subprojects/s7_imgui
 ln -s `readlink -f ../s7` subprojects/s7
-ln -s `readlink -f ../SDL` subprojects/sdl2
-ln -s `readlink -f ../SDL_net` subprojects/sdl_net
 ln -s `readlink -f ../imgui` subprojects/imgui
 ln -s `readlink -f ../SFML` subprojects/SFML
 
@@ -92,6 +90,26 @@ tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7
     #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
 tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so scheme
     #+END_SRC
+* Windows
+** Setup project
+   #+BEGIN_SRC sh :session *s7-reaper-vs*
+cmd //k "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+meson setup build --backend vs
+meson compile -C build
+
+# useful commands
+meson setup build --reconfigure --backend vs
+meson setup build --wipe --backend vs
+rm -rf build
+   #+END_SRC
+
+** Necessary symlinks 
+   #+BEGIN_SRC sh :session *s7-reaper-vs*
+cmd
+mklink /J build\scheme src\scheme
+exit
+   #+END_SRC
 * COMMENT Local variables
   # Local Variables:
   # eval: (aod.org-babel/generate-call-buttons)

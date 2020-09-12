@@ -83,10 +83,15 @@ x
 (rpr/UpdateArrange)
    #+END_SRC
 
-** Zipping build
+** Zip tar build bundle
    #+BEGIN_SRC sh
-tar czpvf foo.tgz build/
+tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7-reaper.so scheme
    #+END_SRC
+
+*** COMMENT versioned
+    #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
+tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so scheme
+    #+END_SRC
 * COMMENT Local variables
   # Local Variables:
   # eval: (aod.org-babel/generate-call-buttons)

@@ -18,7 +18,7 @@ ln -s `readlink -f ../nativefiledialog` subprojects/nfd
    Necessary s7-imgui scheme files: contain imgui macros etc.
    #+BEGIN_SRC sh
 ln -s `readlink -f subprojects/s7_imgui/src/scheme/aod` src/scheme/aod
-ln -s `readlink -f src/scheme/` build/scheme
+ln -s `readlink -f src/scheme/` build/s7-reaper
 # validate
 ls build/scheme -alL
    #+END_SRC
@@ -39,6 +39,9 @@ rm -rf build
 ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
 # scheme files: available in Plugins/s7-reaper
 ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7-reaper
+# ooor, in UserPlugins folder
+ln -s `readlink -f build/reaper_s7-reaper.so` ~/.config/REAPER/UserPlugins
+ln -s `readlink -f src/scheme/` ~/.config/REAPER/UserPlugins/s7-reaper
 
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper
 
@@ -83,12 +86,12 @@ x
 
 ** Zip tar build bundle
    #+BEGIN_SRC sh
-tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7-reaper.so scheme
+tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7-reaper.so s7-reaper
    #+END_SRC
 
 *** COMMENT versioned
     #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
-tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so scheme
+tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so s7-reaper
     #+END_SRC
 * Windows
 ** Setup & build project

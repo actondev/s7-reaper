@@ -34,12 +34,11 @@ meson setup --wipe build
 # to cleanup/regenerate
 rm -rf build
    #+END_SRC
-
 ** Launching REAPER
    (pardon the hardcoded reaper path for now)
    #+BEGIN_SRC sh
 # installing
-ln -s `readlink -f build/reaper_s7-reaper-repl.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
+ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
 # scheme files: available in Plugins/s7_reaper
 ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7_reaper
 
@@ -84,7 +83,10 @@ x
 (rpr/UpdateArrange)
    #+END_SRC
 
-
+** Zipping build
+   #+BEGIN_SRC sh
+tar czpvf foo.tgz build/
+   #+END_SRC
 * COMMENT Local variables
   # Local Variables:
   # eval: (aod.org-babel/generate-call-buttons)

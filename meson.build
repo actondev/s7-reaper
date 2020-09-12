@@ -1,4 +1,4 @@
-project('s7-reaper-repl', 'cpp', 'c',
+project('s7-reaper', 'cpp', 'c',
         default_options: [
         'cpp_std=c++17',
         'default_library=static',]
@@ -13,7 +13,7 @@ s7_imgui_dep = s7_imgui.get_variable('s7_imgui_dep')
 subdir('src')
 
 app = shared_library(
-  'reaper_s7-reaper-repl',
+  'reaper_s7-reaper',
   name_prefix: '', # skipping the lib prefix in linux
   dependencies: [
     iplug2_proj.get_variable('iplug2_RPR_dep'),

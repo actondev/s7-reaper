@@ -41,7 +41,7 @@ void init(reaper_plugin_info_t* pRec, std::string file) {
     std::string path = s7_reaper::path::get();
 
     fs::path base_path = fs::path(path).remove_filename();
-    fs::path scheme_path = base_path / "s7_reaper";
+    fs::path scheme_path = base_path / "s7-reaper";
 
     s7_scheme* sc = aod::s7::init(scheme_path);
     // passing NULL instance

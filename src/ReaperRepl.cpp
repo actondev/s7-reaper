@@ -34,7 +34,7 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     printf("path is %s\n", path.c_str());
 
     fs::path base_path = fs::path(path).remove_filename();
-    fs::path scheme_path = base_path / "s7_reaper";
+    fs::path scheme_path = base_path / "s7-reaper";
     cerr << "scheme path is " << scheme_path << '\n';
 
     sc = aod::s7::init(scheme_path);

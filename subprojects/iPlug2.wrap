@@ -1,5 +1,4 @@
 [wrap-git]
  url = https://github.com/actonDev/iPlug2.git
+ revision = feature/meson-and-linux-nogui
  depth = 1
- # revision = feature/meson-and-linux-nogui
- revision = 613750b85

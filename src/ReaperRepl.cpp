@@ -10,8 +10,6 @@
 #include "s7_reaper/path.hpp"
 #include "aod/s7.hpp"
 
-
-
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -24,11 +22,6 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     : ReaperExtBase(pRec)
 {
 
-    //Use IMPAPI to register any Reaper APIs that you need to use
-//   IMPAPI(GetNumTracks);
-//   IMPAPI(CountTracks);
-//   IMPAPI(InsertTrackAtIndex);
-
     printf("here, this is %p\n", this);
     std::string path = s7_reaper::path::get();
     printf("path is %s\n", path.c_str());
@@ -37,38 +30,37 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     fs::path scheme_path = base_path / "s7-reaper";
     cerr << "scheme path is " << scheme_path << '\n';
 
-    sc = aod::s7::init(scheme_path);
+    // the aod.core etc are located in the s7-imgui subdir of the scheme path
+    // TODO .. how should I manage this? (this is at least during development
+    // so that I can work in s7-imgui for core things, and then use these .scm files)
+    sc = aod::s7::init(scheme_path / "s7-imgui");
+    // adding our own files to the load path
+    s7_add_to_load_path(sc, scheme_path.string().c_str());
+
     s7_reaper::bindings::bind(this, pRec, sc);
     this->repl = aod::s7::Repl(sc);
     aod::s7::load_file(sc, "init.scm");
 
-    // mMakeGraphicsFunc = [&]() {
-    // return MakeGraphics(*this, PLUG_WIDTH, PLUG_HEIGHT, PLUG_FPS);
-    // };
-
     //Define some lambdas that can be called from either GUI widgets or in response to commands
+
+    /**
     auto action1 = []() {
         printf("message box\n");
-//     MessageBox(gParent, "Action 1!", "Reaper extension test", MB_OK); //gParent
     };
 
     auto action2 = []() {
         InsertTrackAtIndex(GetNumTracks(), false);
     };
-
-    //Register an action. args: name: lambda, add menu item,
     RegisterAction("IPlugReaperExtension: Action 1 - MsgBox", action1, true);
     RegisterAction("IPlugReaperExtension: Action 2 - AddTrack", action2, true);
 
+    */
+
     cb = [&](const char *data) -> std::string {
-//         printf("main: got data %s\n", data);
 
         std::ostringstream stream;
         stream << "Got " << strlen(data) << " chars" << std::endl;
         std::string str = stream.str();
-//         printf("
-
-//         InsertTrackAtIndex(GetNumTracks(), false);
 
         std::string res;
         if(repl.handleInput(data)) {
@@ -84,13 +76,5 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
 
 void ReaperRepl::OnIdle()
 {
-    int tracks = CountTracks(0);
-
-    if(tracks != mPrevTrackCount) {
-        mPrevTrackCount = tracks;
-
-        // if(GetUI()) {
-        //   dynamic_cast<ITextControl*>(GetUI()->GetControlWithTag(kCtrlTagText))->SetStrFmt(64, "NumTracks: %i", tracks);
-        // }
-    }
+    // is on idle called?
 }

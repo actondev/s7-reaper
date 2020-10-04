@@ -52,3 +52,13 @@ netcat localhost 1234
 
   maybe not.. i stumbled upon a scenario when =nc= cannot open the port.
   I think this happens when the app crashes.. I have to wait some time (30 secs?) till the port is avaiable..?
+* DONE <2020-10-04 Sun> curl/json/freesound
+  swell: dlopen() failed: libcm_libcurl.so: cannot open shared object file: No such file or directory
+
+  fuck.. again the shared library problem (the reason I made SFML static..)
+
+  Solution
+  =build_rpath: '$ORIGIN/s7-reaper-lib'=  (in the meson shared_library definition)
+
+  where =$ORIGIN= denotes the location of this shared library (=reaper_s7-reaper.so=).
+  So I put =libcm_libcurl.so= into the =s7-reaper-lib= relative to the =reaper_s7-reaper.so= lib

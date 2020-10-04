@@ -20,5 +20,8 @@ app = shared_library(
     s7_imgui_dep,
     app_dep, # from src/
   ],
+  # shared libraries (eg curl) are going to be located in the ./s7-reaper-lib
+  # this is when the extension is installed to the REAPER/UserPlugins/ dir
+  build_rpath: '$ORIGIN/s7-reaper-lib',
   install: true,
   )

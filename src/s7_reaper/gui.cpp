@@ -102,12 +102,8 @@ int guiLoop(s7_scheme* sc) {
 //     ImGui::DestroyContext();
     ImGui::SFML::Shutdown();
 
-//     printf("guiLoop: ----- gui loop quit ------\n");
-    
-    // even with freeing sc, I seem to get memory leaks
-    // does s7 properly free things?
-    // or the problem is elsewhere?
-    free(sc);
+    printf("s7 free called\n");
+    s7_free(sc);
     return 0;
 }
 

@@ -14,13 +14,30 @@ ln -s `readlink -f ../SFML` subprojects/SFML
 ln -s `readlink -f ../nativefiledialog` subprojects/nfd
    #+END_SRC
 
+** COMMENT TEMP: s7svn
+   #+BEGIN_SRC sh
+ln -s `readlink -f ../s7` subprojects/s7
+rm subprojects/s7
+ln -s `readlink -f ../s7svn/trunk` subprojects/s7
+ls subprojects/s7
+   #+END_SRC
+
 ** Necessary symlinks (or copy)
    Necessary s7-imgui scheme files: contain imgui macros etc.
    #+BEGIN_SRC sh
-ln -s `readlink -f subprojects/s7_imgui/src/scheme/aod` src/scheme/aod
+# old way: just linking the s7-imgui aod/ scheme folder
+# but.. I'm adding new functionality there (eg the freesound api)
+# ln -s `readlink -f subprojects/s7_imgui/src/scheme/aod` src/scheme/aod
+
+ln -s `readlink -f subprojects/s7_imgui/src/scheme/` src/scheme/s7-imgui
+# when the extension is "installed", it will search for a subdir "s7-reaper" for the scheme files
 ln -s `readlink -f src/scheme/` build/s7-reaper
 # validate
-ls build/scheme -alL
+ls build/s7-reaper -alL
+
+# shared libraries
+mkdir build/s7-reaper-lib
+ln -s `readlink -f build/subprojects/curl/libcm_libcurl.so` build/s7-reaper-lib/
    #+END_SRC
 
 ** Building
@@ -39,13 +56,20 @@ rm -rf build
 ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
 # scheme files: available in Plugins/s7-reaper
 ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7-reaper
-# ooor, in UserPlugins folder
+
+# ooor, alternatively
 ln -s `readlink -f build/reaper_s7-reaper.so` ~/.config/REAPER/UserPlugins
 ln -s `readlink -f src/scheme/` ~/.config/REAPER/UserPlugins/s7-reaper
+# for shared libraries (eg curl from cmake..)
+ln -s `readlink -f build/s7-reaper-lib/` ~/.config/REAPER/UserPlugins/s7-reaper-lib
 
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper
 
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper test/demo-regions.rpp
+   #+END_SRC
+** COMMENT linked (shared) libraries
+   #+BEGIN_SRC sh
+objdump -p build/reaper_s7-reaper.so   
    #+END_SRC
 
 ** Testing the socket (REPL)

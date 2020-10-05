@@ -43,7 +43,9 @@ void init(reaper_plugin_info_t* pRec, std::string file) {
     fs::path base_path = fs::path(path).remove_filename();
     fs::path scheme_path = base_path / "s7-reaper";
 
-    s7_scheme* sc = aod::s7::init(scheme_path);
+    s7_scheme* sc = aod::s7::init(scheme_path / "s7-imgui");
+    s7_add_to_load_path(sc, scheme_path.string().c_str());
+
     // passing NULL instance
     // by having a NULL instance, I won't be able to register actions/guis
     // which is fine. this should only happen on start up

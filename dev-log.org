@@ -62,3 +62,6 @@ netcat localhost 1234
 
   where =$ORIGIN= denotes the location of this shared library (=reaper_s7-reaper.so=).
   So I put =libcm_libcurl.so= into the =s7-reaper-lib= relative to the =reaper_s7-reaper.so= lib
+* DONE <2020-10-05 Mon> adding a sample (from freesound)
+  yay
+  added 2 demo actions "Freesound: Insert random kick/snare"

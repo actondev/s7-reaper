@@ -74,7 +74,7 @@ objdump -p build/reaper_s7-reaper.so
 
 ** Testing the socket (REPL)
    #+NAME: >repl
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :results silent
 (save-selected-window
   (run-scheme "netcat localhost 1234")
   ;; sending something to see if the repl process is alive
@@ -82,8 +82,6 @@ objdump -p build/reaper_s7-reaper.so
    #+END_SRC
 
    #+CALL: >repl()
-
-   #+RESULTS:
 
    #+BEGIN_SRC scheme
 (+ 1 2 3)

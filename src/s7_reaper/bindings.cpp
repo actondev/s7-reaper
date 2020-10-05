@@ -451,6 +451,32 @@ s7_pointer _GetMediaItemInfo_Value(s7_scheme* sc, s7_pointer args) {
     return s7_make_real(sc, value);
 }
 
+// int InsertMedia(const char* file, int mode)
+const char* help_InsertMedia = "(InsertMedia file-path mode=0) mode:\n"
+                               "- 0 add to current track\n"
+                               "- 1 add new track\n"
+                               "- 3 add to selected items as takes\n"
+                               "- &4 stretch/loop to fit time sel\n"
+                               "- &8=try to match tempo 1x\n"
+                               "- &16=try to match tempo 0.5x\n"
+                               "- &32=try to match tempo 2x\n"
+                               "- &64=don't preserve pitch when matching tempo\n"
+                               "- &128=no loop/section if startpct/endpct set\n"
+                               "- &256=force loop regardless of global preference for looping imported items\n"
+                               "- &512=use high word as absolute track index if mode&3==0";
+s7_pointer _InsertMedia(s7_scheme* sc, s7_pointer args) {
+    const char* path = s7_string(s7_car(args));
+    int mode = 0;
+    args = s7_cdr(args);
+    if(args != s7_nil(sc)) {
+        mode = s7_integer(s7_car(args));
+    }
+
+    InsertMedia(path, mode);
+
+    return s7_nil(sc);
+}
+
 void bind(s7_scheme* sc, s7_pointer env) {
     // types
     s7_int type = s7_make_c_type(sc, "<media-item>");
@@ -481,6 +507,12 @@ void bind(s7_scheme* sc, s7_pointer env) {
               s7_make_function(sc, "GetMediaItemInfo_Value", _GetMediaItemInfo_Value,
                                2, 0, false,
                                help_GetMediaItemInfo_Value));
+
+
+    s7_define(sc, env, s7_make_symbol(sc, "InsertMedia"),
+              s7_make_function(sc, "InsertMedia", _InsertMedia,
+                               1, 1, false,
+                               help_InsertMedia));
 
 }
 } // items
@@ -549,7 +581,7 @@ void bind(s7_scheme* sc, s7_pointer env) {
               s7_make_function(sc, "SetEditCurPos", _SetEditCurPos,
                                1, 2, false,
                                help_SetEditCurPos));
-        s7_define(sc, env, s7_make_symbol(sc, "GetCursorPosition"),
+    s7_define(sc, env, s7_make_symbol(sc, "GetCursorPosition"),
               s7_make_function(sc, "GetCursorPosition", _GetCursorPosition,
                                0, 0, false,
                                "(GetCursorPosition)"));
@@ -594,6 +626,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(GetSetMediaItemInfo_String);
 //     IMPAPI(GetSetMediaItemTakeInfo);
 //     IMPAPI(GetSetMediaItemTakeInfo_String);
+    IMPAPI(InsertMedia);
 
     // takes
     IMPAPI(GetActiveTake);

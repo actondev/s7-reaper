@@ -1,29 +1,17 @@
 (print "hi from init.scm")
 
 ;; actions
-(autoload 'rpr.actions.item "rpr/actions/item.scm")
-(autoload 'rpr.actions.track "rpr/actions/track.scm")
-(autoload 'rpr.actions.sws-track "rpr/actions/sws-track.scm")
-(autoload 'rpr.actions.sws-item "rpr/actions/sws-item.scm")
+;; hm since the last changes in ns.scm, the filename is guess given a namespace
+;; so no need to autoload
+;; (autoload 'rpr.common "rpr/common.scm")
 
-;; helpers
-(autoload 'rpr.helpers.item "rpr/helpers/item.scm")
-
-;; common
-(autoload 'rpr.common "rpr/common.scm")
 ;; making rpr available to any script
-(ns-require rpr :as rpr)
+(ns-require rpr)
 
 ;; guess after that should be the user.scm contents
 ;; ----
 ;; ----
 ;; my scripts (WIP/testing)
-(autoload 'region-items.core "region-items/core.scm")
-
-
-;; requires
-(ns rootlet
-    :require ((region-items.core :as region-items)))
 
 ;; will appear on Extensions menu
 ;; (rpr/RegisterAction "test" (lambda () (print "hi there!!")))
@@ -35,8 +23,21 @@
 ;; in the files, I have to "dynamically" call them:
 ;; (((*nss* 'region-items.core) 'select))
 ;; TODO: actually test this
+
+(ns-require region-items.core :as region-items)
 (rpr/RegisterAction "Region Items: Select" region-items/select)
 (rpr/RegisterAction "Region Items: Propagate" region-items/propagate)
+
+;; freesound
+(ns-require rpr+.freesound)
+(rpr/RegisterAction "Freesound: Insert random kick" (lambda ()
+						       (rpr+.freesound/insert-random-preview
+							"kick"
+							:filter '(:duration (0.0 0.5)))))
+(rpr/RegisterAction "Freesound: Insert random snare" (lambda ()
+						       (rpr+.freesound/insert-random-preview
+							"snare"
+							:filter '(:duration (0.0 0.5)))))
 
 (comment
  (ns-doc rpr)

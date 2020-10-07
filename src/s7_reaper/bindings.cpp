@@ -275,7 +275,7 @@ s7_pointer _GetSetMediaTrackInfo_String(s7_scheme* sc, s7_pointer args) {
     const char* param_name = s7_string(s7_car(args));
     bool is_set = false;
     static char buffer[512];
-    
+
     args = s7_cdr(args);
     if(args != s7_nil(sc)) {
         printf("set mode??\n");
@@ -338,7 +338,7 @@ void bind(s7_scheme* sc, s7_pointer env) {
               s7_make_function(sc, "GetSelectedTrack", _GetSelectedTrack,
                                2, 0, false,
                                help_GetSelectedTrack));
-    
+
     s7_define(sc, env, s7_make_symbol(sc, "GetSetMediaTrackInfo_String"),
               s7_make_function(sc, "GetSetMediaTrackInfo_String", _GetSetMediaTrackInfo_String,
                                2, 1, false, // 1 optional (set-value)
@@ -503,6 +503,17 @@ s7_pointer _InsertMedia(s7_scheme* sc, s7_pointer args) {
     return s7_nil(sc);
 }
 
+const char* help_GetTrackMediaItem = "(GetTrackMediaItem p-track index)";
+s7_pointer _GetTrackMediaItem(s7_scheme* sc, s7_pointer args) {
+    MediaTrack* track = (MediaTrack*) s7_c_object_value(s7_car(args));
+    args = s7_cdr(args);
+    int idx = s7_integer(s7_car(args));
+
+    MediaItem* item = GetTrackMediaItem(track, idx);
+
+    return s7_make_c_object(sc, tag_media_item(sc), (void*)item);
+}
+
 void bind(s7_scheme* sc, s7_pointer env) {
     // types
     s7_int type = s7_make_c_type(sc, "<media-item>");
@@ -528,7 +539,6 @@ void bind(s7_scheme* sc, s7_pointer env) {
                                2, 0, false,
                                help_set_selected));
 
-    // _GetMediaItemInfo_Value
     s7_define(sc, env, s7_make_symbol(sc, "GetMediaItemInfo_Value"),
               s7_make_function(sc, "GetMediaItemInfo_Value", _GetMediaItemInfo_Value,
                                2, 0, false,
@@ -539,6 +549,11 @@ void bind(s7_scheme* sc, s7_pointer env) {
               s7_make_function(sc, "InsertMedia", _InsertMedia,
                                1, 1, false,
                                help_InsertMedia));
+    
+    s7_define(sc, env, s7_make_symbol(sc, "GetTrackMediaItem"),
+              s7_make_function(sc, "GetTrackMediaItem", _GetTrackMediaItem,
+                               2, 0, false,
+                               help_GetTrackMediaItem));
 
 }
 } // items
@@ -653,6 +668,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
 //     IMPAPI(GetSetMediaItemTakeInfo);
 //     IMPAPI(GetSetMediaItemTakeInfo_String);
     IMPAPI(InsertMedia);
+    IMPAPI(GetTrackMediaItem);
 
     // takes
     IMPAPI(GetActiveTake);

@@ -1,9 +1,14 @@
 (ns rpr.helpers.item
-    :require ((rpr.actions.item :as actions.item)))
+    :require ((rpr.actions.item :as actions.item)
+	      (rpr.common)))
 
 (define (set-only-selected item)
   (actions.item/unselect-all-items)
   (rpr/SetMediaItemSelected item #t))
+
+(define (copy)
+  (rpr.common/cmd 40698)
+  )
 
 (define (selected)
   (map (lambda (idx)

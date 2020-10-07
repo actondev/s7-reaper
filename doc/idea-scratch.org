@@ -1,0 +1,65 @@
+* Music ideas in org-mode
+  Let's see what we could do with this
+ 
+* Rhythm
+  #+NAME: beat
+  |            | <3> | <3> | <3> | <3> | <3> | <3> | <3> | <3> |
+  | track\beat | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   |
+  |------------+-----+-----+-----+-----+-----+-----+-----+-----|
+  | kick       | x   |     |     |     |     | x   |     |     |
+  | snare      |     |     | x   |     |     |     | x   |     |
+  | open hat   | x   |     | x   |     | x   |     | x   |     |
+  | closed hat |     | x   |     | x   |     | x   |     | x   |
+
+
+  #+NAME: arrange-children
+  #+BEGIN_SRC scheme :var beat=beat :results silent
+(arrange.core/arrange-children
+ (drop 2 beat))
+  #+END_SRC
+
+  #+CALL: arrange-children()
+
+  #+NAME: beat2
+  | coll width | <3> | <3> | <3> | <3> | <3> | <3> | <3> | <3> |
+  | track\beat | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   |
+  |------------+-----+-----+-----+-----+-----+-----+-----+-----|
+  | kick       | x   |     |     |     | x   |     |     |     |
+  | snare      |     |     | x   |     |     |     | x   |     |
+  | open hat   | x   |     | x   |     | x   |     | x   |     |
+  | closed hat |     | x   |     | x   |     | x   |     | x   |
+
+  #+CALL: arrange-children(beat=beat)
+
+
+* Emacs-lisp
+
+  #+BEGIN_SRC emacs-lisp :results silent
+(defun org-babel-execute:scheme (body params)
+  "Execute a block of Scheme code with org-babel.
+This function is called by `org-babel-execute-src-block'"
+  (save-excursion
+    (let* ((result-type (cdr (assq :result-type params)))
+	   (session "*scheme*")
+	   (full-body (org-babel-expand-body:scheme body params))
+	   ;; (_ (message (format "full body %S" full-body)))
+	   (result
+	    (progn
+	      (let* ((out (org-babel-comint-with-output
+			      ("*scheme*" "\n> " )
+			    (scheme-send-string (format "(begin %s\n)" full-body))
+			    (accept-process-output (get-buffer-process (current-buffer))))))
+		(print out)
+		out
+		))))
+      result)))
+  #+END_SRC
+
+  #+RESULTS:
+  : org-babel-execute:scheme
+
+* COMMENT Local variables
+  # Local Variables:
+  # eval: (aod.org-babel/generate-call-buttons)
+  # eval: (setq-local org-confirm-babel-evaluate nil)
+  # End:  

@@ -2,7 +2,6 @@
     :require ((freesound.core :as fs)
 	      (aod.c.os :as os)
 	      (aod.c.curl :as curl)
-	      (rpr.macros :as m)
 	      (rpr.helpers.track :as h.track)
 	      (rpr.actions.sws-track :as act.sws-track)))
 
@@ -26,7 +25,7 @@
     (rpr/InsertMedia dl-path mode)))
 
 (define (insert-random)
-  (m/save-track-selection
+  (h.track/save-selection
    (for-each (lambda (track)
 	       (print "Inserting random freesound sample in " track)
 	       (rpr/SetOnlyTrackSelected track)

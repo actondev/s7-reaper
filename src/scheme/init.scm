@@ -4,6 +4,7 @@
     :require ((rpr)
 	      (rpr+.freesound)
 	      (region-items.core :as region-items)
+	      (arrange.core)
 	      (rpr.actions.gen)))
 
 (rpr/RegisterGui "Region Items: GUI" "region-items/gui.scm")

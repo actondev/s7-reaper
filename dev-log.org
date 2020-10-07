@@ -39,7 +39,13 @@
   #+BEGIN_SRC sh :session *reaper-repl*
 # start listening
 nc -l -p 1234
+fuser 1234/tcp
 netstat -tulpn | grep 1234
+netcat localhost 1234
+cat /proc/sys/net/ipv4/tcp_fin_timeout
+# default 60
+echo 20 | sudo tee /proc/sys/net/ipv4/tcp_fin_timeout
+sudo 
   #+END_SRC
 
   #+BEGIN_SRC sh :session *client*

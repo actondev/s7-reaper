@@ -15,7 +15,7 @@
   ;; select children tracks of item track
   (let ((track (rpr/GetMediaItem_Track item)))
     (rpr/SetOnlyTrackSelected track)
-    (sws.track/select-children-of-selected-folder-track{s})
+    (sws.track/select-children-of-selected-folder-track<s>)
     (actions.item/select-all-items-on-selected-tracks-in-current-time-selection)
     (rpr/SetOnlyTrackSelected track)
     (rpr/UpdateArrange))

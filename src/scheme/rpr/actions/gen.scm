@@ -23,15 +23,46 @@ The rpr.actions.item/track/time-selection are generated from here"
 			  (s/replace
 			   (s/replace 
 			    (s/replace (s/match-at 1) "[ /]" "-")
-			    "[(]" "{")
-			   "[)]" "}"))))
+			    "[(]" "<")
+			   "[)]" ">"))))
 		    (if-let (named-id (rpr/ReverseNamedCommandLookup id))
 			    ;; named command: appending underscore before the returned name id
 			    (format out "(define (~A) (cmd \"_~A\"))\n" fun-name named-id)
 			    ;; native action
 			    (format out "(define (~A) (cmd ~A))\n" fun-name id)
 			    )))
-		(loop (inc i)))))))))
+		(loop (inc i))))))))
+  (print "wrote" file))
+
+(define (gen-time-selection)
+  (gen-file
+  "rpr.actions.time-selection"
+  "src/scheme/rpr/actions/time_selection.scm"
+  "^Time selection: ([^0-9]+)$"))
+
+(define (gen-track)
+  (gen-file
+  "rpr.actions.track"
+  "src/scheme/rpr/actions/track.scm"
+  "^Track: ([^0-9]+)$"))
+
+(define (gen-item)
+  (gen-file
+  "rpr.actions.item"
+  "src/scheme/rpr/actions/item.scm"
+  "^Item: ([^0-9]+)$"))
+
+(define (gen-sws-track)
+  (gen-file
+  "rpr.actions.sws-track"
+  "src/scheme/rpr/actions/sws-track.scm"
+  "^SWS: ((?!.*[0-9']).*track.*)$"))
+
+(define (gen-sws-item)
+  (gen-file
+  "rpr.actions.sws-item"
+  "src/scheme/rpr/actions/sws-item.scm"
+  "^SWS: ((?!.*[0-9']).*item.*)$"))
 
 (comment
  (rpr/ReverseNamedCommandLookup 53001)

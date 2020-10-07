@@ -1,35 +1,15 @@
 (print "hi from init.scm")
 
-;; actions
-;; hm since the last changes in ns.scm, the filename is guess given a namespace
-;; so no need to autoload
-;; (autoload 'rpr.common "rpr/common.scm")
+(ns rootlet
+    :require ((rpr)
+	      (rpr+.freesound)
+	      (region-items.core :as region-items)
+	      (rpr.actions.gen)))
 
-;; making rpr available to any script
-(ns-require rpr)
-
-;; guess after that should be the user.scm contents
-;; ----
-;; ----
-;; my scripts (WIP/testing)
-
-;; will appear on Extensions menu
-;; (rpr/RegisterAction "test" (lambda () (print "hi there!!")))
 (rpr/RegisterGui "Region Items: GUI" "region-items/gui.scm")
-;; (rpr/RegisterGui "Gui: some track things" "gui1.scm")
-;; (rpr/RegisterGui "gui 2" "gui2.scm")
-
-;; note: to make these actions take into account future changes of the function definition
-;; in the files, I have to "dynamically" call them:
-;; (((*nss* 'region-items.core) 'select))
-;; TODO: actually test this
-
-(ns-require region-items.core :as region-items)
 (rpr/RegisterAction "Region Items: Select" region-items/select)
 (rpr/RegisterAction "Region Items: Propagate" region-items/propagate)
 
-;; freesound
-(ns-require rpr+.freesound)
 (rpr/RegisterAction "Freesound: Insert random kick" (lambda ()
 						       (rpr+.freesound/insert-random-preview
 							"kick"
@@ -38,6 +18,16 @@
 						       (rpr+.freesound/insert-random-preview
 							"snare"
 							:filter '(:duration (0.0 0.5)))))
+
+(rpr/RegisterAction "Freesound: Insert random in every children (querying track name)" (lambda ()
+											 (rpr+.freesound/insert-random-children)))
+
+(rpr/RegisterAction "Generate actions" (lambda ()
+					 (rpr.actions.gen/gen-time-selection)
+					 (rpr.actions.gen/gen-track)
+					 (rpr.actions.gen/gen-item)
+					 (rpr.actions.gen/gen-sws-track)
+					 (rpr.actions.gen/gen-sws-item)))
 
 (comment
  (ns-doc rpr)

@@ -7,6 +7,8 @@
 
   This essentially creates s7 scheme bindings for [[https://www.reaper.fm/sdk/reascript/reascripthelp.html#c][Reaper's C API]]
 
+  Some (auto-generated) documentation of the available =namespaces= is on [[file:doc/ns-doc.md]]
+
   *HEAVILY UNDER DEVELOPMENT*
   
   For example, just recently I made a switch from SDL to SFML for the windowing system (in [[https://github.com/actonDev/s7-imgui][s7-imgui]] repo - not in master branch). Things are changing and this is like an MVP for now. Help wanted (see below)! Some input and/or help could lead to something (more) stable soon.

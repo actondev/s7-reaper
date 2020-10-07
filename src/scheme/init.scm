@@ -29,6 +29,10 @@
 					 (rpr.actions.gen/gen-sws-track)
 					 (rpr.actions.gen/gen-sws-item)))
 
+(rpr/RegisterAction "Generate namespaces doc"
+		    (lambda ()
+		      (load "gen-doc.scm")))
+
 (comment
  (ns-doc rpr)
  (rpr/GetSelectedTrack 0 0)

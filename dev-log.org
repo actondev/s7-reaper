@@ -36,9 +36,10 @@
   | SFML-sans graphics | 17.7 |
 
 * SFML cannot listen to port??
-  #+BEGIN_SRC sh :session *server*
+  #+BEGIN_SRC sh :session *reaper-repl*
 # start listening
 nc -l -p 1234
+netstat -tulpn | grep 1234
   #+END_SRC
 
   #+BEGIN_SRC sh :session *client*
@@ -65,3 +66,8 @@ netcat localhost 1234
 * DONE <2020-10-05 Mon> adding a sample (from freesound)
   yay
   added 2 demo actions "Freesound: Insert random kick/snare"
+* Ram consumption.. 10mb ?
+  I notice a 10mb ram difference with the same project with =reaper_s7-reaper.so= loaded vs not loaded
+* DONE <2020-10-07 Wed> gui crashing. plus repl crashing
+  I was using s7 from the svn with bil's patch about the star functions and s7_free.
+  Updated to the last revision =9.6+20200928=, and it's now ok

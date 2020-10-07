@@ -10,17 +10,9 @@
 (rpr/RegisterAction "Region Items: Select" region-items/select)
 (rpr/RegisterAction "Region Items: Propagate" region-items/propagate)
 
-(rpr/RegisterAction "Freesound: Insert random kick" (lambda ()
-						       (rpr+.freesound/insert-random-preview
-							"kick"
-							:filter '(:duration (0.0 0.5)))))
-(rpr/RegisterAction "Freesound: Insert random snare" (lambda ()
-						       (rpr+.freesound/insert-random-preview
-							"snare"
-							:filter '(:duration (0.0 0.5)))))
-
-(rpr/RegisterAction "Freesound: Insert random in every children (querying track name)" (lambda ()
-											 (rpr+.freesound/insert-random-children)))
+(rpr/RegisterAction "Freesound: Insert random in selected tracks (querying name)"
+		    (lambda ()
+		      (rpr+.freesound/insert-random)))
 
 (rpr/RegisterAction "Generate actions" (lambda ()
 					 (rpr.actions.gen/gen-time-selection)

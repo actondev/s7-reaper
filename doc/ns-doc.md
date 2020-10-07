@@ -6,6 +6,34 @@
 (execute command) Returns the external command on the system
 ## `temp-directory-path` <small>procedure?</small>
 (temp-directory-path) Returns the directory location suitable for temporary files
+# (ns `rpr.macros`)
+
+## `save-track-selection` <small>macro?</small>
+
+# (ns `rpr.helpers.track`)
+
+## `name` <small>procedure?</small>
+
+## `selected` <small>procedure?</small>
+
+# (ns `freesound.core`)
+
+## `search&random-preview` <small>procedure?</small>
+
+## `get-preview` <small>procedure?</small>
+
+## `get` <small>procedure?</small>
+
+## `search&random` <small>procedure?</small>
+
+## `search` <small>procedure?</small>
+
+## `make-filter` <small>procedure?</small>
+
+## `*default-preview*` <small>string?</small>
+
+## `*token*` <small>string?</small>
+
 # (ns `rpr.actions.sws-track`)
 
 ## `toggle-zoom-to-selected-items,-hide-other-tracks` <small>procedure?</small>
@@ -274,6 +302,111 @@
 
 ## `cmd` <small>procedure?</small>
 
+# (ns `secrets`)
+
+## `freesound` <small>string?</small>
+
+# (ns `rpr`)
+
+## `GetCursorPosition` <small>procedure?</small>
+(GetCursorPosition)
+## `SetEditCurPos` <small>procedure?</small>
+(SetEditCurPos time &optional move-view?=false seek-play?=false)
+## `GetSet_LoopTimeRange` <small>procedure?</small>
+(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)
+## `NamedCommandLookup` <small>procedure?</small>
+(NamedCommandLookup name-id)
+## `ReverseNamedCommandLookup` <small>procedure?</small>
+(ReverseNamedCommandLookup id) Returns #f or the named id (string)
+## `Main_OnCommand` <small>procedure?</small>
+(Main_OnCommand cmd-id)
+## `RegisterGui` <small>procedure?</small>
+(RegisterGui name script-file) CUSTOM (not part of reaper): Registers an action under name which runs a gui script
+## `RegisterAction` <small>procedure?</small>
+(RegisterAction name fn) Adds a menu item inside reaper
+## `CF_EnumerateActions` <small>procedure?</small>
+(CF_EnumerateActions section idx) ret (retval:int name:string)
+## `UpdateArrange` <small>procedure?</small>
+(UpdateArrange)
+## `GetSetMediaTrackInfo_String` <small>procedure?</small>
+(GetSetMediaTrackInfo_String p-media-track param-name &opt set-value)
+## `GetSelectedTrack` <small>procedure?</small>
+(GetSelectedTrack ReapProject* idx) TODO project* always 0
+## `CountSelectedTracks` <small>procedure?</small>
+(CountSelectedTracks &optional ReapProject*=0) TODO project is always 0
+## `SetTrackSelected` <small>procedure?</small>
+(SetTrackSelected *media-track sel:bool)
+## `SetOnlyTrackSelected` <small>procedure?</small>
+(SetOnlyTrackSelected *media-track)
+## `GetMediaItem_Track` <small>procedure?</small>
+(GetMediaItem_Track *media-item)
+## `CountTracks` <small>procedure?</small>
+(CountTracks &optional ReaProject=0) TODO ReaProject always 0
+## `type-media-track` <small>integer?</small>
+
+## `GetActiveTake` <small>procedure?</small>
+(GetActiveTake media-item*)
+## `GetSetMediaItemTakeInfo_String` <small>procedure?</small>
+(GetSetMediaItemTakeInfo_String p-take param-name) TODO add an optional set-value param. If present => set. If not => get
+## `type-media-take` <small>integer?</small>
+
+## `InsertMedia` <small>procedure?</small>
+(InsertMedia file-path mode=0) mode:
+- 0 add to current track
+- 1 add new track
+- 3 add to selected items as takes
+- &4 stretch/loop to fit time sel
+- &8=try to match tempo 1x
+- &16=try to match tempo 0.5x
+- &32=try to match tempo 2x
+- &64=don't preserve pitch when matching tempo
+- &128=no loop/section if startpct/endpct set
+- &256=force loop regardless of global preference for looping imported items
+- &512=use high word as absolute track index if mode&3==0
+## `GetMediaItemInfo_Value` <small>procedure?</small>
+(GetMediaItemInfo_Value item param-name)
+## `SetMediaItemSelected` <small>procedure?</small>
+(SetMediaItemSelected *media-item selected?)
+## `GetSelectedMediaItem` <small>procedure?</small>
+(GetSelectedMediaItem ReaProject* idx) TODO ReaProject is always 0
+## `CountSelectedMediaItems` <small>procedure?</small>
+(CountSelectedMediaItems) TODO pass ReaProject
+## `type-media-item` <small>integer?</small>
+
+## `*reaper_plugin_info_t*` <small>c-pointer?</small>
+
+## `ReaperExtBase*` <small>c-pointer?</small>
+
+# (ns `region-items.core`)
+
+## `propagate` <small>procedure?</small>
+
+## `clear` <small>procedure?</small>
+
+## `select` <small>procedure?</small>
+
+# (ns `rpr+.freesound`)
+
+## `insert-random` <small>procedure?</small>
+
+## `insert-random-preview` <small>procedure?</small>
+
+## `*download-dir*` <small>string?</small>
+
+# (ns `aod.c.string`)
+
+## `lowercase` <small>procedure?</small>
+(lowercase str)
+## `uppercase` <small>procedure?</small>
+(uppercase str)
+## `replace` <small>procedure?</small>
+(replace str regex replacement)
+## `match-at` <small>procedure?</small>
+(match-at)
+## `count-matches` <small>procedure?</small>
+(count-matches)
+## `search` <small>procedure?</small>
+(search str regex) Returns #t or #f
 # (ns `rpr.actions.item`)
 
 ## `set-cursor-to-next-take-marker-in-selected-items` <small>procedure?</small>
@@ -618,157 +751,6 @@
 
 ## `cmd` <small>procedure?</small>
 
-# (ns `rpr.helpers.item`)
-
-## `active-take-name` <small>procedure?</small>
-
-## `start-end` <small>procedure?</small>
-
-## `track-items` <small>procedure?</small>
-
-## `selected` <small>procedure?</small>
-
-## `set-only-selected` <small>procedure?</small>
-
-# (ns `rpr.common`)
-
-## `cmd` <small>procedure?</small>
-
-# (ns `freesound.core`)
-
-## `search&random-preview` <small>procedure?</small>
-
-## `get-preview` <small>procedure?</small>
-
-## `get` <small>procedure?</small>
-
-## `search&random` <small>procedure?</small>
-
-## `search` <small>procedure?</small>
-
-## `make-filter` <small>procedure?</small>
-
-## `*default-preview*` <small>string?</small>
-
-## `*token*` <small>string?</small>
-
-# (ns `secrets`)
-
-## `freesound` <small>string?</small>
-
-# (ns `aod.c.curl`)
-Basic bindings for libcurl
-## `easy-escape` <small>procedure?</small>
-(easy-escape string)
-## `curl` <small>procedure?</small>
-(curl url (out #f) (opts *default-curl-opts*))
-## `*default-opts*` <small>let?</small>
-value `(inlet :ssl-verify-peer 1 :follow-location 1)`
-# (ns `rpr`)
-
-## `GetCursorPosition` <small>procedure?</small>
-(GetCursorPosition)
-## `SetEditCurPos` <small>procedure?</small>
-(SetEditCurPos time &optional move-view?=false seek-play?=false)
-## `GetSet_LoopTimeRange` <small>procedure?</small>
-(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)
-## `NamedCommandLookup` <small>procedure?</small>
-(NamedCommandLookup name-id)
-## `ReverseNamedCommandLookup` <small>procedure?</small>
-(ReverseNamedCommandLookup id) Returns #f or the named id (string)
-## `Main_OnCommand` <small>procedure?</small>
-(Main_OnCommand cmd-id)
-## `RegisterGui` <small>procedure?</small>
-(RegisterGui name script-file) CUSTOM (not part of reaper): Registers an action under name which runs a gui script
-## `RegisterAction` <small>procedure?</small>
-(RegisterAction name fn) Adds a menu item inside reaper
-## `CF_EnumerateActions` <small>procedure?</small>
-(CF_EnumerateActions section idx) ret (retval:int name:string)
-## `UpdateArrange` <small>procedure?</small>
-(UpdateArrange)
-## `GetSelectedTrack` <small>procedure?</small>
-(GetSelectedTrack ReapProject* idx) TODO project* always 0
-## `CountSelectedTracks` <small>procedure?</small>
-(CountSelectedTracks &optional ReapProject*=0) TODO project is always 0
-## `SetTrackSelected` <small>procedure?</small>
-(SetTrackSelected *media-track sel:bool)
-## `SetOnlyTrackSelected` <small>procedure?</small>
-(SetOnlyTrackSelected *media-track)
-## `GetMediaItem_Track` <small>procedure?</small>
-(GetMediaItem_Track *media-item)
-## `CountTracks` <small>procedure?</small>
-(CountTracks &optional ReaProject=0) TODO ReaProject always 0
-## `type-media-track` <small>integer?</small>
-
-## `GetActiveTake` <small>procedure?</small>
-(GetActiveTake media-item*)
-## `GetSetMediaItemTakeInfo_String` <small>procedure?</small>
-(GetSetMediaItemTakeInfo_String take* param-name)
-## `type-media-take` <small>integer?</small>
-
-## `InsertMedia` <small>procedure?</small>
-(InsertMedia file-path mode=0) mode:
-- 0 add to current track
-- 1 add new track
-- 3 add to selected items as takes
-- &4 stretch/loop to fit time sel
-- &8=try to match tempo 1x
-- &16=try to match tempo 0.5x
-- &32=try to match tempo 2x
-- &64=don't preserve pitch when matching tempo
-- &128=no loop/section if startpct/endpct set
-- &256=force loop regardless of global preference for looping imported items
-- &512=use high word as absolute track index if mode&3==0
-## `GetMediaItemInfo_Value` <small>procedure?</small>
-(GetMediaItemInfo_Value item param-name)
-## `SetMediaItemSelected` <small>procedure?</small>
-(SetMediaItemSelected *media-item selected?)
-## `GetSelectedMediaItem` <small>procedure?</small>
-(GetSelectedMediaItem ReaProject* idx) TODO ReaProject is always 0
-## `CountSelectedMediaItems` <small>procedure?</small>
-(CountSelectedMediaItems) TODO pass ReaProject
-## `type-media-item` <small>integer?</small>
-
-## `*reaper_plugin_info_t*` <small>c-pointer?</small>
-
-## `ReaperExtBase*` <small>c-pointer?</small>
-
-# (ns `rpr+.freesound`)
-
-## `insert-random-children` <small>procedure?</small>
-
-## `insert-random-preview` <small>procedure?</small>
-
-## `*download-dir*` <small>string?</small>
-
-# (ns `aod.c.json`)
-Basic bindings for nlohmann/json
-## `parse` <small>procedure?</small>
-(parse json-str) Returns a json c-object
-## `type-json` <small>integer?</small>
-
-# (ns `region-items.core`)
-
-## `propagate` <small>procedure?</small>
-
-## `clear` <small>procedure?</small>
-
-## `select` <small>procedure?</small>
-
-# (ns `aod.c.string`)
-
-## `lowercase` <small>procedure?</small>
-(lowercase str)
-## `uppercase` <small>procedure?</small>
-(uppercase str)
-## `replace` <small>procedure?</small>
-(replace str regex replacement)
-## `match-at` <small>procedure?</small>
-(match-at)
-## `count-matches` <small>procedure?</small>
-(count-matches)
-## `search` <small>procedure?</small>
-(search str regex) Returns #t or #f
 # (ns `rpr.actions.gen`)
 Generating functions from the action list
 The rpr.actions.item/track/time-selection are generated from here
@@ -783,4 +765,438 @@ The rpr.actions.item/track/time-selection are generated from here
 ## `gen-time-selection` <small>procedure?</small>
 
 ## `gen-file` <small>procedure?</small>
+
+# (ns `rpr.helpers.item`)
+
+## `active-take-name` <small>procedure?</small>
+
+## `start-end` <small>procedure?</small>
+
+## `track-items` <small>procedure?</small>
+
+## `selected` <small>procedure?</small>
+
+## `set-only-selected` <small>procedure?</small>
+
+# (ns `rpr.actions.track`)
+
+## `insert-track-from-template...` <small>procedure?</small>
+
+## `lock-unlock-track-height` <small>procedure?</small>
+
+## `view-routing-and-i-o-for-master-track` <small>procedure?</small>
+
+## `apply-playback-offset-to-receive-source-tracks` <small>procedure?</small>
+
+## `bypass-track-playback-offset` <small>procedure?</small>
+
+## `prevent-spectral-peaks-spectrogram` <small>procedure?</small>
+
+## `disable-midi-input-quantize-for-last-touched-track` <small>procedure?</small>
+
+## `enable-midi-input-quantize-for-last-touched-track` <small>procedure?</small>
+
+## `disable-midi-input-quantize-for-all-tracks` <small>procedure?</small>
+
+## `enable-midi-input-quantize-for-all-tracks` <small>procedure?</small>
+
+## `disable-midi-input-quantize-for-selected-tracks` <small>procedure?</small>
+
+## `enable-midi-input-quantize-for-selected-tracks` <small>procedure?</small>
+
+## `set-midi-input-quantize-to-grid-for-last-touched-track` <small>procedure?</small>
+
+## `set-midi-input-quantize-to-grid-for-all-tracks` <small>procedure?</small>
+
+## `set-midi-input-quantize-to-grid-for-selected-tracks` <small>procedure?</small>
+
+## `toggle-midi-input-quantize-for-last-touched-track` <small>procedure?</small>
+
+## `toggle-midi-input-quantize-for-all-tracks` <small>procedure?</small>
+
+## `toggle-midi-input-quantize-for-selected-tracks` <small>procedure?</small>
+
+## `swap-volume-envelope-and-trim-envelope` <small>procedure?</small>
+
+## `toggle-track-trim-envelope-visible` <small>procedure?</small>
+
+## `apply-volume-envelope-to-trim-envelope,-clear-volume-envelope` <small>procedure?</small>
+
+## `apply-trim-envelope-to-volume-envelope,-clear-trim-envelope` <small>procedure?</small>
+
+## `move-tracks-to-subproject` <small>procedure?</small>
+
+## `view-envelopes-for-current-last-touched-track-at-mouse-cursor` <small>procedure?</small>
+
+## `set-preserve-pdc-delayed-monitoring-in-recorded-items` <small>procedure?</small>
+
+## `unset-preserve-pdc-delayed-monitoring-in-recorded-items` <small>procedure?</small>
+
+## `toggle-preserve-pdc-delayed-monitoring-in-recorded-items` <small>procedure?</small>
+
+## `select-mute-envelope` <small>procedure?</small>
+
+## `select-width-envelope` <small>procedure?</small>
+
+## `select-pre-fx-width-envelope` <small>procedure?</small>
+
+## `select-pan-envelope` <small>procedure?</small>
+
+## `select-pre-fx-pan-envelope` <small>procedure?</small>
+
+## `select-volume-envelope` <small>procedure?</small>
+
+## `select-pre-fx-volume-envelope` <small>procedure?</small>
+
+## `select-next-envelope` <small>procedure?</small>
+
+## `select-previous-envelope` <small>procedure?</small>
+
+## `select-all-top-level-tracks` <small>procedure?</small>
+
+## `insert-show-reaeq-<track-eq>` <small>procedure?</small>
+
+## `toggle-track-metering` <small>procedure?</small>
+
+## `set-track-record-mode-to-midi-latch-replace` <small>procedure?</small>
+
+## `toggle-full-multichannel-metering` <small>procedure?</small>
+
+## `render-selected-area-of-tracks-to-mono-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-selected-area-of-tracks-to-multichannel-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-selected-area-of-tracks-to-stereo-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-selected-area-of-tracks-to-mono-post-fader-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-selected-area-of-tracks-to-multichannel-post-fader-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-selected-area-of-tracks-to-stereo-post-fader-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `unfreeze-tracks-<restore-previously-saved-items-and-fx>` <small>procedure?</small>
+
+## `make-all-tracks-visible-in-tcp-and-mixer` <small>procedure?</small>
+
+## `hide-tracks-in-tcp-and-mixer` <small>procedure?</small>
+
+## `toggle-tracks-visible-<hide>-in-mixer` <small>procedure?</small>
+
+## `toggle-tracks-visible-<hide>-in-tcp` <small>procedure?</small>
+
+## `insert-new-surround-track,-using-selected-tracks-as-source-audio` <small>procedure?</small>
+
+## `insert-new-surround-track` <small>procedure?</small>
+
+## `toggle-link-unlink-track-volume-pan-controls-to-midi-volume-pan-on-all-channels` <small>procedure?</small>
+
+## `link-track-volume-pan-controls-to-midi-volume-pan-on-all-channels` <small>procedure?</small>
+
+## `do-not-link-track-volume-pan-controls-to-midi-volume-pan` <small>procedure?</small>
+
+## `select-all-tracks-that-have-controls-locked` <small>procedure?</small>
+
+## `set-record-path-to-primary+secondary` <small>procedure?</small>
+
+## `set-record-path-to-secondary` <small>procedure?</small>
+
+## `set-record-path-to-primary` <small>procedure?</small>
+
+## `toggle-lock-unlock-track-controls` <small>procedure?</small>
+
+## `unlock-track-controls` <small>procedure?</small>
+
+## `lock-track-controls` <small>procedure?</small>
+
+## `freeze-to-stereo-<render-pre-fader,-save-remove-items-and-online-fx>` <small>procedure?</small>
+
+## `toggle-track-solo-defeat` <small>procedure?</small>
+
+## `unset-track-solo-defeat` <small>procedure?</small>
+
+## `set-track-solo-defeat` <small>procedure?</small>
+
+## `insert-new-track-at-end-of-mixer` <small>procedure?</small>
+
+## `select-track-under-mouse` <small>procedure?</small>
+
+## `insert-multiple-new-tracks...` <small>procedure?</small>
+
+## `set-first-selected-track-as-last-touched-track` <small>procedure?</small>
+
+## `vertical-scroll-selected-tracks-into-view` <small>procedure?</small>
+
+## `insert-show-reacontrolmidi-<midi-track-control>` <small>procedure?</small>
+
+## `freeze-to-mono-<render-pre-fader,-save-remove-items-and-online-fx>` <small>procedure?</small>
+
+## `remove-track-icon` <small>procedure?</small>
+
+## `set-track-icon...` <small>procedure?</small>
+
+## `set-track-record-mode-to-output-<full-multichannel-compensated>` <small>procedure?</small>
+
+## `set-track-record-mode-to-output-<full-multichannel>` <small>procedure?</small>
+
+## `render-tracks-to-multichannel-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-tracks-to-multichannel-post-fader-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `freeze-to-multichannel-<render-pre-fader,-save-remove-items-and-online-fx>` <small>procedure?</small>
+
+## `toggle-track-mute-envelope-visible` <small>procedure?</small>
+
+## `toggle-track-mute-envelope-active` <small>procedure?</small>
+
+## `toggle-show-hide-in-tcp` <small>procedure?</small>
+
+## `set-track-record-mode-to-midi-touch-replace` <small>procedure?</small>
+
+## `view-fx-chain-for-master-track` <small>procedure?</small>
+
+## `view-input-fx-chain-for-current-last-touched-track` <small>procedure?</small>
+
+## `render-tracks-to-mono-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `render-tracks-to-stereo-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `set-track-grouping-parameters` <small>procedure?</small>
+
+## `toggle-all-track-grouping-enabled` <small>procedure?</small>
+
+## `unset-track-solo-defeat-<all-tracks>` <small>procedure?</small>
+
+## `nudge-master-track-volume-down` <small>procedure?</small>
+
+## `nudge-master-track-volume-up` <small>procedure?</small>
+
+## `set-clear-all-tracks-automatic-record-arm` <small>procedure?</small>
+
+## `clear-automatic-record-arm` <small>procedure?</small>
+
+## `set-automatic-record-arm-when-track-selected` <small>procedure?</small>
+
+## `toggle-automatic-record-arm-when-track-selected` <small>procedure?</small>
+
+## `unmute-tracks` <small>procedure?</small>
+
+## `mute-tracks` <small>procedure?</small>
+
+## `unsolo-tracks` <small>procedure?</small>
+
+## `solo-tracks` <small>procedure?</small>
+
+## `insert-new-track-at-end-of-track-list` <small>procedure?</small>
+
+## `rename-last-touched-track` <small>procedure?</small>
+
+## `prevent-track-anticipative-fx` <small>procedure?</small>
+
+## `allow-track-anticipative-fx` <small>procedure?</small>
+
+## `prevent-track-media-buffering` <small>procedure?</small>
+
+## `allow-track-media-buffering` <small>procedure?</small>
+
+## `view-track-recording-settings-<midi-quantize,-file-format-path>-for-last-touched-track` <small>procedure?</small>
+
+## `render-tracks-to-mono-post-fader-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `set-all-fx-online-for-selected-tracks` <small>procedure?</small>
+
+## `set-all-fx-offline-for-selected-tracks` <small>procedure?</small>
+
+## `select-last-touched-track` <small>procedure?</small>
+
+## `set-track-record-mode-to-midi-replace` <small>procedure?</small>
+
+## `set-track-record-mode-to-midi-overdub` <small>procedure?</small>
+
+## `set-track-record-mode-to-output-<mono-latency-compensated>` <small>procedure?</small>
+
+## `set-track-record-mode-to-output-<mono>` <small>procedure?</small>
+
+## `set-track-record-mode-to-midi-output` <small>procedure?</small>
+
+## `set-track-record-mode-to-output-<stereo-latency-compensated>` <small>procedure?</small>
+
+## `set-track-record-mode-to-none-<monitoring-only>` <small>procedure?</small>
+
+## `set-track-record-mode-to-output-<stereo>` <small>procedure?</small>
+
+## `set-track-record-mode-to-input` <small>procedure?</small>
+
+## `cycle-track-record-monitor` <small>procedure?</small>
+
+## `set-track-record-monitor-to-auto-tape` <small>procedure?</small>
+
+## `set-track-record-monitor-to-on` <small>procedure?</small>
+
+## `set-track-record-monitor-to-off` <small>procedure?</small>
+
+## `unarm-all-tracks-for-recording` <small>procedure?</small>
+
+## `arm-all-tracks-for-recording` <small>procedure?</small>
+
+## `toggle-track-pre-fx-pan-envelope-visible` <small>procedure?</small>
+
+## `toggle-track-pre-fx-volume-envelope-visible` <small>procedure?</small>
+
+## `toggle-track-pan-envelope-visible` <small>procedure?</small>
+
+## `toggle-track-volume-envelope-visible` <small>procedure?</small>
+
+## `render-tracks-to-stereo-post-fader-stem-tracks-<and-mute-originals>` <small>procedure?</small>
+
+## `save-tracks-as-track-template...` <small>procedure?</small>
+
+## `set-to-one-random-color` <small>procedure?</small>
+
+## `set-to-default-color` <small>procedure?</small>
+
+## `set-to-random-colors` <small>procedure?</small>
+
+## `set-to-custom-color...` <small>procedure?</small>
+
+## `toggle-fx-bypass-on-all-tracks` <small>procedure?</small>
+
+## `unbypass-fx-on-all-tracks` <small>procedure?</small>
+
+## `bypass-fx-on-all-tracks` <small>procedure?</small>
+
+## `mute-all-tracks` <small>procedure?</small>
+
+## `unsolo-all-tracks` <small>procedure?</small>
+
+## `unmute-all-tracks` <small>procedure?</small>
+
+## `cut-tracks` <small>procedure?</small>
+
+## `toggle-fx-bypass-for-current-last-touched-track` <small>procedure?</small>
+
+## `unselect-all-tracks` <small>procedure?</small>
+
+## `select-all-tracks` <small>procedure?</small>
+
+## `toggle-record-arming-for-current-last-touched-track` <small>procedure?</small>
+
+## `view-routing-and-i-o-for-current-last-touched-track` <small>procedure?</small>
+
+## `view-envelopes-for-current-last-touched-track` <small>procedure?</small>
+
+## `view-fx-chain-for-current-last-touched-track` <small>procedure?</small>
+
+## `go-to-previous-track-<leaving-other-tracks-selected>` <small>procedure?</small>
+
+## `go-to-next-track-<leaving-other-tracks-selected>` <small>procedure?</small>
+
+## `go-to-previous-track` <small>procedure?</small>
+
+## `go-to-next-track` <small>procedure?</small>
+
+## `nudge-track-pan-right` <small>procedure?</small>
+
+## `nudge-track-pan-left` <small>procedure?</small>
+
+## `invert-track-phase` <small>procedure?</small>
+
+## `solo-unsolo-tracks` <small>procedure?</small>
+
+## `mute-unmute-tracks` <small>procedure?</small>
+
+## `toggle-show-hide-in-mixer` <small>procedure?</small>
+
+## `copy-tracks` <small>procedure?</small>
+
+## `nudge-track-volume-down` <small>procedure?</small>
+
+## `nudge-track-volume-up` <small>procedure?</small>
+
+## `duplicate-tracks` <small>procedure?</small>
+
+## `toggle-track-pan-envelope-active` <small>procedure?</small>
+
+## `toggle-track-volume-envelope-active` <small>procedure?</small>
+
+## `toggle-track-pre-fx-pan-envelope-active` <small>procedure?</small>
+
+## `toggle-track-pre-fx-volume-envelope-active` <small>procedure?</small>
+
+## `remove-tracks` <small>procedure?</small>
+
+## `insert-new-track` <small>procedure?</small>
+
+## `set-stereo-width-<or-right-channel-pan>-for-last-touched-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-stereo-width-<or-right-channel-pan>-for-master-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-stereo-width-<or-right-channel-pan>-for-selected-tracks-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `cycle-folder-collapsed-state` <small>procedure?</small>
+
+## `cycle-track-folder-state` <small>procedure?</small>
+
+## `set-solo-for-last-touched-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-mute-for-last-touched-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `toggle-record-arm-for-last-touched-track` <small>procedure?</small>
+
+## `toggle-fx-bypass-for-last-touched-track` <small>procedure?</small>
+
+## `toggle-solo-for-last-touched-track` <small>procedure?</small>
+
+## `toggle-mute-for-last-touched-track` <small>procedure?</small>
+
+## `set-pan-for-last-touched-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-volume-for-last-touched-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-solo-for-master-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-mute-for-master-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `toggle-fx-bypass-for-master-track` <small>procedure?</small>
+
+## `toggle-solo-for-master-track` <small>procedure?</small>
+
+## `toggle-mute-for-master-track` <small>procedure?</small>
+
+## `set-pan-for-master-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-volume-for-master-track-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-solo-for-selected-tracks-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `set-mute-for-selected-tracks-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `toggle-record-arm-for-selected-tracks` <small>procedure?</small>
+
+## `toggle-fx-bypass-for-selected-tracks` <small>procedure?</small>
+
+## `toggle-solo-for-selected-tracks` <small>procedure?</small>
+
+## `toggle-mute-for-selected-tracks` <small>procedure?</small>
+
+## `set-pan-for-selected-tracks-<midi-cc-osc-only>` <small>procedure?</small>
+
+## `cmd` <small>procedure?</small>
+
+# (ns `rpr.common`)
+
+## `cmd` <small>procedure?</small>
+
+# (ns `aod.c.curl`)
+Basic bindings for libcurl
+## `easy-escape` <small>procedure?</small>
+(easy-escape string)
+## `curl` <small>procedure?</small>
+(curl url (out #f) (opts *default-curl-opts*))
+## `*default-opts*` <small>let?</small>
+value `(inlet :ssl-verify-peer 1 :follow-location 1)`
+# (ns `aod.c.json`)
+Basic bindings for nlohmann/json
+## `parse` <small>procedure?</small>
+(parse json-str) Returns a json c-object
+## `type-json` <small>integer?</small>
 

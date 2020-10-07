@@ -268,6 +268,26 @@ s7_pointer _GetSelectedTrack(s7_scheme* sc, s7_pointer args) {
     return s7_make_c_object(sc, tag_media_track(sc), (void*)track);
 }
 
+const char* help_GetSetMediaTrackInfo_String = "(GetSetMediaTrackInfo_String p-media-track param-name &opt set-value)";
+s7_pointer _GetSetMediaTrackInfo_String(s7_scheme* sc, s7_pointer args) {
+    MediaTrack* track = (MediaTrack*) s7_c_object_value(s7_car(args));
+    args = s7_cdr(args);
+    const char* param_name = s7_string(s7_car(args));
+    bool is_set = false;
+    static char buffer[512];
+    
+    args = s7_cdr(args);
+    if(args != s7_nil(sc)) {
+        printf("set mode??\n");
+        // set mode
+        is_set = true;
+        strcpy(buffer, s7_string(s7_car(args)));
+    }
+
+    GetSetMediaTrackInfo_String(track, param_name, buffer, is_set);
+    return s7_make_string(sc, buffer);
+}
+
 // returns <media-track name:"track name here">
 s7_pointer to_string(s7_scheme* sc, s7_pointer args) {
     MediaTrack* track = (MediaTrack*) s7_c_object_value(s7_car(args));
@@ -318,6 +338,11 @@ void bind(s7_scheme* sc, s7_pointer env) {
               s7_make_function(sc, "GetSelectedTrack", _GetSelectedTrack,
                                2, 0, false,
                                help_GetSelectedTrack));
+    
+    s7_define(sc, env, s7_make_symbol(sc, "GetSetMediaTrackInfo_String"),
+              s7_make_function(sc, "GetSetMediaTrackInfo_String", _GetSetMediaTrackInfo_String,
+                               2, 1, false, // 1 optional (set-value)
+                               help_GetSetMediaTrackInfo_String));
 }
 
 } // tracks
@@ -335,6 +360,7 @@ int tag_media_take(s7_scheme* sc) {
     return -1;
 }
 
+const char* help_GetSetMediaItemTakeInfo_String = "(GetSetMediaItemTakeInfo_String p-take param-name) TODO add an optional set-value param. If present => set. If not => get";
 s7_pointer _GetSetMediaItemTakeInfo_String(s7_scheme* sc, s7_pointer args) {
     MediaItem_Take* take = (MediaItem_Take*) s7_c_object_value(s7_car(args));
 
@@ -365,7 +391,7 @@ void bind(s7_scheme* sc, s7_pointer env) {
     s7_define(sc, env, s7_make_symbol(sc, "GetSetMediaItemTakeInfo_String"),
               s7_make_function(sc, "GetSetMediaItemTakeInfo_String", _GetSetMediaItemTakeInfo_String,
                                2, 0, false,
-                               "(GetSetMediaItemTakeInfo_String take* param-name)"));
+                               help_GetSetMediaItemTakeInfo_String));
 
     s7_define(sc, env, s7_make_symbol(sc, "GetActiveTake"),
               s7_make_function(sc, "GetActiveTake", _GetActiveTake,

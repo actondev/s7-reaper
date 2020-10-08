@@ -401,6 +401,131 @@ void bind(s7_scheme* sc, s7_pointer env) {
 
 } // takes
 
+namespace midi {
+
+//     bool MIDI_InsertNote(MediaItem_Take* take, bool selected, bool muted, double startppqpos, double endppqpos, int chan, int pitch, int vel, const bool* noSortInOptional)
+const char* help_MIDI_InsertNote = "(MIDI_InsertNote p-media-item-take selected? muted? startppqpos endppqpos chan pitch vel &opt no-sort-in?)";
+s7_pointer _MIDI_InsertNote(s7_scheme* sc, s7_pointer args) {
+    MediaItem_Take* take = (MediaItem_Take*) s7_c_object_value_checked(s7_car(args), takes::tag_media_take(sc));
+    if (take == NULL) {
+        return s7_wrong_type_arg_error(sc, "MIDI_InsertNote", 1, s7_car(args), "expecting MediaItem_Take*");
+    }
+
+    args = s7_cdr(args);
+    bool is_selected = s7_boolean(sc, s7_car(args));
+    args = s7_cdr(args);
+    bool is_muted = s7_boolean(sc, s7_car(args));
+    args = s7_cdr(args);
+    double startppqpos = s7_real(s7_car(args));
+    args = s7_cdr(args);
+    double endppqpos = s7_real(s7_car(args));
+    args = s7_cdr(args);
+    int chan = s7_integer(s7_car(args));
+    args = s7_cdr(args);
+    int pitch = s7_integer(s7_car(args));
+    args = s7_cdr(args);
+    int vel = s7_integer(s7_car(args));
+
+    // don't know what's the default value, so avoiding to pass a true/false boolean
+    bool* no_sort = NULL;
+    args = s7_cdr(args);
+    bool no_sort_res = false;
+    if(args != s7_nil(sc)) {
+        no_sort_res = s7_boolean(sc, s7_car(args));
+        no_sort = &no_sort_res;
+    }
+
+    bool res = MIDI_InsertNote(take, is_selected, is_muted, startppqpos, endppqpos, chan, pitch, vel, no_sort);
+
+    return s7_make_boolean(sc, res);
+}
+
+// MIDI_GetPPQPosFromProjTime(MediaItem_Take* take, double projtime)
+const char* help_MIDI_GetPPQPosFromProjTime = "(MIDI_GetPPQPosFromProjTime p-media-item-take project-time) : double";
+s7_pointer _MIDI_GetPPQPosFromProjTime(s7_scheme* sc, s7_pointer args) {
+    MediaItem_Take* take = (MediaItem_Take*) s7_c_object_value_checked(s7_car(args), takes::tag_media_take(sc));
+    if (take == NULL) {
+        return s7_wrong_type_arg_error(sc, "MIDI_InsertNote", 1, s7_car(args), "expecting MediaItem_Take*");
+    }
+
+    args = s7_cdr(args);
+    double projtime = s7_real(s7_car(args));
+
+    return s7_make_real(sc, MIDI_GetPPQPosFromProjTime(take, projtime));
+}
+
+// double MIDI_GetProjTimeFromPPQPos(MediaItem_Take* take, double ppqpos)
+const char* help_MIDI_GetProjTimeFromPPQPos = "(MIDI_GetProjTimeFromPPQPos p-media-item-take ppqpos) : double";
+s7_pointer _MIDI_GetProjTimeFromPPQPos(s7_scheme* sc, s7_pointer args) {
+    MediaItem_Take* take = (MediaItem_Take*) s7_c_object_value_checked(s7_car(args), takes::tag_media_take(sc));
+    if (take == NULL) {
+        return s7_wrong_type_arg_error(sc, "MIDI_InsertNote", 1, s7_car(args), "expecting MediaItem_Take*");
+    }
+
+    args = s7_cdr(args);
+    double ppqpos = s7_real(s7_car(args));
+
+    return s7_make_real(sc, MIDI_GetProjTimeFromPPQPos(take, ppqpos));
+}
+
+// int MIDI_CountEvts(MediaItem_Take* take, int* notecntOut, int* ccevtcntOut, int* textsyxevtcntOut)
+const char* help_MIDI_CountEvts = "(MIDI_CountEvts p-media-item-take) Count the number of notes, CC events, and text/sysex events in a given MIDI item.\n"
+                                  "TODO pass an optional argument for the type of events: 'note 'cc or ('text or 'sysex)";
+
+s7_pointer _MIDI_CountEvts(s7_scheme* sc, s7_pointer args) {
+    MediaItem_Take* take = (MediaItem_Take*) s7_c_object_value_checked(s7_car(args), takes::tag_media_take(sc));
+    if (take == NULL) {
+        return s7_wrong_type_arg_error(sc, "MIDI_CountEvts", 1, s7_car(args), "expecting MediaItem_Take*");
+    }
+
+    int notecntOut, ccevtcntOut, textsyxevtcntOut;
+    int allcnt = MIDI_CountEvts(take, &notecntOut, &ccevtcntOut, &textsyxevtcntOut);
+    return s7_make_integer(sc, allcnt);
+}
+
+// bool MIDI_DeleteEvt(MediaItem_Take* take, int evtidx)
+const char* help_MIDI_DeleteEvt = "(MIDI_DeleteEvt p-media-item-take idx)";
+s7_pointer _MIDI_DeleteEvt(s7_scheme* sc, s7_pointer args) {
+    MediaItem_Take* take = (MediaItem_Take*) s7_c_object_value_checked(s7_car(args), takes::tag_media_take(sc));
+    if (take == NULL) {
+        return s7_wrong_type_arg_error(sc, "MIDI_DeleteEvt", 1, s7_car(args), "expecting MediaItem_Take*");
+    }
+    args = s7_cdr(args);
+    int evtidx = s7_integer(s7_car(args));
+
+    return s7_make_boolean(sc, MIDI_DeleteEvt(take, evtidx));
+}
+
+void bind(s7_scheme* sc, s7_pointer env) {
+    s7_define(sc, env, s7_make_symbol(sc, "MIDI_InsertNote"),
+              s7_make_function(sc, "MIDI_InsertNote", _MIDI_InsertNote,
+                               8, 1, false,
+                               help_MIDI_InsertNote));
+
+    s7_define(sc, env, s7_make_symbol(sc, "MIDI_GetPPQPosFromProjTime"),
+              s7_make_function(sc, "MIDI_GetPPQPosFromProjTime", _MIDI_GetPPQPosFromProjTime,
+                               2, 0, false,
+                               help_MIDI_GetPPQPosFromProjTime));
+
+    s7_define(sc, env, s7_make_symbol(sc, "MIDI_GetProjTimeFromPPQPos"),
+              s7_make_function(sc, "MIDI_GetProjTimeFromPPQPos", _MIDI_GetProjTimeFromPPQPos,
+                               2, 0, false,
+                               help_MIDI_GetProjTimeFromPPQPos));
+
+    s7_define(sc, env, s7_make_symbol(sc, "MIDI_CountEvts"),
+              s7_make_function(sc, "MIDI_CountEvts", _MIDI_CountEvts,
+                               1, 0, false, // TODO add optional argument for the type of events
+                               help_MIDI_CountEvts));
+
+    s7_define(sc, env, s7_make_symbol(sc, "MIDI_DeleteEvt"),
+              s7_make_function(sc, "MIDI_DeleteEvt", _MIDI_DeleteEvt,
+                               2, 0, false,
+                               help_MIDI_DeleteEvt));
+
+}
+
+} // midi
+
 
 namespace items {
 
@@ -549,7 +674,7 @@ void bind(s7_scheme* sc, s7_pointer env) {
               s7_make_function(sc, "InsertMedia", _InsertMedia,
                                1, 1, false,
                                help_InsertMedia));
-    
+
     s7_define(sc, env, s7_make_symbol(sc, "GetTrackMediaItem"),
               s7_make_function(sc, "GetTrackMediaItem", _GetTrackMediaItem,
                                2, 0, false,
@@ -612,16 +737,17 @@ s7_pointer _GetCursorPosition(s7_scheme* sc, s7_pointer) {
 }
 
 // int GetSetProjectGrid(ReaProject* project, bool set, double* divisionInOutOptional, int* swingmodeInOutOptional, double* swingamtInOutOptional)
-const char* help_GetSetProjectGrid = "(GetSetProjectGrid proj=0 &optional division) Note: proj is fixed to 0. If a division is passed, then it's a set operation. If not, a get\n"
-"TODO missing int* swingmodeInOutOptional, double* swingamtInOutOptional";
+const char* help_GetSetProjectGrid = "(GetSetProjectGrid proj=0 &optional division) Note: proj is fixed to 0.\n"
+                                     "If a division is passed, then it's a set operation. If not, a get.\n"
+                                     "TODO missing int* swingmodeInOutOptional, double* swingamtInOutOptional";
 s7_pointer _GetSetProjectGrid(s7_scheme *sc, s7_pointer args) {
- // ignoring first arg, setting proj to 0
+// ignoring first arg, setting proj to 0
     args = s7_cdr(args);
     bool is_set = false;
     double division = 0;
-    if(args != s7_nil(sc)){
-            is_set = true;
-            division = s7_real(s7_car(args));
+    if(args != s7_nil(sc)) {
+        is_set = true;
+        division = s7_real(s7_car(args));
     }
 
     GetSetProjectGrid(0, is_set, &division, NULL, NULL);
@@ -694,6 +820,13 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(InsertMedia);
     IMPAPI(GetTrackMediaItem);
 
+    // midi
+    IMPAPI(MIDI_InsertNote);
+    IMPAPI(MIDI_GetProjTimeFromPPQPos);
+    IMPAPI(MIDI_GetPPQPosFromProjTime);
+    IMPAPI(MIDI_CountEvts);
+    IMPAPI(MIDI_DeleteEvt);
+
     // takes
     IMPAPI(GetActiveTake);
     IMPAPI(GetSetMediaItemTakeInfo_String);
@@ -726,6 +859,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     internal::bind(sc, env);
     actions::bind(sc, env);
     time::bind(sc, env); // time selection, loop selection, edit cursor
+    midi::bind(sc, env);
 
     s7_define_variable(sc, "rpr", env);
 }

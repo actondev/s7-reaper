@@ -20,6 +20,11 @@
   (rpr.common/cmd 40647)
   )
 
+(define (move-cursor n)
+  (if (> n 0)
+      (dotimes (i n) (move-cursor-right))
+      (dotimes (i (- n)) (move-cursor-left))))
+
 (define-macro (with-grid grid . body)
   (let ((prev-grid (rpr/GetSetProjectGrid 0)))
     `(begin
@@ -28,7 +33,14 @@
 	 (rpr/GetSetProjectGrid 0 ,prev-grid)
 	 res))))
 
+(comment
+ (rpr/GetCursorPosition)
 
+ (save-cursor-position
+  (move-cursor 10)
+  (rpr/GetCursorPosition)
+  )
+ )
 
 (comment
  (rpr/GetSetProjectGrid 0)

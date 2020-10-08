@@ -45,7 +45,6 @@ netcat localhost 1234
 cat /proc/sys/net/ipv4/tcp_fin_timeout
 # default 60
 echo 20 | sudo tee /proc/sys/net/ipv4/tcp_fin_timeout
-sudo 
   #+END_SRC
 
   #+BEGIN_SRC sh :session *client*
@@ -77,3 +76,12 @@ netcat localhost 1234
 * DONE <2020-10-07 Wed> gui crashing. plus repl crashing
   I was using s7 from the svn with bil's patch about the star functions and s7_free.
   Updated to the last revision =9.6+20200928=, and it's now ok
+* <2020-10-07 Wed> org-mode: defined rhythm -> reaper
+  Checkpoint! Nothing fancy so far, but I like the possibilites
+
+  also, golden dawn got charged of being a crime organization.
+  also, I signed the contract with fred.
+
+  todos
+  - [X] =(with-grid ..)= macro
+  - [ ] creating/editing midi files

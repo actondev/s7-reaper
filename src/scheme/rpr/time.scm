@@ -20,9 +20,23 @@
   (rpr.common/cmd 40647)
   )
 
+(define-macro (with-grid grid . body)
+  (let ((prev-grid (rpr/GetSetProjectGrid 0)))
+    `(begin
+       (rpr/GetSetProjectGrid 0 ,grid)
+       (let ((res (,rpr.macros/safe ,@body)))
+	 (rpr/GetSetProjectGrid 0 ,prev-grid)
+	 res))))
+
 
 
 (comment
+ (rpr/GetSetProjectGrid 0)
+ (rpr/GetSetProjectGrid 0 1/4)
+ (with-grid 1/16
+	    (print "set grid to " (rpr/GetSetProjectGrid 0))
+	    )
+ 
  (ns-doc 'rpr 'GetSet_LoopTimeRange)
  (rpr/GetCursorPosition)
  "(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)"

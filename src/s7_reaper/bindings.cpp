@@ -611,21 +611,45 @@ s7_pointer _GetCursorPosition(s7_scheme* sc, s7_pointer) {
     return s7_make_real(sc, GetCursorPosition());
 }
 
+// int GetSetProjectGrid(ReaProject* project, bool set, double* divisionInOutOptional, int* swingmodeInOutOptional, double* swingamtInOutOptional)
+const char* help_GetSetProjectGrid = "(GetSetProjectGrid proj=0 &optional division) Note: proj is fixed to 0. If a division is passed, then it's a set operation. If not, a get\n"
+"TODO missing int* swingmodeInOutOptional, double* swingamtInOutOptional";
+s7_pointer _GetSetProjectGrid(s7_scheme *sc, s7_pointer args) {
+ // ignoring first arg, setting proj to 0
+    args = s7_cdr(args);
+    bool is_set = false;
+    double division = 0;
+    if(args != s7_nil(sc)){
+            is_set = true;
+            division = s7_real(s7_car(args));
+    }
+
+    GetSetProjectGrid(0, is_set, &division, NULL, NULL);
+
+    return s7_make_real(sc, division);
+}
+
 void bind(s7_scheme* sc, s7_pointer env) {
     // functions
     s7_define(sc, env, s7_make_symbol(sc, "GetSet_LoopTimeRange"),
               s7_make_function(sc, "GetSet_LoopTimeRange", _GetSet_LoopTimeRange,
                                5, 0, false,
                                help_GetSet_LoopTimeRange));
-    // _SetEditCurPos
+
     s7_define(sc, env, s7_make_symbol(sc, "SetEditCurPos"),
               s7_make_function(sc, "SetEditCurPos", _SetEditCurPos,
                                1, 2, false,
                                help_SetEditCurPos));
+
     s7_define(sc, env, s7_make_symbol(sc, "GetCursorPosition"),
               s7_make_function(sc, "GetCursorPosition", _GetCursorPosition,
                                0, 0, false,
                                "(GetCursorPosition)"));
+
+    s7_define(sc, env, s7_make_symbol(sc, "GetSetProjectGrid"),
+              s7_make_function(sc, "GetSetProjectGrid", _GetSetProjectGrid,
+                               1, 1, false,
+                               "(GetSetProjectGrid)"));
 
 }
 
@@ -686,6 +710,7 @@ void bind(iplug::ReaperExtBase* inst, reaper_plugin_info_t* pRec, s7_scheme* sc)
     IMPAPI(GetSet_LoopTimeRange)
     IMPAPI(GetCursorPosition);
     IMPAPI(SetEditCurPos);
+    IMPAPI(GetSetProjectGrid);
 
     //project
     IMPAPI(EnumProjects);

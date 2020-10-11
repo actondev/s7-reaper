@@ -49,6 +49,52 @@ meson setup --wipe build
 # to cleanup/regenerate
 rm -rf build
    #+END_SRC
+** Building: cross-build (mingw)
+   #+BEGIN_SRC sh
+meson setup build-mingw --cross-file mingw.ini
+
+ninja -C build-mingw
+
+# helper commands
+meson setup --reconfigure build-mingw
+meson setup --wipe build-mingw
+# to cleanup/regenerate
+rm -rf build-mingw
+   #+END_SRC
+*** launching reaper
+    scheme files & shared libraries symlink into =build-mingw= folder
+    #+BEGIN_SRC sh
+ln -s `readlink -f subprojects/s7_imgui/src/scheme/` src/scheme/s7-imgui
+# when the extension is "installed", it will search for a subdir "s7-reaper" for the scheme files
+ln -s `readlink -f src/scheme/` build-mingw/s7-reaper
+# validate
+ls build-mingw/s7-reaper -alL
+
+# shared libraries
+mkdir build-mingw/s7-reaper-lib
+ln -s `readlink -f build-mingw/subprojects/curl/libcm_libcurl.dll` build-mingw/s7-reaper-lib/
+    #+END_SRC
+    reaper plugin symlinks
+    #+BEGIN_SRC sh
+ln -s `readlink -f build-mingw/s7-reaper-lib/` ~/wine/reaper_x64/UserPlugins
+ln -s `readlink -f src/scheme/` ~/wine/reaper_x64/UserPlugins/s7-reaper
+ln -s `readlink -f build-mingw/reaper_s7-reaper.dll` ~/wine/reaper_x64/UserPlugins
+    #+END_SRC
+
+    *OOPS* rpath not working on windows
+    have to copy on the .exe path
+   #+BEGIN_SRC sh
+cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll ~/wine/reaper_x64/
+cp /usr/lib/gcc/x86_64-w64-mingw32/9.3-posix/libgcc_s_seh-1.dll ~/wine/reaper_x64/
+cp /usr/lib/gcc/x86_64-w64-mingw32/9.3-posix/libstdc++-6.dll ~/wine/reaper_x64/
+cp build-mingw/subprojects/curl/libcm_libcurl.dll ~/wine/reaper_x64/
+   #+END_SRC
+     
+    Launching reaper
+    #+BEGIN_SRC sh
+WINEPREFIX=~/wine/prefix64 wine64 ~/wine/reaper_x64/reaper.exe
+    #+END_SRC
+
 ** Launching REAPER
    (pardon the hardcoded reaper path for now)
    #+BEGIN_SRC sh
@@ -58,7 +104,7 @@ ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/RE
 ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7-reaper
 
 # ooor, alternatively
-ln -s `readlink -f build/reaper_s7-reaper.so` ~/.config/REAPER/UserPlugins
+ln -s `readlink -f build/reaper_s7-reaper.so` ~/.config/REAPER/UserPlugins 
 ln -s `readlink -f src/scheme/` ~/.config/REAPER/UserPlugins/s7-reaper
 # for shared libraries (eg curl from cmake..)
 ln -s `readlink -f build/s7-reaper-lib/` ~/.config/REAPER/UserPlugins/s7-reaper-lib

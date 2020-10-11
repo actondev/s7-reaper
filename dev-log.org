@@ -84,4 +84,79 @@ netcat localhost 1234
 
   todos
   - [X] =(with-grid ..)= macro
-  - [ ] creating/editing midi files
+  - [X] creating/editing midi files
+    well, inserting notes, deleting all events
+    creating melodies with markov chain :)
+
+* <2020-10-09 Fri> x86 reaper on linux with wine?
+  #+BEGIN_SRC sh
+wine ~/Downloads/reaper614-install.exe
+  #+END_SRC
+
+  =C:\users\USER\My Documents\= in wine points to =$HOME=
+* <2020-10-11 Sun> mingw cross compile in linux
+  #+BEGIN_SRC sh
+sudo apt-get install mingw-w64 -y
+# hm missing pkg-config
+sudo apt-get install mingw-w64-tools
+# yep, that did it
+
+# hm, no cmake
+sudo apt-get install binutils-mingw-w64 # nope
+
+# hah! https://github.com/mesonbuild/meson/pull/7816
+# cmake: Cross compilation support
+# opened.. just 6 days ago! what a timing
+# https://github.com/mesonbuild/meson/milestone/52 0.6.0 milestone
+  #+END_SRC
+
+  ok one step closer..
+
+  now =curl= has problems.. hm maybe it's time to toss these libraries. I shouldn't build them myself
+
+  =Windows.h= vs =windows.h=
+
+  #+BEGIN_SRC sh
+locate windows.h
+sudo cp /usr/share/mingw-w64/include/windows.h /usr/share/mingw-w64/include/Windows.h # nope
+
+sudo cp /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/include/Windows.h
+
+locate Shlobj.h
+locate x86_64-w64-mingw32-g++-posix
+  #+END_SRC
+
+
+  std::thread etc
+
+  #+BEGIN_SRC sh
+locate shlobj.h
+  #+END_SRC
+
+
+  #+BEGIN_QUOTE
+  x86_64-w64-mingw32-g++-posix: error: dsound.lib: No such file or directory
+x86_64-w64-mingw32-g++-posix: error: winmm.lib: No such file or directory
+x86_64-w64-mingw32-g++-posix: error: Shlwapi.lib: No such file or directory
+x86_64-w64-mingw32-g++-posix: error: comctl32.lib: No such file or directory
+x86_64-w64-mingw32-g++-posix: error: Ws2_32.lib: No such file or directory
+  #+END_QUOTE
+
+
+  #+BEGIN_SRC sh
+locate libws2_32   
+  #+END_SRC
+** built! now having problems with dlls
+   #+BEGIN_QUOTE
+   0024:err:module:import_dll Library libwinpthread-1.dll (which is needed by L"Z:\\home\\actondev\\wine\\reaper_x64\\UserPlugins\\reaper_s7-reaper.dll") not found
+0024:err:module:import_dll Library libgcc_s_seh-1.dll (which is needed by L"Z:\\home\\actondev\\wine\\reaper_x64\\UserPlugins\\reaper_s7-reaper.dll") not found
+0024:err:module:import_dll Library libstdc++-6.dll (which is needed by L"Z:\\home\\actondev\\wine\\reaper_x64\\UserPlugins\\reaper_s7-reaper.dll") not found
+0024:err:module:import_dll Library libcm_libcurl.dll (which is needed by L"Z:\\home\\actondev\\wine\\reaper_x64\\UserPlugins\\reaper_s7-reaper.dll") not found
+   #+END_QUOTE
+
+   #+BEGIN_SRC sh
+cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll ~/wine/reaper_x64/
+cp /usr/lib/gcc/x86_64-w64-mingw32/9.3-posix/libgcc_s_seh-1.dll ~/wine/reaper_x64/
+cp /usr/lib/gcc/x86_64-w64-mingw32/9.3-posix/libstdc++-6.dll ~/wine/reaper_x64/
+cp build-mingw/subprojects/curl/libcm_libcurl.dll ~/wine/reaper_x64/
+   #+END_SRC

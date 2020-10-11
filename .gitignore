@@ -3,6 +3,7 @@ subprojects/*
 
 # un-ignoring specific file extensions
 !subprojects/*.wrap
+!subprojects/packagefiles
 build*/
 *.reapeaks
 imgui.ini

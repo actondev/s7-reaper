@@ -88,12 +88,17 @@ netcat localhost 1234
     well, inserting notes, deleting all events
     creating melodies with markov chain :)
 
-* <2020-10-09 Fri> x86 reaper on linux with wine?
+* <2020-10-09 Fri>  reaper on linux with wine?
   #+BEGIN_SRC sh
 wine ~/Downloads/reaper614-install.exe
   #+END_SRC
 
   =C:\users\USER\My Documents\= in wine points to =$HOME=
+
+** wine64, sws
+   #+BEGIN_SRC sh
+wine64 ~/Downloads/sws-v2.10.0.1-x64-install.exe   
+   #+END_SRC
 * <2020-10-11 Sun> mingw cross compile in linux
   #+BEGIN_SRC sh
 sudo apt-get install mingw-w64 -y
@@ -118,16 +123,16 @@ sudo apt-get install binutils-mingw-w64 # nope
 
   #+BEGIN_SRC sh
 locate windows.h
-sudo cp /usr/share/mingw-w64/include/windows.h /usr/share/mingw-w64/include/Windows.h # nope
 
 sudo cp /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/include/Windows.h
 
-locate Shlobj.h
+locate shlobj.h
 locate x86_64-w64-mingw32-g++-posix
   #+END_SRC
 
+  oor.. 
 
-  std::thread etc
+  std::thread etc : need =x86_64-w64-mingw32-g++-posix= compiler
 
   #+BEGIN_SRC sh
 locate shlobj.h

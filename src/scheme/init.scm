@@ -5,7 +5,8 @@
 	      (rpr+.freesound)
 	      (region-items.core :as region-items)
 	      (arrange.core)
-	      (rpr.actions.gen)))
+	      (rpr.actions.gen)
+	      (rpr.midi)))
 
 (rpr/RegisterGui "Region Items: GUI" "region-items/gui.scm")
 (rpr/RegisterAction "Region Items: Select" region-items/select)

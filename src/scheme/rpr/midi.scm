@@ -1,6 +1,9 @@
 (ns rpr.midi
-    :require ((rpr.time)))
-
+    :require ((rpr.time)
+	      (stochastic.core :as stoch)
+	      (aod.midi.core :as midi)
+	      (aod.midi.scales :as scales)))
+(ns-doc 'aod.midi.scales)
 (define (-cur-take)
   (rpr/GetActiveTake
    (rpr/GetSelectedMediaItem 0 0))
@@ -39,6 +42,71 @@
     (rpr/MIDI_InsertNote take selected? muted? start end channel pitch velocity))
   ;; the end
   )
+
+(define* (insert-intervals
+	  intervals
+	  (root 60))
+  (rpr.time/save-cursor-position
+   (for-each (lambda (x)
+	       (insert-note :pitch (+ root x))
+	       ;; advance
+	       (rpr.time/move-cursor +1)
+	       )
+	     intervals)))
+
+(define* (insert-markov-melody
+	  (root (midi/note c 4))
+	  (steps 8)
+	  (scale scales/major)
+	  )
+  (let ((intervals (stoch/markov :init 0
+				 :transitions
+				 '(0 1 -1 3 -3 5 -5 7 -7 12 -12 12 -12)
+				 :steps steps
+				 :snap-fn (let ((snaps
+						 (midi/add-sub-octave scale)))
+					    (lambda (x)
+					      (snap x snaps))))))
+    (print "intervals" intervals)
+    (insert-intervals intervals :root root)))
+
+(comment
+ (insert-intervals (range 12))
+ (insert-note :pitch (midi/note c 4))
+ (begin
+   (delete-all-events)
+   (rpr.time/with-grid
+    1/7
+    (insert-markov-melody
+     :root (midi/note E 2)
+     :scale scales/minor
+     :steps 13
+     )))
+ )
+
+;; TODO where should this belong? which namespace??
+(define (snap val permitted)
+  (let loop ((incd val)
+	     (decd val))
+    (cond ((member incd permitted) incd)
+	  ((member decd permitted) decd)
+	  (#t (loop (inc incd) (dec decd))))))
+
+(comment
+ (snap-octave+- 4)
+ )
+
+(comment
+
+ (stoch/markov :init 0
+	       :transitions
+	       '(0 1 -1 3 -3 5 -5 7 -7 12 -12 12 -12)
+	       :steps 8
+	 :snap-fn (let ((snaps
+			 (midi/add-sub-octave scales/major)))
+		    (lambda (x)
+		      (snap x snaps))))
+ )
 
 (comment
  (insert-note)

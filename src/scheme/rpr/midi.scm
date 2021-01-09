@@ -1,9 +1,9 @@
 (ns rpr.midi
     :require ((rpr.time)
 	      (stochastic.core :as stoch)
-	      (aod.midi.core :as midi)
-	      (aod.midi.scales :as scales)))
-(ns-doc 'aod.midi.scales)
+	      (midi.core :as midi)
+	      (midi.scales :as scales)))
+(ns-doc 'midi.scales)
 (define (-cur-take)
   (rpr/GetActiveTake
    (rpr/GetSelectedMediaItem 0 0))

@@ -1,7 +1,7 @@
 (ns rpr+.freesound
-    :require ((freesound.core :as fs)
-	      (aod.c.os :as os)
-	      (aod.c.curl :as curl)
+    :require ((freesound.core :as fsound)
+	      (s7bi.fs.c :as fs)
+	      (s7bi.curl.c :as curl)
 	      (rpr.helpers.track :as h.track)
 	      (rpr.actions.sws-track :as act.sws-track)))
 
@@ -10,15 +10,15 @@
  ((*nss* 'freesound.core) '*token*)
  )
 
-(define *download-dir* (os/temp-directory-path))
+(define *download-dir* (fs/temp-directory-path))
 
 (define* (insert-random-preview
 	  query
 	  (mode 0) ;; the mode to be passed to rpr/InsertMedia
 	  filter ;; to be passed to freesound
 	  )
-  (let* ((url (fs/search&random-preview query :filter filter))
-	 (filename (os/path-filename url))
+  (let* ((url (fsound/search&random-preview query :filter filter))
+	 (filename (fs/path-filename url))
 	 (dl-path (format #f "~A/~A" *download-dir* filename)))
     (print "Downloading " dl-path)
     (curl/curl url :out dl-path :opts '(:ssl-verify-peer 0))

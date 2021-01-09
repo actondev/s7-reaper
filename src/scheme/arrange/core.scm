@@ -3,7 +3,7 @@
 	      (rpr.helpers.item :as h.item)
 	      (rpr.actions.item :as a.item)
 	      (rpr.time :as time)
-	      (aod.c.string :as s)))
+	      (s7bi.string :as s)))
 
 (define* (filter-tracks-regex tracks regex)
   ;; returns a list of matching tracks

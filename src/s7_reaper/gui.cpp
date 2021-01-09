@@ -3,7 +3,7 @@
 #include "s7_reaper/path.hpp"
 #include "s7_reaper/bindings.hpp"
 #include <filesystem>
-#include "aod/s7.hpp"
+#include "s7bi/s7bi.hpp"
 #include <thread>
 
 // gui things
@@ -20,7 +20,7 @@
 #include <SFML/Window.hpp>
 // #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
-#include "aod/imgui/imgui-SFML.h"
+#include "imgui-SFML.h"
 
 
 namespace s7_reaper {
@@ -43,15 +43,17 @@ void init(reaper_plugin_info_t* pRec, std::string file) {
     fs::path base_path = fs::path(path).remove_filename();
     fs::path scheme_path = base_path / "s7-reaper";
 
-    s7_scheme* sc = aod::s7::init(scheme_path / "s7-imgui");
+    s7_scheme* sc = s7bi::init(scheme_path / "s7-imgui");
     s7_add_to_load_path(sc, scheme_path.string().c_str());
 
     // passing NULL instance
     // by having a NULL instance, I won't be able to register actions/guis
     // which is fine. this should only happen on start up
     s7_reaper::bindings::bind(NULL, pRec, sc);
-    aod::s7::load_file(sc, "init.scm");
-    aod::s7::load_file(sc, file.c_str());
+    s7bi::load_file(sc, "init.scm");
+    s7bi::load_file(sc, file.c_str());
+//     aod::s7::load_file(sc, "init.scm");
+//     aod::s7::load_file(sc, file.c_str());
 
     std::thread t(guiLoop, sc);
     t.detach();

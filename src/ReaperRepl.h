@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ReaperExt_include_in_plug_hdr.h"
-#include "aod/net/net.hpp"
-#include "aod/s7/repl.hpp"
+// #include "aod/net/net.hpp"
+// #include "aod/s7/repl.hpp"
 #include "s7.h"
 
 enum EControlTags
@@ -26,9 +26,9 @@ public:
 private:
     int mPrevTrackCount = 0;
     int mGUIToggle = 0;
-    aod::net::TcpServer srv;
-    aod::net::Callback cb;
-    aod::s7::Repl repl;
+//     aod::net::TcpServer srv;
+//     aod::net::Callback cb;
+//     aod::s7::Repl repl;
     s7_scheme* sc;
 };
 

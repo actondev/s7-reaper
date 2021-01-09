@@ -1,10 +1,46 @@
 #+PROPERTY: header-args:sh :session *reaper-repl*
 
 * Linux
+
+** Preparation
+   Meson
+   #+begin_src sh
+# clean up:
+rm -rf build
+meson setup build
+   #+end_src
+
+   Symlinks
+   #+begin_src sh
+# clean up
+rm ~/.config/REAPER/UserPlugins/reaper_s7-reaper.so
+rm ~/.config/REAPER/UserPlugins/s7-reaper
+
+ln -rs build/reaper_s7-reaper.so ~/.config/REAPER/UserPlugins
+ln -rs src/scheme ~/.config/REAPER/UserPlugins/s7-reaper
+ln -rs subprojects/s7bi/scheme/s7bi  src/scheme/s7bi
+   #+end_src
+** Build
+   #+begin_src sh
+meson setup build
+ninja -C build
+# if changing s7bi default_opts
+rm -rf build
+   #+end_src
+
+** Run reaper
+   #+begin_src sh
+~/daw/reaper618_linux_x86_64/REAPER/reaper test/demo-regions.rpp    
+   #+end_src
+
+* old notes
 ** Optional: symlinks
    #+BEGIN_SRC sh
 ln -s `readlink -f ../iPlug2` subprojects/iPlug2
-ln -s `readlink -f ../s7-imgui` subprojects/s7_imgui
+#ln -s `readlink -f ../s7-imgui` subprojects/s7_imgui
+ln -s `readlink -f ../s7bi` subprojects/s7i
+ln -rs ../s7bi subprojects/s7bi
+
 ln -s `readlink -f ../s7` subprojects/s7
 ln -s `readlink -f ../imgui` subprojects/imgui
 ln -s `readlink -f ../SFML` subprojects/SFML
@@ -98,12 +134,18 @@ WINEPREFIX=~/wine/prefix64 wine64 ~/wine/reaper_x64/reaper.exe
 ** Launching REAPER
    (pardon the hardcoded reaper path for now)
    #+BEGIN_SRC sh
-# installing
-ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
-# scheme files: available in Plugins/s7-reaper
-ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s7-reaper
 
-# ooor, alternatively
+rm ~/.config/REAPER/UserPlugins/reaper_s7-reaper.so
+rm ~/.config/REAPER/UserPlugins/s7-reaper
+
+ln -rs build/reaper_s7-reaper.so ~/.config/REAPER/UserPlugins
+ln -rs src/scheme ~/.config/REAPER/UserPlugins/s7-reaper
+ln -rs subprojects/s7bi/scheme/s7bi  src/scheme/s7bi
+
+~/daw/reaper618_linux_x86_64/REAPER/reaper test/demo-regions.rpp
+
+#rm ~/.config/REAPER/UserPlugins/s7-reaper/
+
 ln -s `readlink -f build/reaper_s7-reaper.so` ~/.config/REAPER/UserPlugins 
 ln -s `readlink -f src/scheme/` ~/.config/REAPER/UserPlugins/s7-reaper
 # for shared libraries (eg curl from cmake..)
@@ -111,7 +153,7 @@ ln -s `readlink -f build/s7-reaper-lib/` ~/.config/REAPER/UserPlugins/s7-reaper-
 
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper
 
-~/Downloads/reaper_linux_x86_64/REAPER/reaper test/demo-regions.rpp
+~/daw/reaper618_linux_x86_64/REAPER/reaper test/demo-regions.rpp
    #+END_SRC
 ** COMMENT linked (shared) libraries
    #+BEGIN_SRC sh
@@ -161,9 +203,9 @@ tar -czvf s7-reaper.tar.gz -C build --dereference --exclude=.gitignore reaper_s7
     #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
 tar -czvf "s7-reaper_linux_${version}.tar.gz" -C build --dereference --exclude=.gitignore reaper_s7-reaper.so s7-reaper
     #+END_SRC
-* Windows
-** Setup & build project
-   #+BEGIN_SRC sh :session *s7-reaper-vs*
+** Windows
+*** Setup & build project
+    #+BEGIN_SRC sh :session *s7-reaper-vs*
 cmd //k "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
 meson setup build --backend vs
@@ -173,18 +215,18 @@ meson compile -C build
 meson setup build --reconfigure --backend vs
 meson setup build --wipe --backend vs
 rm -rf build
-   #+END_SRC
+    #+END_SRC
 
-** Necessary symlinks 
-   #+BEGIN_SRC sh :session *s7-reaper-vs*
+*** Necessary symlinks 
+    #+BEGIN_SRC sh :session *s7-reaper-vs*
 cmd
 mklink /J src\scheme\aod subprojects\s7_imgui\src\scheme\aod
 mklink /J build\s7-reaper src\scheme
 exit
-   #+END_SRC
-** Launching REAPER
-   (pardon the hardcoded reaper path for now)
-   #+BEGIN_SRC sh :session *s7-reaper-vs*
+    #+END_SRC
+*** Launching REAPER
+    (pardon the hardcoded reaper path for now)
+    #+BEGIN_SRC sh :session *s7-reaper-vs*
 
 ln -s `readlink -f build/reaper_s7-reaper.so` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins
 # scheme files: available in Plugins/s7-reaper
@@ -193,10 +235,10 @@ ln -s `readlink -f src/scheme/` ~/Downloads/reaper_linux_x86_64/REAPER/Plugins/s
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper
 
 ~/Downloads/reaper_linux_x86_64/REAPER/reaper test/demo-regions.rpp
-   #+END_SRC
+    #+END_SRC
 
 
-   #+BEGIN_SRC sh :session *s7-reaper-cmd*
+    #+BEGIN_SRC sh :session *s7-reaper-cmd*
 cmd
 # fuck that's not working, do it by hand
 mklink W:\DAW\Reaper\Plugins\reaper_s7-reaper.dll build\reaper_s7-reaper.dll
@@ -208,15 +250,15 @@ W:\DAW\Reaper\reaper.exe
 exit
 cp build/reaper_s7-reaper.dll /w/DAW/Reaper/Plugins/
 /w/DAW/Reaper/reaper
-   #+END_SRC
-** Zip build bundle
-   #+BEGIN_SRC sh
-cd build && zip ../s7-reaper.zip -r reaper_s7-reaper.dll s7-reaper -x "*.gitignore" && cd ..
-   #+END_SRC
-*** COMMENT versioned
-    #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
-cd build && zip "../s7-reaper_win_${version}.zip" -r reaper_s7-reaper.dll s7-reaper -x "*.gitignore" && cd ..
     #+END_SRC
+*** Zip build bundle
+    #+BEGIN_SRC sh
+cd build && zip ../s7-reaper.zip -r reaper_s7-reaper.dll s7-reaper -x "*.gitignore" && cd ..
+    #+END_SRC
+**** COMMENT versioned
+     #+BEGIN_SRC sh :var version=(read-string "version: ") :results silent
+cd build && zip "../s7-reaper_win_${version}.zip" -r reaper_s7-reaper.dll s7-reaper -x "*.gitignore" && cd ..
+     #+END_SRC
 * COMMENT Local variables
   # Local Variables:
   # eval: (aod.org-babel/generate-call-buttons)

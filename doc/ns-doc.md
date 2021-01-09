@@ -1,399 +1,4 @@
-# (ns `aod.c.os`)
-
-## `path-filename` <small>procedure?</small>
-(path-filename path) Returns the filename component of the given path
-## `execute` <small>procedure?</small>
-(execute command) Returns the external command on the system
-## `temp-directory-path` <small>procedure?</small>
-(temp-directory-path) Returns the directory location suitable for temporary files
-# (ns `rpr.macros`)
-
-## `save-track-selection` <small>macro?</small>
-
-# (ns `rpr.helpers.track`)
-
-## `name` <small>procedure?</small>
-
-## `selected` <small>procedure?</small>
-
-# (ns `freesound.core`)
-
-## `search&random-preview` <small>procedure?</small>
-
-## `get-preview` <small>procedure?</small>
-
-## `get` <small>procedure?</small>
-
-## `search&random` <small>procedure?</small>
-
-## `search` <small>procedure?</small>
-
-## `make-filter` <small>procedure?</small>
-
-## `*default-preview*` <small>string?</small>
-
-## `*token*` <small>string?</small>
-
-# (ns `rpr.actions.sws-track`)
-
-## `toggle-zoom-to-selected-items,-hide-other-tracks` <small>procedure?</small>
-
-## `toggle-zoom-to-selected-items,-minimize-other-tracks` <small>procedure?</small>
-
-## `toggle-zoom-to-selected-items-or-time-selection,-hide-other-tracks` <small>procedure?</small>
-
-## `toggle-zoom-to-selected-items-or-time-selection,-minimize-other-tracks` <small>procedure?</small>
-
-## `toggle-zoom-to-selected-tracks-and-time-selection,-hide-others` <small>procedure?</small>
-
-## `toggle-zoom-to-selected-tracks-and-time-selection,-minimize-others` <small>procedure?</small>
-
-## `toggle-zoom-to-selected-tracks-and-time-selection` <small>procedure?</small>
-
-## `vertical-zoom-to-selected-tracks,-minimize-others` <small>procedure?</small>
-
-## `vertical-zoom-to-selected-tracks` <small>procedure?</small>
-
-## `toggle-master-track-select` <small>procedure?</small>
-
-## `unselect-master-track` <small>procedure?</small>
-
-## `select-master-track` <small>procedure?</small>
-
-## `unselect-rec-armed-track<s>` <small>procedure?</small>
-
-## `select-only-rec-armed-track<s>` <small>procedure?</small>
-
-## `select-tracks-with-active-routing-to-selected-track<s>` <small>procedure?</small>
-
-## `select-armed-tracks` <small>procedure?</small>
-
-## `select-tracks-with-flipped-phase` <small>procedure?</small>
-
-## `select-soloed-tracks` <small>procedure?</small>
-
-## `select-unmuted-tracks` <small>procedure?</small>
-
-## `select-muted-tracks` <small>procedure?</small>
-
-## `select-all-folder-start-tracks` <small>procedure?</small>
-
-## `unselect-children-of-selected-folder-track<s>` <small>procedure?</small>
-
-## `unselect-parent<s>-of-selected-folder-track<s>` <small>procedure?</small>
-
-## `select-parent<s>-of-selected-folder-track<s>` <small>procedure?</small>
-
-## `select-only-parent<s>-of-selected-folder-track<s>` <small>procedure?</small>
-
-## `select-children-of-selected-folder-track<s>` <small>procedure?</small>
-
-## `set-last-touched-track-to-match-track-selection-<deprecated>` <small>procedure?</small>
-
-## `select-only-track<s>-with-selected-item<s>` <small>procedure?</small>
-
-## `toggle-<invert>-track-selection` <small>procedure?</small>
-
-## `toggle-between-current-and-saved-track-selection` <small>procedure?</small>
-
-## `restore-saved-track-selection` <small>procedure?</small>
-
-## `save-current-track-selection` <small>procedure?</small>
-
-## `set-all-selected-tracks-inputs-to-match-first-selected-track` <small>procedure?</small>
-
-## `set-track-name-from-first-selected-item-in-project` <small>procedure?</small>
-
-## `set-track-name-from-first-selected-item-on-track` <small>procedure?</small>
-
-## `delete-track<s>-with-children-<prompt>` <small>procedure?</small>
-
-## `create-and-select-first-track` <small>procedure?</small>
-
-## `insert-track-above-selected-tracks` <small>procedure?</small>
-
-## `unset-selected-track<s>-monitor-track-media-while-recording` <small>procedure?</small>
-
-## `set-selected-track<s>-monitor-track-media-while-recording` <small>procedure?</small>
-
-## `set-selected-track<s>-record-output-mode-based-on-items` <small>procedure?</small>
-
-## `minimize-selected-track<s>` <small>procedure?</small>
-
-## `unbypass-fx-on-selected-track<s>` <small>procedure?</small>
-
-## `bypass-fx-on-selected-track<s>` <small>procedure?</small>
-
-## `unmute-all-sends-from-selected-track<s>` <small>procedure?</small>
-
-## `mute-all-sends-from-selected-track<s>` <small>procedure?</small>
-
-## `toggle-mute-on-receives-for-selected-track<s>` <small>procedure?</small>
-
-## `unmute-all-receives-for-selected-track<s>` <small>procedure?</small>
-
-## `mute-all-receives-for-selected-track<s>` <small>procedure?</small>
-
-## `set-all-master-track-outputs-muted` <small>procedure?</small>
-
-## `set-all-master-track-outputs-unmuted` <small>procedure?</small>
-
-## `toggle-master-parent-send-on-selected-track<s>` <small>procedure?</small>
-
-## `disable-master-parent-send-on-selected-track<s>` <small>procedure?</small>
-
-## `enable-master-parent-send-on-selected-track<s>` <small>procedure?</small>
-
-## `hide-master-track-in-track-control-panel` <small>procedure?</small>
-
-## `show-master-track-in-track-control-panel` <small>procedure?</small>
-
-## `select-locked-items-on-selected-track<s>` <small>procedure?</small>
-
-## `select-previous-item,-keeping-current-selection-<across-tracks>` <small>procedure?</small>
-
-## `select-next-item,-keeping-current-selection-<across-tracks>` <small>procedure?</small>
-
-## `select-previous-item-<across-tracks>` <small>procedure?</small>
-
-## `select-next-item-<across-tracks>` <small>procedure?</small>
-
-## `select-unmuted-items-on-selected-track<s>` <small>procedure?</small>
-
-## `select-muted-items-on-selected-track<s>` <small>procedure?</small>
-
-## `toggle-selection-of-items-on-selected-track<s>` <small>procedure?</small>
-
-## `unselect-upper-leftmost-item-on-selected-track<s>` <small>procedure?</small>
-
-## `select-upper-leftmost-item-on-selected-track<s>` <small>procedure?</small>
-
-## `select-lower-leftmost-item-on-selected-track<s>` <small>procedure?</small>
-
-## `unselect-all-items-on-selected-track<s>` <small>procedure?</small>
-
-## `insert-file-matching-selected-track<s>-name` <small>procedure?</small>
-
-## `delete-all-items-on-selected-track<s>` <small>procedure?</small>
-
-## `toggle-mute-of-items-on-selected-track<s>` <small>procedure?</small>
-
-## `unindent-selected-track<s>` <small>procedure?</small>
-
-## `indent-selected-track<s>` <small>procedure?</small>
-
-## `make-folder-from-selected-tracks` <small>procedure?</small>
-
-## `set-selected-track<s>-to-same-folder-as-previous-track` <small>procedure?</small>
-
-## `unselect-all-items-tracks-env-points` <small>procedure?</small>
-
-## `unselect-all-items-tracks-env-points-<depending-on-focus>` <small>procedure?</small>
-
-## `remove-items-tracks-env,-<obey-time-selection>` <small>procedure?</small>
-
-## `cut-items-tracks-env-<obey-time-selection>` <small>procedure?</small>
-
-## `copy-items-tracks-env-<obey-time-selection>` <small>procedure?</small>
-
-## `set-selected-tracks-pan-law-to-default` <small>procedure?</small>
-
-## `snapshot-current-track-visibility` <small>procedure?</small>
-
-## `clear-tracklist-filter` <small>procedure?</small>
-
-## `hide-unselected-track<s>` <small>procedure?</small>
-
-## `show-selected-track<s>,-hide-others` <small>procedure?</small>
-
-## `show-selected-track<s>-in-tcp,-hide-others` <small>procedure?</small>
-
-## `show-selected-track<s>-in-mcp,-hide-others` <small>procedure?</small>
-
-## `hide-all-tracks` <small>procedure?</small>
-
-## `show-all-tracks-in-tcp` <small>procedure?</small>
-
-## `show-all-tracks-in-mcp` <small>procedure?</small>
-
-## `show-all-tracks` <small>procedure?</small>
-
-## `toggle-selected-track<s>-fully-visible-hidden` <small>procedure?</small>
-
-## `toggle-selected-track<s>-visible-in-tcp` <small>procedure?</small>
-
-## `toggle-selected-track<s>-visible-in-mcp` <small>procedure?</small>
-
-## `hide-selected-track<s>-from-tcp` <small>procedure?</small>
-
-## `hide-selected-track<s>-from-mcp` <small>procedure?</small>
-
-## `show-selected-track<s>-in-tcp` <small>procedure?</small>
-
-## `show-selected-track<s>-in-mcp` <small>procedure?</small>
-
-## `hide-selected-track<s>` <small>procedure?</small>
-
-## `show-selected-track<s>-in-tcp-and-mcp` <small>procedure?</small>
-
-## `show-selected-track<s>-in-tcp-only` <small>procedure?</small>
-
-## `show-selected-track<s>-in-mcp-only` <small>procedure?</small>
-
-## `toggle-snapshot-show-only-for-selected-tracks` <small>procedure?</small>
-
-## `copy-new-snapshot-<all-track<s>>` <small>procedure?</small>
-
-## `copy-new-snapshot-<selected-track<s>>` <small>procedure?</small>
-
-## `new-snapshot-<selected-track<s>>` <small>procedure?</small>
-
-## `new-snapshot-<all-tracks>` <small>procedure?</small>
-
-## `select-current-snapshot-track<s>` <small>procedure?</small>
-
-## `delete-selected-track<s>-from-all-snapshots` <small>procedure?</small>
-
-## `delete-selected-track<s>-from-current-snapshot` <small>procedure?</small>
-
-## `add-selected-track<s>-to-all-snapshots` <small>procedure?</small>
-
-## `add-selected-track<s>-to-current-snapshot` <small>procedure?</small>
-
-## `select-item<s>-with-saved-state-on-selected-track<s>` <small>procedure?</small>
-
-## `restore-selected-track<s>-mutes-<+receives,-children>` <small>procedure?</small>
-
-## `save-selected-track<s>-mutes-<+receives,-children>` <small>procedure?</small>
-
-## `restore-last-item-selection-on-selected-track<s>` <small>procedure?</small>
-
-## `restore-active-takes-on-selected-track<s>` <small>procedure?</small>
-
-## `save-active-takes-on-selected-track<s>` <small>procedure?</small>
-
-## `set-selected-track<s>-item<s>-to-custom-color...` <small>procedure?</small>
-
-## `set-selected-track<s>-item<s>-to-one-random-color` <small>procedure?</small>
-
-## `set-selected-item<s>-to-respective-track-color` <small>procedure?</small>
-
-## `set-selected-item<s>-to-ordered-custom-colors-per-track` <small>procedure?</small>
-
-## `set-selected-item<s>-to-color-gradient-per-track` <small>procedure?</small>
-
-## `set-selected-track<s>-children-to-same-color` <small>procedure?</small>
-
-## `set-selected-track<s>-to-ordered-custom-colors` <small>procedure?</small>
-
-## `set-selected-tracks-to-color-gradient` <small>procedure?</small>
-
-## `set-selected-track<s>-to-random-custom-color<s>` <small>procedure?</small>
-
-## `set-selected-track<s>-to-one-random-custom-color` <small>procedure?</small>
-
-## `set-selected-track<s>-to-next-custom-color` <small>procedure?</small>
-
-## `set-selected-track<s>-to-color-black` <small>procedure?</small>
-
-## `set-selected-track<s>-to-color-white` <small>procedure?</small>
-
-## `toggle-auto-track-coloring-enable` <small>procedure?</small>
-
-## `cmd` <small>procedure?</small>
-
-# (ns `secrets`)
-
-## `freesound` <small>string?</small>
-
-# (ns `rpr`)
-
-## `GetCursorPosition` <small>procedure?</small>
-(GetCursorPosition)
-## `SetEditCurPos` <small>procedure?</small>
-(SetEditCurPos time &optional move-view?=false seek-play?=false)
-## `GetSet_LoopTimeRange` <small>procedure?</small>
-(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)
-## `NamedCommandLookup` <small>procedure?</small>
-(NamedCommandLookup name-id)
-## `ReverseNamedCommandLookup` <small>procedure?</small>
-(ReverseNamedCommandLookup id) Returns #f or the named id (string)
-## `Main_OnCommand` <small>procedure?</small>
-(Main_OnCommand cmd-id)
-## `RegisterGui` <small>procedure?</small>
-(RegisterGui name script-file) CUSTOM (not part of reaper): Registers an action under name which runs a gui script
-## `RegisterAction` <small>procedure?</small>
-(RegisterAction name fn) Adds a menu item inside reaper
-## `CF_EnumerateActions` <small>procedure?</small>
-(CF_EnumerateActions section idx) ret (retval:int name:string)
-## `UpdateArrange` <small>procedure?</small>
-(UpdateArrange)
-## `GetSetMediaTrackInfo_String` <small>procedure?</small>
-(GetSetMediaTrackInfo_String p-media-track param-name &opt set-value)
-## `GetSelectedTrack` <small>procedure?</small>
-(GetSelectedTrack ReapProject* idx) TODO project* always 0
-## `CountSelectedTracks` <small>procedure?</small>
-(CountSelectedTracks &optional ReapProject*=0) TODO project is always 0
-## `SetTrackSelected` <small>procedure?</small>
-(SetTrackSelected *media-track sel:bool)
-## `SetOnlyTrackSelected` <small>procedure?</small>
-(SetOnlyTrackSelected *media-track)
-## `GetMediaItem_Track` <small>procedure?</small>
-(GetMediaItem_Track *media-item)
-## `CountTracks` <small>procedure?</small>
-(CountTracks &optional ReaProject=0) TODO ReaProject always 0
-## `type-media-track` <small>integer?</small>
-
-## `GetActiveTake` <small>procedure?</small>
-(GetActiveTake media-item*)
-## `GetSetMediaItemTakeInfo_String` <small>procedure?</small>
-(GetSetMediaItemTakeInfo_String p-take param-name) TODO add an optional set-value param. If present => set. If not => get
-## `type-media-take` <small>integer?</small>
-
-## `InsertMedia` <small>procedure?</small>
-(InsertMedia file-path mode=0) mode:
-- 0 add to current track
-- 1 add new track
-- 3 add to selected items as takes
-- &4 stretch/loop to fit time sel
-- &8=try to match tempo 1x
-- &16=try to match tempo 0.5x
-- &32=try to match tempo 2x
-- &64=don't preserve pitch when matching tempo
-- &128=no loop/section if startpct/endpct set
-- &256=force loop regardless of global preference for looping imported items
-- &512=use high word as absolute track index if mode&3==0
-## `GetMediaItemInfo_Value` <small>procedure?</small>
-(GetMediaItemInfo_Value item param-name)
-## `SetMediaItemSelected` <small>procedure?</small>
-(SetMediaItemSelected *media-item selected?)
-## `GetSelectedMediaItem` <small>procedure?</small>
-(GetSelectedMediaItem ReaProject* idx) TODO ReaProject is always 0
-## `CountSelectedMediaItems` <small>procedure?</small>
-(CountSelectedMediaItems) TODO pass ReaProject
-## `type-media-item` <small>integer?</small>
-
-## `*reaper_plugin_info_t*` <small>c-pointer?</small>
-
-## `ReaperExtBase*` <small>c-pointer?</small>
-
-# (ns `region-items.core`)
-
-## `propagate` <small>procedure?</small>
-
-## `clear` <small>procedure?</small>
-
-## `select` <small>procedure?</small>
-
-# (ns `rpr+.freesound`)
-
-## `insert-random` <small>procedure?</small>
-
-## `insert-random-preview` <small>procedure?</small>
-
-## `*download-dir*` <small>string?</small>
-
-# (ns `aod.c.string`)
+# (ns `s7bi.string`)
 
 ## `lowercase` <small>procedure?</small>
 (lowercase str)
@@ -403,10 +8,18 @@
 (replace str regex replacement)
 ## `match-at` <small>procedure?</small>
 (match-at)
-## `count-matches` <small>procedure?</small>
-(count-matches)
+## `match-count` <small>procedure?</small>
+(match-count)
+## `search-global` <small>procedure?</small>
+(search-global str regex cb &optional ignore-case?) Returns the list of the results
 ## `search` <small>procedure?</small>
-(search str regex) Returns #t or #f
+(search str regex &optional ignore-case?) Returns #t or #f
+# (ns `s7bi.fs.c`)
+
+## `path-filename` <small>procedure?</small>
+(path-filename path) Returns the filename component of the given path
+## `temp-directory-path` <small>procedure?</small>
+(temp-directory-path) Returns the directory location suitable for temporary files
 # (ns `rpr.actions.item`)
 
 ## `set-cursor-to-next-take-marker-in-selected-items` <small>procedure?</small>
@@ -751,6 +364,492 @@
 
 ## `cmd` <small>procedure?</small>
 
+# (ns `s7bi.json.c`)
+Basic bindings for nlohmann/json
+## `parse` <small>procedure?</small>
+(parse json-str) Returns a json c-object
+## `type-json` <small>integer?</small>
+
+# (ns `rpr.helpers.item`)
+
+## `active-take-name` <small>procedure?</small>
+
+## `start-end` <small>procedure?</small>
+
+## `track-items` <small>procedure?</small>
+
+## `selected` <small>procedure?</small>
+
+## `copy` <small>procedure?</small>
+
+## `set-only-selected` <small>procedure?</small>
+
+# (ns `aod.c.midi`)
+
+# (ns `stochastic.core`)
+
+## `markov` <small>procedure?</small>
+
+## `snap` <small>procedure?</small>
+
+## `chance?` <small>procedure?</small>
+
+## `pick-list` <small>procedure?</small>
+
+# (ns `aod.c.string`)
+
+# (ns `midi.core`)
+
+## `note` <small>macro?</small>
+
+## `octave` <small>procedure?</small>
+
+## `add-sub-octave` <small>procedure?</small>
+
+## `snap-octave+` <small>procedure?</small>
+
+## `snap-octave+-` <small>procedure?</small>
+
+# (ns `midi.scales`)
+
+## `minor` <small>pair?</small>
+
+## `major` <small>pair?</small>
+
+## `chromatic` <small>pair?</small>
+
+# (ns `freesound.core`)
+
+## `search&random-preview` <small>procedure?</small>
+
+## `get-preview` <small>procedure?</small>
+
+## `get` <small>procedure?</small>
+
+## `search&random` <small>procedure?</small>
+
+## `search` <small>procedure?</small>
+
+## `make-filter` <small>procedure?</small>
+
+## `*default-preview*` <small>string?</small>
+
+## `*token*` <small>string?</small>
+
+# (ns `rpr.helpers.track`)
+
+## `children` <small>procedure?</small>
+
+## `save-selection` <small>macro?</small>
+
+## `name` <small>procedure?</small>
+
+## `select-only-children` <small>procedure?</small>
+
+## `selected` <small>procedure?</small>
+
+# (ns `rpr.actions.sws-track`)
+
+## `toggle-zoom-to-selected-items,-hide-other-tracks` <small>procedure?</small>
+
+## `toggle-zoom-to-selected-items,-minimize-other-tracks` <small>procedure?</small>
+
+## `toggle-zoom-to-selected-items-or-time-selection,-hide-other-tracks` <small>procedure?</small>
+
+## `toggle-zoom-to-selected-items-or-time-selection,-minimize-other-tracks` <small>procedure?</small>
+
+## `toggle-zoom-to-selected-tracks-and-time-selection,-hide-others` <small>procedure?</small>
+
+## `toggle-zoom-to-selected-tracks-and-time-selection,-minimize-others` <small>procedure?</small>
+
+## `toggle-zoom-to-selected-tracks-and-time-selection` <small>procedure?</small>
+
+## `vertical-zoom-to-selected-tracks,-minimize-others` <small>procedure?</small>
+
+## `vertical-zoom-to-selected-tracks` <small>procedure?</small>
+
+## `toggle-master-track-select` <small>procedure?</small>
+
+## `unselect-master-track` <small>procedure?</small>
+
+## `select-master-track` <small>procedure?</small>
+
+## `unselect-rec-armed-track<s>` <small>procedure?</small>
+
+## `select-only-rec-armed-track<s>` <small>procedure?</small>
+
+## `select-tracks-with-active-routing-to-selected-track<s>` <small>procedure?</small>
+
+## `select-armed-tracks` <small>procedure?</small>
+
+## `select-tracks-with-flipped-phase` <small>procedure?</small>
+
+## `select-soloed-tracks` <small>procedure?</small>
+
+## `select-unmuted-tracks` <small>procedure?</small>
+
+## `select-muted-tracks` <small>procedure?</small>
+
+## `select-all-folder-start-tracks` <small>procedure?</small>
+
+## `unselect-children-of-selected-folder-track<s>` <small>procedure?</small>
+
+## `unselect-parent<s>-of-selected-folder-track<s>` <small>procedure?</small>
+
+## `select-parent<s>-of-selected-folder-track<s>` <small>procedure?</small>
+
+## `select-only-parent<s>-of-selected-folder-track<s>` <small>procedure?</small>
+
+## `select-children-of-selected-folder-track<s>` <small>procedure?</small>
+
+## `set-last-touched-track-to-match-track-selection-<deprecated>` <small>procedure?</small>
+
+## `select-only-track<s>-with-selected-item<s>` <small>procedure?</small>
+
+## `toggle-<invert>-track-selection` <small>procedure?</small>
+
+## `toggle-between-current-and-saved-track-selection` <small>procedure?</small>
+
+## `restore-saved-track-selection` <small>procedure?</small>
+
+## `save-current-track-selection` <small>procedure?</small>
+
+## `set-all-selected-tracks-inputs-to-match-first-selected-track` <small>procedure?</small>
+
+## `set-track-name-from-first-selected-item-in-project` <small>procedure?</small>
+
+## `set-track-name-from-first-selected-item-on-track` <small>procedure?</small>
+
+## `delete-track<s>-with-children-<prompt>` <small>procedure?</small>
+
+## `create-and-select-first-track` <small>procedure?</small>
+
+## `insert-track-above-selected-tracks` <small>procedure?</small>
+
+## `unset-selected-track<s>-monitor-track-media-while-recording` <small>procedure?</small>
+
+## `set-selected-track<s>-monitor-track-media-while-recording` <small>procedure?</small>
+
+## `set-selected-track<s>-record-output-mode-based-on-items` <small>procedure?</small>
+
+## `minimize-selected-track<s>` <small>procedure?</small>
+
+## `unbypass-fx-on-selected-track<s>` <small>procedure?</small>
+
+## `bypass-fx-on-selected-track<s>` <small>procedure?</small>
+
+## `unmute-all-sends-from-selected-track<s>` <small>procedure?</small>
+
+## `mute-all-sends-from-selected-track<s>` <small>procedure?</small>
+
+## `toggle-mute-on-receives-for-selected-track<s>` <small>procedure?</small>
+
+## `unmute-all-receives-for-selected-track<s>` <small>procedure?</small>
+
+## `mute-all-receives-for-selected-track<s>` <small>procedure?</small>
+
+## `set-all-master-track-outputs-muted` <small>procedure?</small>
+
+## `set-all-master-track-outputs-unmuted` <small>procedure?</small>
+
+## `toggle-master-parent-send-on-selected-track<s>` <small>procedure?</small>
+
+## `disable-master-parent-send-on-selected-track<s>` <small>procedure?</small>
+
+## `enable-master-parent-send-on-selected-track<s>` <small>procedure?</small>
+
+## `hide-master-track-in-track-control-panel` <small>procedure?</small>
+
+## `show-master-track-in-track-control-panel` <small>procedure?</small>
+
+## `select-locked-items-on-selected-track<s>` <small>procedure?</small>
+
+## `select-previous-item,-keeping-current-selection-<across-tracks>` <small>procedure?</small>
+
+## `select-next-item,-keeping-current-selection-<across-tracks>` <small>procedure?</small>
+
+## `select-previous-item-<across-tracks>` <small>procedure?</small>
+
+## `select-next-item-<across-tracks>` <small>procedure?</small>
+
+## `select-unmuted-items-on-selected-track<s>` <small>procedure?</small>
+
+## `select-muted-items-on-selected-track<s>` <small>procedure?</small>
+
+## `toggle-selection-of-items-on-selected-track<s>` <small>procedure?</small>
+
+## `unselect-upper-leftmost-item-on-selected-track<s>` <small>procedure?</small>
+
+## `select-upper-leftmost-item-on-selected-track<s>` <small>procedure?</small>
+
+## `select-lower-leftmost-item-on-selected-track<s>` <small>procedure?</small>
+
+## `unselect-all-items-on-selected-track<s>` <small>procedure?</small>
+
+## `insert-file-matching-selected-track<s>-name` <small>procedure?</small>
+
+## `delete-all-items-on-selected-track<s>` <small>procedure?</small>
+
+## `toggle-mute-of-items-on-selected-track<s>` <small>procedure?</small>
+
+## `unindent-selected-track<s>` <small>procedure?</small>
+
+## `indent-selected-track<s>` <small>procedure?</small>
+
+## `make-folder-from-selected-tracks` <small>procedure?</small>
+
+## `set-selected-track<s>-to-same-folder-as-previous-track` <small>procedure?</small>
+
+## `unselect-all-items-tracks-env-points` <small>procedure?</small>
+
+## `unselect-all-items-tracks-env-points-<depending-on-focus>` <small>procedure?</small>
+
+## `remove-items-tracks-env,-<obey-time-selection>` <small>procedure?</small>
+
+## `cut-items-tracks-env-<obey-time-selection>` <small>procedure?</small>
+
+## `copy-items-tracks-env-<obey-time-selection>` <small>procedure?</small>
+
+## `set-selected-tracks-pan-law-to-default` <small>procedure?</small>
+
+## `snapshot-current-track-visibility` <small>procedure?</small>
+
+## `clear-tracklist-filter` <small>procedure?</small>
+
+## `hide-unselected-track<s>` <small>procedure?</small>
+
+## `show-selected-track<s>,-hide-others` <small>procedure?</small>
+
+## `show-selected-track<s>-in-tcp,-hide-others` <small>procedure?</small>
+
+## `show-selected-track<s>-in-mcp,-hide-others` <small>procedure?</small>
+
+## `hide-all-tracks` <small>procedure?</small>
+
+## `show-all-tracks-in-tcp` <small>procedure?</small>
+
+## `show-all-tracks-in-mcp` <small>procedure?</small>
+
+## `show-all-tracks` <small>procedure?</small>
+
+## `toggle-selected-track<s>-fully-visible-hidden` <small>procedure?</small>
+
+## `toggle-selected-track<s>-visible-in-tcp` <small>procedure?</small>
+
+## `toggle-selected-track<s>-visible-in-mcp` <small>procedure?</small>
+
+## `hide-selected-track<s>-from-tcp` <small>procedure?</small>
+
+## `hide-selected-track<s>-from-mcp` <small>procedure?</small>
+
+## `show-selected-track<s>-in-tcp` <small>procedure?</small>
+
+## `show-selected-track<s>-in-mcp` <small>procedure?</small>
+
+## `hide-selected-track<s>` <small>procedure?</small>
+
+## `show-selected-track<s>-in-tcp-and-mcp` <small>procedure?</small>
+
+## `show-selected-track<s>-in-tcp-only` <small>procedure?</small>
+
+## `show-selected-track<s>-in-mcp-only` <small>procedure?</small>
+
+## `toggle-snapshot-show-only-for-selected-tracks` <small>procedure?</small>
+
+## `copy-new-snapshot-<all-track<s>>` <small>procedure?</small>
+
+## `copy-new-snapshot-<selected-track<s>>` <small>procedure?</small>
+
+## `new-snapshot-<selected-track<s>>` <small>procedure?</small>
+
+## `new-snapshot-<all-tracks>` <small>procedure?</small>
+
+## `select-current-snapshot-track<s>` <small>procedure?</small>
+
+## `delete-selected-track<s>-from-all-snapshots` <small>procedure?</small>
+
+## `delete-selected-track<s>-from-current-snapshot` <small>procedure?</small>
+
+## `add-selected-track<s>-to-all-snapshots` <small>procedure?</small>
+
+## `add-selected-track<s>-to-current-snapshot` <small>procedure?</small>
+
+## `select-item<s>-with-saved-state-on-selected-track<s>` <small>procedure?</small>
+
+## `restore-selected-track<s>-mutes-<+receives,-children>` <small>procedure?</small>
+
+## `save-selected-track<s>-mutes-<+receives,-children>` <small>procedure?</small>
+
+## `restore-last-item-selection-on-selected-track<s>` <small>procedure?</small>
+
+## `restore-active-takes-on-selected-track<s>` <small>procedure?</small>
+
+## `save-active-takes-on-selected-track<s>` <small>procedure?</small>
+
+## `set-selected-track<s>-item<s>-to-custom-color...` <small>procedure?</small>
+
+## `set-selected-track<s>-item<s>-to-one-random-color` <small>procedure?</small>
+
+## `set-selected-item<s>-to-respective-track-color` <small>procedure?</small>
+
+## `set-selected-item<s>-to-ordered-custom-colors-per-track` <small>procedure?</small>
+
+## `set-selected-item<s>-to-color-gradient-per-track` <small>procedure?</small>
+
+## `set-selected-track<s>-children-to-same-color` <small>procedure?</small>
+
+## `set-selected-track<s>-to-ordered-custom-colors` <small>procedure?</small>
+
+## `set-selected-tracks-to-color-gradient` <small>procedure?</small>
+
+## `set-selected-track<s>-to-random-custom-color<s>` <small>procedure?</small>
+
+## `set-selected-track<s>-to-one-random-custom-color` <small>procedure?</small>
+
+## `set-selected-track<s>-to-next-custom-color` <small>procedure?</small>
+
+## `set-selected-track<s>-to-color-black` <small>procedure?</small>
+
+## `set-selected-track<s>-to-color-white` <small>procedure?</small>
+
+## `toggle-auto-track-coloring-enable` <small>procedure?</small>
+
+## `cmd` <small>procedure?</small>
+
+# (ns `rpr.time`)
+
+## `with-grid` <small>macro?</small>
+
+## `move-cursor` <small>procedure?</small>
+
+## `move-cursor-right` <small>procedure?</small>
+
+## `move-cursor-left` <small>procedure?</small>
+
+## `save-cursor-position` <small>macro?</small>
+
+# (ns `secrets`)
+
+## `freesound` <small>string?</small>
+
+# (ns `rpr`)
+
+## `MIDI_DeleteEvt` <small>procedure?</small>
+(MIDI_DeleteEvt p-media-item-take idx)
+## `MIDI_CountEvts` <small>procedure?</small>
+(MIDI_CountEvts p-media-item-take) Count the number of notes, CC events, and text/sysex events in a given MIDI item.
+TODO pass an optional argument for the type of events: 'note 'cc or ('text or 'sysex)
+## `MIDI_GetProjTimeFromPPQPos` <small>procedure?</small>
+(MIDI_GetProjTimeFromPPQPos p-media-item-take ppqpos) : double
+## `MIDI_GetPPQPosFromProjTime` <small>procedure?</small>
+(MIDI_GetPPQPosFromProjTime p-media-item-take project-time) : double
+## `MIDI_InsertNote` <small>procedure?</small>
+(MIDI_InsertNote p-media-item-take selected? muted? startppqpos endppqpos chan pitch vel &opt no-sort-in?)
+## `GetSetProjectGrid` <small>procedure?</small>
+(GetSetProjectGrid)
+## `GetCursorPosition` <small>procedure?</small>
+(GetCursorPosition)
+## `SetEditCurPos` <small>procedure?</small>
+(SetEditCurPos time &optional move-view?=false seek-play?=false)
+## `GetSet_LoopTimeRange` <small>procedure?</small>
+(GetSet_LoopTimeRange set? loop? start end allow-auto-seek)
+## `NamedCommandLookup` <small>procedure?</small>
+(NamedCommandLookup name-id)
+## `ReverseNamedCommandLookup` <small>procedure?</small>
+(ReverseNamedCommandLookup id) Returns #f or the named id (string)
+## `Main_OnCommand` <small>procedure?</small>
+(Main_OnCommand cmd-id)
+## `RegisterGui` <small>procedure?</small>
+(RegisterGui name script-file) CUSTOM (not part of reaper): Registers an action under name which runs a gui script
+## `RegisterAction` <small>procedure?</small>
+(RegisterAction name fn) Adds a menu item inside reaper
+## `CF_EnumerateActions` <small>procedure?</small>
+(CF_EnumerateActions section idx) ret (retval:int name:string)
+## `UpdateArrange` <small>procedure?</small>
+(UpdateArrange)
+## `GetSetMediaTrackInfo_String` <small>procedure?</small>
+(GetSetMediaTrackInfo_String p-media-track param-name &opt set-value)
+## `GetSelectedTrack` <small>procedure?</small>
+(GetSelectedTrack ReapProject* idx) TODO project* always 0
+## `CountSelectedTracks` <small>procedure?</small>
+(CountSelectedTracks &optional ReapProject*=0) TODO project is always 0
+## `SetTrackSelected` <small>procedure?</small>
+(SetTrackSelected *media-track sel:bool)
+## `SetOnlyTrackSelected` <small>procedure?</small>
+(SetOnlyTrackSelected *media-track)
+## `GetMediaItem_Track` <small>procedure?</small>
+(GetMediaItem_Track *media-item)
+## `CountTracks` <small>procedure?</small>
+(CountTracks &optional ReaProject=0) TODO ReaProject always 0
+## `type-media-track` <small>integer?</small>
+
+## `GetActiveTake` <small>procedure?</small>
+(GetActiveTake media-item*)
+## `GetSetMediaItemTakeInfo_String` <small>procedure?</small>
+(GetSetMediaItemTakeInfo_String p-take param-name) TODO add an optional set-value param. If present => set. If not => get
+## `type-media-take` <small>integer?</small>
+
+## `GetTrackMediaItem` <small>procedure?</small>
+(GetTrackMediaItem p-track index)
+## `InsertMedia` <small>procedure?</small>
+(InsertMedia file-path mode=0) mode:
+- 0 add to current track
+- 1 add new track
+- 3 add to selected items as takes
+- &4 stretch/loop to fit time sel
+- &8=try to match tempo 1x
+- &16=try to match tempo 0.5x
+- &32=try to match tempo 2x
+- &64=don't preserve pitch when matching tempo
+- &128=no loop/section if startpct/endpct set
+- &256=force loop regardless of global preference for looping imported items
+- &512=use high word as absolute track index if mode&3==0
+## `GetMediaItemInfo_Value` <small>procedure?</small>
+(GetMediaItemInfo_Value item param-name)
+## `SetMediaItemSelected` <small>procedure?</small>
+(SetMediaItemSelected *media-item selected?)
+## `GetSelectedMediaItem` <small>procedure?</small>
+(GetSelectedMediaItem ReaProject* idx) TODO ReaProject is always 0
+## `CountSelectedMediaItems` <small>procedure?</small>
+(CountSelectedMediaItems) TODO pass ReaProject
+## `type-media-item` <small>integer?</small>
+
+## `*reaper_plugin_info_t*` <small>c-pointer?</small>
+
+## `ReaperExtBase*` <small>c-pointer?</small>
+
+# (ns `s7bi.curl.c`)
+Basic bindings for libcurl
+## `easy-escape` <small>procedure?</small>
+(easy-escape string)
+## `curl` <small>procedure?</small>
+(curl url (out #f) (opts *default-curl-opts*))
+## `*default-opts*` <small>let?</small>
+value `(inlet :ssl-verify-peer 1 :follow-location 1)`
+# (ns `rpr+.freesound`)
+
+## `insert-random` <small>procedure?</small>
+
+## `insert-random-preview` <small>procedure?</small>
+
+## `*download-dir*` <small>string?</small>
+
+# (ns `region-items.core`)
+
+## `propagate` <small>procedure?</small>
+
+## `clear` <small>procedure?</small>
+
+## `select` <small>procedure?</small>
+
+# (ns `arrange.core`)
+
+## `arrange-children` <small>procedure?</small>
+
+## `arrange-track` <small>procedure?</small>
+
+## `filter-tracks-regex` <small>procedure?</small>
+
 # (ns `rpr.actions.gen`)
 Generating functions from the action list
 The rpr.actions.item/track/time-selection are generated from here
@@ -765,18 +864,6 @@ The rpr.actions.item/track/time-selection are generated from here
 ## `gen-time-selection` <small>procedure?</small>
 
 ## `gen-file` <small>procedure?</small>
-
-# (ns `rpr.helpers.item`)
-
-## `active-take-name` <small>procedure?</small>
-
-## `start-end` <small>procedure?</small>
-
-## `track-items` <small>procedure?</small>
-
-## `selected` <small>procedure?</small>
-
-## `set-only-selected` <small>procedure?</small>
 
 # (ns `rpr.actions.track`)
 
@@ -1182,21 +1269,25 @@ The rpr.actions.item/track/time-selection are generated from here
 
 ## `cmd` <small>procedure?</small>
 
+# (ns `rpr.midi`)
+
+## `snap` <small>procedure?</small>
+
+## `insert-markov-melody` <small>procedure?</small>
+
+## `insert-intervals` <small>procedure?</small>
+
+## `insert-note` <small>procedure?</small>
+
+## `delete-event` <small>procedure?</small>
+
+## `delete-all-events` <small>procedure?</small>
+
+# (ns `rpr.macros`)
+Common macros
+## `safe` <small>macro?</small>
+
 # (ns `rpr.common`)
 
 ## `cmd` <small>procedure?</small>
-
-# (ns `aod.c.curl`)
-Basic bindings for libcurl
-## `easy-escape` <small>procedure?</small>
-(easy-escape string)
-## `curl` <small>procedure?</small>
-(curl url (out #f) (opts *default-curl-opts*))
-## `*default-opts*` <small>let?</small>
-value `(inlet :ssl-verify-peer 1 :follow-location 1)`
-# (ns `aod.c.json`)
-Basic bindings for nlohmann/json
-## `parse` <small>procedure?</small>
-(parse json-str) Returns a json c-object
-## `type-json` <small>integer?</small>
 

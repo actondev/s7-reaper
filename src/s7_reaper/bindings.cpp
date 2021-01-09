@@ -28,6 +28,9 @@ s7_pointer cf_enumarate_actions(s7_scheme* sc, s7_pointer args) {
                        s7_make_string(sc, buffer));
 
     }
+        return s7_error(sc,
+             s7_make_symbol(sc, "error"),
+             s7_cons(sc, s7_make_string(sc, "CF_EnumerateActions not available"), s7_nil(sc)));
 }
 
 void bind(s7_scheme* sc, s7_pointer env) {

@@ -1,6 +1,7 @@
 (ns midi.core
-    :require ((aod.c.midi :as midi)
-	      (aod.c.string :as s)))
+    :require (
+	      ;;(aod.c.midi :as midi)
+	      (s7bi.string.c :as s)))
 
 (define (snap-octave+- x)
   (* (sign x) (mod (abs x) 12)))

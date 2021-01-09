@@ -23,7 +23,7 @@ ReaperRepl::ReaperRepl(reaper_plugin_info_t* pRec)
     : ReaperExtBase(pRec)
 {
 
-    printf("here, this is %p\n", this);
+    // printf("here, this is %p\n", this);
     std::string path = s7_reaper::path::get();
     printf("path is %s\n", path.c_str());
 

@@ -9,8 +9,9 @@ iplug2_proj = subproject('iPlug2', default_options:
 			 
 s7bi_proj = subproject('s7bi',
 		       default_options:[
+			 'imgui=enabled',
 			 'curl=enabled',
-			 'json=enabled'
+			 'json=enabled',
 		       ])
 s7bi_dep = s7bi_proj.get_variable('s7bi_dep')
 

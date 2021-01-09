@@ -1,6 +1,6 @@
 (ns rootlet
-    :require ((aod.c.imgui :as ig)
-	      (aod.imgui.macros :as igm)
+    :require ((s7bi.imgui.c :as ig)
+	      (s7bi.imgui.macros :as igm)
 	      (region-items.core :as ri)
 	      ))
 

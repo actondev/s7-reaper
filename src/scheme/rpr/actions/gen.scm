@@ -2,7 +2,7 @@
     :doc "Generating functions from the action list
 The rpr.actions.item/track/time-selection are generated from here"
     :require ((rpr)
-	      (s7bi.string :as s)))
+	      (s7bi.string.c :as s)))
 
 (define (gen-file the-ns file regex)
   (call-with-output-file file

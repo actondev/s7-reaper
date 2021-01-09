@@ -37,13 +37,14 @@ int guiLoop(s7_scheme* sc); // defined later
  * This also creates a new s7_scheme* instance
  */
 void init(reaper_plugin_info_t* pRec, std::string file) {
-    printf("gui init with file %s\n", file.c_str());
+    
     std::string path = s7_reaper::path::get();
 
     fs::path base_path = fs::path(path).remove_filename();
     fs::path scheme_path = base_path / "s7-reaper";
 
-    s7_scheme* sc = s7bi::init(scheme_path / "s7-imgui");
+    printf("gui init with file %s, scheme path%s\n", file.c_str(), scheme_path.c_str());
+    s7_scheme* sc = s7bi::init(scheme_path);
     s7_add_to_load_path(sc, scheme_path.string().c_str());
 
     // passing NULL instance

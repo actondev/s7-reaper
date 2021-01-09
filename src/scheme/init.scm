@@ -16,12 +16,14 @@
 		    (lambda ()
 		      (rpr+.freesound/insert-random)))
 
-(rpr/RegisterAction "Generate actions" (lambda ()
-					 (rpr.actions.gen/gen-time-selection)
-					 (rpr.actions.gen/gen-track)
-					 (rpr.actions.gen/gen-item)
-					 (rpr.actions.gen/gen-sws-track)
-					 (rpr.actions.gen/gen-sws-item)))
+(define generate-actions (lambda ()
+			   (print "generating actions")
+			   (rpr.actions.gen/gen-time-selection)
+			   (rpr.actions.gen/gen-track)
+			   (rpr.actions.gen/gen-item)
+			   (rpr.actions.gen/gen-sws-track)
+			   (rpr.actions.gen/gen-sws-item)))
+(rpr/RegisterAction "Generate actions" generate-actions)
 
 (rpr/RegisterAction "Generate namespaces doc"
 		    (lambda ()
